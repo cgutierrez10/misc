@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Engine Alpha" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Engine Alpha" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="0" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Engine Alpha" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="include" />
+			<Add directory="../../Libraries/SDL2-2.0.3/include/" />
+			<Add directory="../../Libraries/freeglut-2.8.1/include/" />
+			<Add directory="../../Libraries/Armadillo/include" />
+			<Add directory="C:/programming/Libraries/SDL2_image-2.0.0/i686-w64-mingw32/include/SDL2" />
+			<Add directory="../level/include" />
+		</Compiler>
+		<Linker>
+			<Add option="-lmingw32" />
+			<Add option="-lOpengl32" />
+			<Add option="-lSDL2main" />
+			<Add option="-lSDL2" />
+			<Add option="-lSDL2_image" />
+			<Add library="C:\programming\Libraries\SDL2-2.0.3\i686-w64-mingw32\lib\libSDL2.a" />
+			<Add library="C:\programming\Libraries\SDL2-2.0.3\i686-w64-mingw32\lib\libSDL2main.a" />
+			<Add library="C:\programming\Libraries\SDL2_image-2.0.0\i686-w64-mingw32\lib\libSDL2_image.a" />
+			<Add directory="C:/programming/Libraries/SDL2-2.0.3/i686-w64-mingw32/lib" />
+			<Add directory="C:/programming/Libraries/SDL2_image-2.0.0/i686-w64-mingw32/lib" />
+		</Linker>
+		<Unit filename="include/astat.h" />
+		<Unit filename="include/combat.h" />
+		<Unit filename="include/core.h" />
+		<Unit filename="include/decoration.h" />
+		<Unit filename="include/gamecore.h" />
+		<Unit filename="include/glfont2.h" />
+		<Unit filename="include/handler.h" />
+		<Unit filename="include/igfxlayer.h" />
+		<Unit filename="include/ihandle.h" />
+		<Unit filename="include/input.h" />
+		<Unit filename="include/iuifx.h" />
+		<Unit filename="include/meter_uifx.h" />
+		<Unit filename="include/mob.h" />
+		<Unit filename="include/mobgfx.h" />
+		<Unit filename="include/pstat.h" />
+		<Unit filename="include/skills.h" />
+		<Unit filename="include/terrain.h" />
+		<Unit filename="include/title.h" />
+		<Unit filename="include/ui.h" />
+		<Unit filename="src/astat.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/decoration.cpp" />
+		<Unit filename="src/gamecore.cpp" />
+		<Unit filename="src/handler.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/igfxlayer.cpp" />
+		<Unit filename="src/init.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/input.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/meter_uifx.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/mob.cpp" />
+		<Unit filename="src/mobgfx.cpp" />
+		<Unit filename="src/terrain.cpp" />
+		<Unit filename="src/title.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,293 @@
+#ifndef _Mob
+#define _Mob
+#include "mob.h"
+#endif
+
+#ifndef _GameCore
+#define _GameCore
+#include "gamecore.h"
+#endif
+
+
+/*
+	Ships work as self maintained bidirectional linked list
+
+	Member functions
+	Ctor
+	Dtor
+
+	Class with linked list structure within?
+*/
+
+/* 
+ * Mobs should work as a factory pattern
+ * All should have a tick() function and a draw() function
+ */
+
+
+
+Mob::Mob() {
+	//When class is called player element is initialized
+	//Ship::first = NULL;
+	//Ship::last = NULL;
+	// Creating the first mob, player
+    gfx = new Mat<int>();
+	gfx->resize(1,6);
+
+    mob_data* self = new mob_data();
+    self->prev = self;
+    self->next = self;
+
+    first = self;
+    last = self;
+    player = self;
+
+	self->x = 10;
+	self->y = 5;
+	//self->catagory = 2;
+	self->type = 0;
+	self->gfx = 1;
+	//self->dead = 0;
+	self->cur_frame = 1;
+	self->ttl = 5;
+	self->gfx_lock = false;
+}
+
+
+Mat<int>* Mob::update() {
+	//Process move() per item, check element integrity, process drawmob() per item
+	// Since it is called once per frame this also allows regeneration and lifespan updating
+	//Currently has a bug regarding last item in list (typically bullets) either multiple or skip processing them
+	//Very buggy! Fix here fix for good though
+
+	// Start with simplest case
+	// Tick the player and update player gfx
+	mob_data* current;
+	//mob_data* next;
+	//next = first; //First element not 0th
+	//new mob_data;
+
+	int i;
+	// Verify [current] is a valid object
+	current = player;
+	bool is_player;
+
+/*
+	gfx->at(1,1) = 32;
+	gfx->at(1,2) = 32;
+	gfx->at(1,3) = 0;
+	gfx->at(1,4) = 0;
+	gfx->at(1,5) = 64;
+*/
+    gfx->at(1,1) = (current->x * 32) + (8 * current->cur_frame * current->vec[0]);
+    gfx->at(1,2) = (current->y * 32) + (8 * current->cur_frame * current->vec[1]);
+    gfx->at(1,3) = current->type;
+    gfx->at(1,4) = (current->cur_frame - 1) * 40;
+    if (current->vec[0] == -1) { gfx->at(1,5) = 60; } // All elements here are in pixels
+    if (current->vec[0] == 1) { gfx->at(1,5) = 120; } // All elements here are in pixels
+    if (current->vec[1] == -1) { gfx->at(1,5) = 180; } // All elements here are in pixels
+    if (current->vec[1] == 1) { gfx->at(1,5) = 0; } // All elements here are in pixels
+    gfx->at(1,6) = 60;
+    if (current == player) { is_player = true; } else { is_player = false; }
+	tick(current, is_player);
+    return gfx;
+
+	/*
+	do {
+		//Next is current->next, if current is deleted next is still valid
+		//
+		current = next;
+		next = current->next;
+		tick(current); // Processes object 'frame'
+		// Creates entry in gfx columns to draw sprite upper left corner at x, y, for resource frame*32 by height
+		i++;
+		gfx.column(i) = (current->x * 32, current->y * 32, current->type, current->cur_frame * 32, 64); // All elements here are in pixels
+
+
+
+		//collision(current); //Flags elements for deletion
+		//regen(current); //Regenerates energy to max as possible
+		} else { delete current; }
+	} while (next != last); //Current may be deleted preventing current == checks, last may change based on deletion
+	/ *current = next;
+	if (!current->dead) {
+		move(current);
+		collision(current); //Flags elements for deletion
+		//regen(current); //Regenerates energy to max as possible
+		drawship(current);
+	} else { delete current; }* /
+    */
+}
+
+void Mob::tick(mob_data* self, bool player)
+{
+	//This currently seems to delete second to last element under some circumstances?
+	//if ((0 <= (self->y + self->vec[1])) && ((self->y + self->vec[1] <= 478) || (self->type != 0))) { self->y = self->y + self->vec[1]; } //Adding vertical check prevents off-screen spawning entries, later checks remove past-vertical elements
+	//if ((0 <= (self->x + self->vec[0])) && ((self->x + self->vec[0]) <= 640)) { self->x = self->x + self->vec[0]; }
+	//if (self->y >= 470 && self->type == 0 /*&& self != player*/) {self->dead = true; } //Bullet leaves top screen
+	//if (self->y <= 10 && self->type == 1) { self->dead = true; } //Opponent escaped bottom of screen
+    if (self->gfx_lock == true)
+    {
+        self->cur_frame++;
+    }
+    if (self->cur_frame == self->ttl)
+    {
+        self->gfx_lock = false;
+
+        self->y = self->vec[1] + self->y;
+        self->x = self->vec[0] + self->x;
+        self->cur_frame = 1;
+        self->vec[0] = 0;
+        self->vec[1] = 0;
+    }
+    if (player)
+    {
+        if (self->y > 9) { self->y--;}
+        if (self->y < 3)  { self->y++;}
+        if (self->x > 15) { self->x--;}
+        if (self->x < 5)  { self->x++;}
+    }
+
+	return;
+}
+
+/*
+void Mob::Events::spawn(int number) {
+	//Spawns number ships in vertical line
+	//Create pointer, point to last existing element, add new element to next
+
+	while (number > 0) {
+		new mob_data; //new ship_data self-maintains
+		last->x = (200 + (number * 10)); //Spawn a few pixels offscreen movement will bring them into play
+		last->y = 480; //Temp holder later y location will be defined as necessary
+		last->catagory = 2;
+		last->score = 0;
+		last->layer = 2;
+		last->weapon = 0;
+		last->regen = 10;
+		last->fire_rate = 0;
+		last->motion = 0;
+		last->type = 1;
+		last->gfx = 0;
+		last->strength = 10;
+		last->dead = 0;
+		last->ttl = 7;
+		last->cur_frame = 0;
+		number--;
+	}
+}
+*/
+void Mob::add_mob()
+{
+    mob_data* self = new mob_data();
+	last->next = self;
+	self->prev = last;
+	last = self;
+	self->next = self;
+	elements++;
+	return;
+}
+Mob::mob_data::mob_data() {
+	//printf("Ship element initialized.\n");
+
+}
+
+Mob::mob_data::~mob_data() {
+	//Each clause should be exclusive and thus prevent multiple attempts to resolve
+	//printf("Ship delete.\n");
+	//Last element, revert last back one element, clean up next link
+//	if (this == player) { GameCore::Status::game_is_running(false); printf("Player die.\n"); }
+//	if (this == last && this != first) { last = this->prev; last->next = last; }
+	//printf("Line 1.\n");
+	//Middle elements, link past, link behind, remove self
+//	if (this != first) { this->prev->next = this->next; this->next->prev = this->prev; }
+	//printf("Line 2.\n");
+	//First element, incriment first one pointer, new element prev = first
+//	if (this == first) { first = this->next; this->prev = this; }
+	//printf("Line 3.\n");
+//	elements--;
+}
+
+/*
+void Mob::Events::newbullet() //Currently path is x cooridinate, pure vertical motion
+{
+	// This should resemble spawn, perhaps an intermediate function can handle list and prelim data and this could configure each object?
+	new mob_data;
+	last->catagory = 2; // Target layer
+	last->layer = 2; // Source layer
+	last->weapon = 0;
+	last->score = 0;
+	last->regen = 0;
+	last->motion = 0;
+	last->ttl = 120;
+	last->fire_rate = 0;
+	// 1-3 ground to space, 2-3 air to space, 3-3 space to space, etc
+	last->x = player->x;
+	last->y = player->y;
+	last->type = 0;
+	last->gfx = 2;
+	last->strength = 1000;
+	last->dead = 0;
+}
+*/
+
+void Mob::change_move(int x, int y) {
+    if (player->gfx_lock == false)
+    {
+        player->vec[0] = x;
+        player->vec[1] = y;
+        player->gfx_lock = true;
+    }
+	//printf("Final Vector: %d, %d\n", player->vec[0], player->vec[1]);
+
+}
+
+/*
+void Mob::Events::collision(mob_data* current)
+{
+	//Iterate through list checking y coords for matches then x, double match = collision
+	//Very Hit and Miss collision detection, radius and proximity calculations are bad relative to target sizes
+	//Buggy, elements sometimes bypass each other, hit other elements later or not at all, temporary and fleeting immunity
+	//Immunity issues seem to stem from opponent elements previous in list not encountering bullet elements
+	mob_data* step;
+	mob_data* next;
+	int j, radius;
+	int max = elements;
+	int skip = 0;
+	//Next is current->next, if current is deleted next is still valid
+	//
+	//Outer loop, calls one element at a time until element = n-1 (leaving 1 to check against and avoiding checking against itself)
+	if (current == last) { return; }
+	next = current->next;
+	skip = 0;
+	while ((current->type == next->type) && next != last) { next = next->next; skip++; } //Skips all self-same elements
+	if (next == last) { return; } //Cancels all remaining looping if types are same, ends further looping
+	for (j = max - skip; j > 0; j--) {
+		step = next;
+		while ((current->type == next->type) && next != last) { next = next->next; } //Skips all self-same elements
+		if (next == last) { return; } //Cancels all remaining looping if types are same, ends further looping
+	}
+	printf("Collision() returns.\n");
+}
+*/
+
+/*
+bool Mob::Events::damage(mob_data* first, mob_data* second) {
+	//Stub
+	//Bullet type element is deleted automatically
+	//Player/ship collision immediately removes weaker element
+	int e1, e2, result;
+	bool flag = false;
+	e1 = first->strength;
+	e2 = second->strength;
+	result = e1 - e2;
+	first->strength = result;
+	second->strength = -result;
+
+	//Deplete shields, remove bullet type object
+	if (first->strength <= 0) { first->dead = true; flag = true; }
+	if (second->strength <= 0) { second->dead = true; }
+	printf("Damage applied.\n");
+	return(flag);
+}
+*/

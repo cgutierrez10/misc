@@ -1,0 +1,29 @@
+#include "meter_uifx.h"
+#include "astat.h"
+
+meter_uifx::meter_uifx(astat tracker)
+{
+  MeterSource = tracker;
+}
+
+SDL_Surface* Draw()
+{
+
+}
+
+void ApplyDecor()
+{
+
+}
+
+/* Up or downscale decor and meter */
+void Resize(int x, int y)
+{
+
+}
+
+/* Determines scale and then calls resize with the calculated amounts */
+void Rescale(int)
+{
+
+}

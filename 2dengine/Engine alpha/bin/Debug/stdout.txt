@@ -1,0 +1,3 @@
+World size: 200 by 200
+Terrain surface size: 6400 by 6400
+Game is exiting 0.
