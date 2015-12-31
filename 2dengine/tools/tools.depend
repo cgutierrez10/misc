@@ -1,0 +1,36 @@
+# depslib dependency file v1.0
+1445132351 source:c:\programming\2dengine\tools\main.cpp
+	<iostream>
+	"include\lvl_write.h"
+	"..\..\level\include\lvlfilehandle.h"
+	"C:\programming\2dengine\level\src\lvlfilehandle.cpp"
+
+1445132650 c:\programming\2dengine\tools\include\lvl_write.h
+	<vector>
+	<string>
+	"..\..\level\include\level_data.h"
+
+1445127813 c:\programming\2dengine\level\include\level_data.h
+	<cstdint>
+	<fstream>
+
+1445126109 c:\programming\2dengine\level\include\lvlfilehandle.h
+	<string>
+	<vector>
+	"level_data.h"
+	<boost\archive\text_oarchive.hpp>
+	<boost\archive\text_iarchive.hpp>
+	<boost\serialization\vector.hpp>
+
+1445132711 source:c:\programming\2dengine\tools\src\lvl_write.cpp
+	"C:\programming\2dengine\tools\include\lvl_write.h"
+	<stdio.h>
+	<stdlib.h>
+	<fstream>
+	<iostream>
+
+1445134365 c:\programming\2dengine\level\src\lvlfilehandle.cpp
+	"../include/lvlfilehandle.h"
+	<iostream>
+	<fstream>
+
