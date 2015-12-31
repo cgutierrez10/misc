@@ -1,0 +1,26 @@
+# depslib dependency file v1.0
+1421891307 source:c:\programming\2dengine\level\src\igfxlayer.cpp
+	"../include/igfxlayer.h"
+
+1421893437 c:\programming\2dengine\level\include\igfxlayer.h
+	"sdl.h"
+	<stdio.h>
+	<string>
+	<vector>
+
+1445130765 source:c:\programming\2dengine\level\src\lvlfilehandle.cpp
+	"../include/lvlfilehandle.h"
+	<iostream>
+	<fstream>
+
+1422374224 c:\programming\2dengine\level\include\lvlfilehandle.h
+	<string>
+	<vector>
+	"level_data.h"
+	<boost\archive\text_oarchive.hpp>
+	<boost\archive\text_iarchive.hpp>
+	<boost\serialization\vector.hpp>
+
+1445122416 c:\programming\2dengine\level\include\level_data.h
+	<cstdint>
+
