@@ -1,0 +1,10 @@
+C:\Documents and Settings\Chris\my documents\visual studio 2010\Projects\cards web interface\SqlInterface\bin\Release\SqlInterface.dll
+C:\Documents and Settings\Chris\my documents\visual studio 2010\Projects\cards web interface\SqlInterface\bin\Release\SqlInterface.pdb
+C:\Documents and Settings\Chris\my documents\visual studio 2010\Projects\cards web interface\SqlInterface\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Chris\my documents\visual studio 2010\Projects\cards web interface\SqlInterface\obj\Release\SqlInterface.dll
+C:\Documents and Settings\Chris\my documents\visual studio 2010\Projects\cards web interface\SqlInterface\obj\Release\SqlInterface.pdb
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\cardalog web interface\SqlInterface\bin\Release\SqlInterface.dll
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\cardalog web interface\SqlInterface\bin\Release\SqlInterface.pdb
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\cardalog web interface\SqlInterface\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\cardalog web interface\SqlInterface\obj\Release\SqlInterface.dll
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\cardalog web interface\SqlInterface\obj\Release\SqlInterface.pdb

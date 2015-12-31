@@ -1,0 +1,13 @@
+C:\Documents and Settings\Chris\My Documents\Programming\Cards v0.5\Cards\bin\Debug\Cards.exe.config
+C:\Documents and Settings\Chris\My Documents\Programming\Cards v0.5\Cards\obj\Debug\Cards.exe
+C:\Documents and Settings\Chris\My Documents\Programming\Cards v0.5\Cards\obj\Debug\Cards.pdb
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\Cards v0.5\Cards\bin\Debug\Cards.exe.config
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\Cards v0.5\Cards\obj\Debug\Cards.exe
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\Cards v0.5\Cards\obj\Debug\Cards.pdb
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\Cards v0.5\Cards\bin\Debug\Cards.exe
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\Cards v0.5\Cards\bin\Debug\Cards.pdb
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\Cards v0.5\Cards\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\Cards v0.5\Cards\obj\Debug\Cards.Form1.resources
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\Cards v0.5\Cards\obj\Debug\Cards.Properties.Resources.resources
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\Cards v0.5\Cards\obj\Debug\GenerateResource-ResGen.read.1.tlog
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\Cards v0.5\Cards\obj\Debug\GenerateResource-ResGen.write.1.tlog

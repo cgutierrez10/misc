@@ -1,0 +1,16 @@
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\DataEntry.Form1.resources
+obj\Debug\DataEntry.Properties.Resources.resources
+obj\Debug\DataEntry.csproj.GenerateResource.Cache
+bin\Debug\DataEntry.exe
+bin\Debug\DataEntry.pdb
+obj\Debug\DataEntry.exe
+obj\Debug\DataEntry.pdb
+bin\Release\DataEntry.exe
+bin\Release\DataEntry.pdb
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\DataEntry.Form1.resources
+obj\Release\DataEntry.Properties.Resources.resources
+obj\Release\DataEntry.csproj.GenerateResource.Cache
+obj\Release\DataEntry.exe
+obj\Release\DataEntry.pdb

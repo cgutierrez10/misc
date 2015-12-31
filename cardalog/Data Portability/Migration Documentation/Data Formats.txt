@@ -1,0 +1,1 @@
+This file will detail the data formatting of the sql fields as well as their interrelation to facilitate developer efforts to create migration tools. I do not intend to write tools to export data but I do hope to write a few data import tools.

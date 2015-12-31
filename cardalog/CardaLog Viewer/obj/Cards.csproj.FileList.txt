@@ -1,0 +1,9 @@
+bin\Debug\Cards.exe.config
+bin\Debug\Cards.exe
+bin\Debug\Cards.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Cards.Form1.resources
+obj\Debug\Cards.Properties.Resources.resources
+obj\Debug\Cards.csproj.GenerateResource.Cache
+obj\Debug\Cards.exe
+obj\Debug\Cards.pdb

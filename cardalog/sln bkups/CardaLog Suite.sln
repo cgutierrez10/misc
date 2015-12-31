@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardaLog DataEntry", "CardaLog DataEntry\DataEntry\CardaLog DataEntry.csproj", "{6ADD8126-60F5-4982-9F4E-C7A6F4BE12B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardaLog Viewer", "CardaLog Viewer\Cards\CardaLog Viewer.csproj", "{C22AFC36-B7C9-4C6E-8558-A5C72CD8AA86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7373A636-EC6D-42AD-B1CF-E3105060A22D}"
+	ProjectSection(SolutionItems) = preProject
+		..\cards web interface\separating ddl set control notes.txt = ..\cards web interface\separating ddl set control notes.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardaLog Web Viewer", "CardaLog Web Viewer\CardaLog Web Viewer\CardaLog Web Viewer.csproj", "{B162A281-B6B8-4D89-A89B-115845CFC0FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6ADD8126-60F5-4982-9F4E-C7A6F4BE12B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ADD8126-60F5-4982-9F4E-C7A6F4BE12B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ADD8126-60F5-4982-9F4E-C7A6F4BE12B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ADD8126-60F5-4982-9F4E-C7A6F4BE12B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C22AFC36-B7C9-4C6E-8558-A5C72CD8AA86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C22AFC36-B7C9-4C6E-8558-A5C72CD8AA86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C22AFC36-B7C9-4C6E-8558-A5C72CD8AA86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C22AFC36-B7C9-4C6E-8558-A5C72CD8AA86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B162A281-B6B8-4D89-A89B-115845CFC0FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B162A281-B6B8-4D89-A89B-115845CFC0FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B162A281-B6B8-4D89-A89B-115845CFC0FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B162A281-B6B8-4D89-A89B-115845CFC0FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

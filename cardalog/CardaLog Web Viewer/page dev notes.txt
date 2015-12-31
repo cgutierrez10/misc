@@ -1,0 +1,22 @@
+modify controls to send only 2 least populus listboxes of options initially (or with a switch to apply this as an override when page size is excessive)
+	Disable controls with excessive results (based on having selected all other enabled fields already)
+
+add various bits of user-notifications
+	page refreshing 
+
+** remove login link in upper right corner
+
+** retitle page to be Asp CardaLog Demo
+
+Fix CSS and site.master files!
+	Dan reported background color flicker/changing (css conflict?)
+
+Add several static pages to form a site including
+	about me
+	contact links
+	technology information
+	behind the code information page?
+	actual code samples or user controls developed from projects
+	DB information  for compliant sql tables
+	existing toolsuite for data entry
+	link to sourceforge project?

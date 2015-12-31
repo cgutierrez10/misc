@@ -1,0 +1,18 @@
+C:\Documents and Settings\Chris\my documents\visual studio 2010\Projects\cards web interface\SqlInterface\bin\Debug\SqlInterface.dll
+C:\Documents and Settings\Chris\my documents\visual studio 2010\Projects\cards web interface\SqlInterface\bin\Debug\SqlInterface.pdb
+C:\Documents and Settings\Chris\my documents\visual studio 2010\Projects\cards web interface\SqlInterface\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Chris\my documents\visual studio 2010\Projects\cards web interface\SqlInterface\obj\Debug\SqlInterface.dll
+C:\Documents and Settings\Chris\my documents\visual studio 2010\Projects\cards web interface\SqlInterface\obj\Debug\SqlInterface.pdb
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\cardalog web interface\SqlInterface\bin\Debug\SqlInterface.dll
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\cardalog web interface\SqlInterface\bin\Debug\SqlInterface.pdb
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\cardalog web interface\SqlInterface\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\cardalog web interface\SqlInterface\obj\Debug\SqlInterface.dll
+C:\Documents and Settings\Chris\My Documents\Programming\cardalog\cardalog\cardalog web interface\SqlInterface\obj\Debug\SqlInterface.pdb
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\SqlInterface\bin\Debug\SqlInterface.dll
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\SqlInterface\bin\Debug\SqlInterface.pdb
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\SqlInterface\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\SqlInterface\obj\Debug\SqlInterface.dll
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\SqlInterface\obj\Debug\SqlInterface.pdb
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\SqlInterface\obj\Debug\SqlInterface.DialogBoxForm1.resources
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\SqlInterface\obj\Debug\GenerateResource.read.1.tlog
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\SqlInterface\obj\Debug\GenerateResource.write.1.tlog

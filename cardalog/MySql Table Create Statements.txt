@@ -1,0 +1,48 @@
+For development purposes the card_prototype table should be used whenever a database selector is yet to be implimented.
+
+`card_prototype`.CREATE DATABASE `card_prototype`
+
+
+
+
+This table holds data about the valuation book used for any particular subset of cards. To a non-collector this may look unnecessary but books often drop years or manufacturers out at edition changes only to bring them back later so very few books have a complete valuation of the entirity of the printed cards.
+
+
+DROP TABLE IF EXISTS `card_prototype`.`book`;
+CREATE TABLE  `card_prototype`.`book` (`ISBN` varchar(20) NOT NULL,`title` varchar(45) NOT NULL,`publish_year` smallint(5) unsigned NOT NULL,`edition` tinyint(3) unsigned NOT NULL, PRIMARY KEY  (`ISBN`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+
+The MetaData table contains all the information which is specific to a card as it would appear within a pricing catalog, information which refers to a particular printing but not a single physical copy. This reduces the data duplication as most collectors have several copies of many cards. This is also the basis of the index as this is the information which a value book is based on and it is also the information that forms a complete picture of a physical card when combined with uniquedata table.
+
+
+DROP TABLE IF EXISTS `card_prototype`.`metadata`;
+CREATE TABLE  `card_prototype`.`metadata` (`name` varchar(100) default NULL, `number` int(10) unsigned default NULL,`manufacturer` varchar(100) default NULL,`year` year(4) default NULL, `serial` varchar(45) NOT NULL, `validate` tinyint(1) default '0', PRIMARY KEY  (`serial`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+
+
+
+
+The uniquedata table is the specific information linked with a single physical copy of a card. Including physical location within the catalog as well as condition and valuations. This is the table with the most fields and likely the most rows it will typically represent the content of the catalog while the other tables form its context.
+
+
+DROP TABLE IF EXISTS `card_prototype`.`uniquedata`;
+CREATE TABLE  `card_prototype`.`uniquedata` (`notes` varchar(100) default NULL, `grade` varchar(45) default NULL, `container` int(10) unsigned NOT NULL default '0', `page` smallint(5) unsigned NOT NULL default '0', `location` tinyint(3) unsigned NOT NULL default '0', `price` float NOT NULL default '1', `image` mediumblob, `serial_fk0` varchar(45) NOT NULL, `date` datetime default NULL, KEY `serial_fk0` (`serial_fk0`), CONSTRAINT `serial_fk0` FOREIGN KEY (`serial_fk0`) REFERENCES `metadata` (`serial`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+
+
+
+
+The values table contains 2 bits of data not seen elsewhere and 2 index keys. A value is one of the most important pieces of data available and a last update ensures that the system can automatically flag old entries for a review to prevent unintended listing by obsolete values.
+
+
+DROP TABLE IF EXISTS `card_prototype`.`value`;
+CREATE TABLE  `card_prototype`.`value` (`ISBN_fk0` varchar(20) NOT NULL, `value` decimal(10,2) unsigned NOT NULL, `serial_fk1` varchar(45) NOT NULL, `lupdate` datetime default NULL, PRIMARY KEY  (`serial_fk1`), KEY `ISBN_fk0` (`ISBN_fk0`), CONSTRAINT `ISBN_fk0` FOREIGN KEY (`ISBN_fk0`) REFERENCES `book` (`ISBN`), CONSTRAINT `serial_fk1` FOREIGN KEY (`serial_fk1`) REFERENCES `metadata` (`serial`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+The following statement creates a view that joins all the tables in creating a single place from which all data can be drawn. For debugging purposes while developing this can be used to confirm any special joins return correct and valid results.
+
+
+CREATE OR REPLACE VIEW `completerow` AS select `book`.`ISBN` AS `ISBN`,`book`.`title` AS `title`,`book`.`publish_year` AS `publish_year`,`book`.`edition` AS `edition`,`metadata`.`name` AS `name`,`metadata`.`number` AS `number`,`metadata`.`manufacturer` AS `manufacturer`,`metadata`.`year` AS `year`,`metadata`.`serial` AS `serial`,`metadata`.`validate` AS `validate`,`uniquedata`.`notes` AS `notes`,`uniquedata`.`grade` AS `grade`,`uniquedata`.`container` AS `container`,`uniquedata`.`page` AS `page`,`uniquedata`.`location` AS `location`,`uniquedata`.`price` AS `price`,`uniquedata`.`image` AS `image`,`uniquedata`.`serial_fk0` AS `serial_fk0`,`uniquedata`.`date` AS `date`,`value`.`ISBN_fk0` AS `ISBN_fk0`,`value`.`value` AS `value`,`value`.`serial_fk1` AS `serial_fk1`,`value`.`lupdate` AS `lupdate` from (((`book` join `metadata`) join `uniquedata`) join `value`) where ((`metadata`.`serial` = `uniquedata`.`serial_fk0`) and (`metadata`.`serial` = `value`.`serial_fk1`) and (`value`.`ISBN_fk0` = `book`.`ISBN`))

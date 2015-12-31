@@ -1,0 +1,23 @@
+Disable populate list while !connected
+
+<first and last name fields, price
+*on update(book) add new isbn to existing book selectors
+add validate flag on price change?
+	add validate button to validate selected entry?
+
+
+
+revise datagrid to use databinding rather than manual field selections
+
+revise entire sql structure to utilize the sqlhandler.dll interfacing
+In Progress
+	Extend sqlhandler.dll to accomodate updates and other varieties of select, multiple tables?
+	to write:
+		update logic (simple form to edit book data, bear in mind full data entry modes)
+		delete logic (remove existing rows? data safety issues?)
+		unusual select logics?
+		insert logic (add books and existing rows)
+
+
+
+Create login dialog,	include in sqlhandler.dll?

@@ -1,0 +1,20 @@
+﻿This class should accept
+public:
+*/	constructor/destructor
+**	statement prep (parameters input)
+**	result returns (sanitized of latent sql)
+**	connectstring variables (set, compare, but not get)
+**		db name
+**		login name
+**		login pw
+**		hostname
+**	populate field (autopostback provides field1 name, seek all field2 return databindable list)
+
+protected:
+
+private:
+**	variables for connectstring
+**	sqlconnection handle
+	checking authorizations (determine ability to perform requests)
+
+	

@@ -1,0 +1,35 @@
+An effort to list the target formats from which import should be possible along with the minimum data set required for the more flexible formats such as CSV's
+
+CSV files must have:
+player name
+card number
+manufacturer of card
+year of publish
+
+from this set an index value will be produced
+
+CSV files may include:
+locational data (physical storage): 3 dimension integer array; defaults to 0's
+	Typical use in current practice is [binder][page][slot in card page]
+	Use may be regarded as flexible but each field must be an integer
+Image data: Binary data glob; defaults to null
+	Not currently used in practice but the database format specifies a field
+	for binary dataglobs
+Value Data A: Float value from 0 to 1, defaults to 1
+	This is a price multiplier attached to individual cards which represents
+	values with specific quality data in mind, this is entered by the users opinion
+	Defaults to 1 (100% of base value)
+Value Data B: Float from 0 to inf
+	This represents a base value of a card assuming a mint condition example.
+
+et al continue editting later and expand this listing.
+
+Additional targets, investigate the ability to export user data from becketts online catalogging resource
+
+prepare xml transfer tool in an generic a way as possible
+
+
+All import tools should include configure modes
+	Read a single data row (as best as possible to determine)
+	ask user to verify what type of data this field from row represents
+	parse fields 

@@ -1,0 +1,12 @@
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\obj\Debug\CardaLog_Web_Viewer.Properties.Resources.resources
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\obj\Debug\GenerateResource.read.1.tlog
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\obj\Debug\GenerateResource.write.1.tlog
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\bin\CardaLog Web Viewer.dll
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\bin\CardaLog Web Viewer.pdb
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\bin\DataEntry.exe
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\bin\SqlInterface.dll
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\bin\DataEntry.pdb
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\bin\SqlInterface.pdb
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\obj\Debug\CardaLog Web Viewer.dll
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\CardaLog Suite\CardaLog Web Viewer\obj\Debug\CardaLog Web Viewer.pdb

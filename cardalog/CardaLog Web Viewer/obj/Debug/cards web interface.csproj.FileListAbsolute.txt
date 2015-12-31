@@ -1,0 +1,10 @@
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\cards web interface\cards web interface\bin\cards web interface.dll
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\cards web interface\cards web interface\bin\cards web interface.pdb
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\cards web interface\cards web interface\bin\SqlInterface.dll
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\cards web interface\cards web interface\bin\SqlInterface.pdb
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\cards web interface\cards web interface\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\cards web interface\cards web interface\obj\Debug\cards_web_interface.Properties.Resources.resources
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\cards web interface\cards web interface\obj\Debug\GenerateResource.read.1.tlog
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\cards web interface\cards web interface\obj\Debug\GenerateResource.write.1.tlog
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\cards web interface\cards web interface\obj\Debug\cards web interface.dll
+C:\Documents and Settings\Chris\My Documents\Visual Studio 2010\Projects\cards web interface\cards web interface\obj\Debug\cards web interface.pdb

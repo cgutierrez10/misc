@@ -1,0 +1,20 @@
+To separate the ddl control set as a separate control:
+
+using existing code evaluate ways to making elements into useable iteratiable arrays that are simple to programatically interact with
+
+find simple ways to populate the controls (maybe by each column in a datatable being uniquely bound to each control)
+
+define ways to control the set of controls (size multi-select defaults etc)
+
+determine how to load this control into VS as a drag and drop control
+
+package control for distribution as desired
+
+
+issues to avoid:
+avoid worrying about column names and control titles try to make this entirely abstract
+
+avoid edge cases of excessive controls (that's an implimentation problem on the user-dev not a control issue)
+
+avoid any and all efforts to bind this to a datasource (at this time, as an evolution it may be handy or appropriate but KISS)
+

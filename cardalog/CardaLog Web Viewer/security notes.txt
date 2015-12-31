@@ -1,0 +1,32 @@
+
+*sanitize fields on a whitelist (select unique [field] lookup table match) basis where possible preventing any user-input->passthrough behavoir
+	parameterized commands sidesteps and addresses sql injection issues
+		except data type checking and condition (
+
+	latent sql injection (draw field, use field-data to form later query, injection happens at this point)
+
+middle-class to distinguish data from statement? (creates and handles lookup table functions exclusively)
+	will function well for small lookup tables may function poorly for loose strings like [name]
+	inquire of wil for suggestions in the [name] field issue
+	includes lookup for db access info (acct & pw, connectstring et al)
+
+validate data both directions (prevent sql/website from being compromised to issue bad data to web users)
+
+in DB, ensure read account can *only* perform 'select's on a single view which contains only publicly visible fields
+disable non-read accounts? (prevent any escalation efforts)
+
+stored proc to dump text file containing all user searchable distinct fields for lookup table?
+
+inquire of wil and dan about non-sql injection security concerns to be handled at asp/programmer level for sample programming code?
+
+
+
+Security Testing framework:
+attempt incorrect data tyep and check for standard (handled) error message
+attempt sql injection
+attempt to call latent sql injection
+attempt form hacking
+attempt buffer overflowing
+check against malformed code which should return errors
+
+all failures handled or unhandled should return uniform results
