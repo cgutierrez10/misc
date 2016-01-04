@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="game_idealized" version="4">
+  <OBJECT>
+    <ID name="game_idealized" mc="Standard.Package" uid="9635ba4f-768a-4d82-a5e8-ce2d989dd902"/>
+    <PID name="Game_Idealized" mc="Standard.Project" uid="df8019d3-a7a4-431d-a2bb-adaabef4109b"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[game_idealized]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="Product">
+        <COMPID name="overview diagram" mc="Standard.ClassDiagram" uid="5ae5b974-56c2-4477-a3ee-878052be972c"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

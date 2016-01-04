@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Game_Idealized" version="4">
+  <OBJECT>
+    <ID name="Game_Idealized" mc="Standard.DiagramSet" uid="938131d9-e788-4bc4-995d-b62586ef597c"/>
+    <PID name="Game_Idealized" mc="Standard.Project" uid="df8019d3-a7a4-431d-a2bb-adaabef4109b"/>
+    <ATTRIBUTES>
+      <ATT name="Name"><![CDATA[Game_Idealized]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES></DEPENDENCIES>
+  </OBJECT>
+</EXT>

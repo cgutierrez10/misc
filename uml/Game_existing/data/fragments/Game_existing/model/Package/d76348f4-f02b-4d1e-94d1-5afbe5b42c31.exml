@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="game_existing" version="4">
+  <OBJECT>
+    <ID name="game_existing" mc="Standard.Package" uid="d76348f4-f02b-4d1e-94d1-5afbe5b42c31"/>
+    <PID name="Game_existing" mc="Standard.Project" uid="88e9fc6c-4c79-48e3-b06c-c1913792cdfd"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[game_existing]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="OwnedElement">
+        <COMPID name="igfxlayer" mc="Standard.Interface" uid="4dc454f2-435b-4f8e-a044-7513b453d7c4"/>
+        <COMPID name="Terrain" mc="Standard.Class" uid="0f1d9196-68e8-4e1a-9405-5c3d7c16b3af"/>
+        <COMPID name="vector&lt;xy_container&gt;*" mc="Standard.DataType" uid="f6970cfd-a37f-4c08-a74b-821299e7b4bd"/>
+        <COMPID name="integer*" mc="Standard.DataType" uid="0ae8d177-add7-4ff0-bdc1-01eff6aaf2d5"/>
+        <COMPID name="Mat&lt;int&gt;*" mc="Standard.DataType" uid="1763e572-2776-47db-bb8e-f72b1d437d84"/>
+        <COMPID name="SDL_Renderer*" mc="Standard.DataType" uid="3a5bdd96-a10b-4a5f-8656-16b322afc157"/>
+        <COMPID name="SDL_Surface*" mc="Standard.DataType" uid="10d7c855-efd4-42f8-be4b-11afffb1f2f8"/>
+        <COMPID name="SDL_Texture*" mc="Standard.DataType" uid="3dbdc24c-320d-4869-a733-ccf020e583c0"/>
+        <COMPID name="Decor" mc="Standard.Class" uid="e282d035-d594-469b-917a-e373b11bf3aa"/>
+        <COMPID name="GameCore" mc="Standard.Class" uid="ff796085-ced0-460e-9ff9-11822135c152"/>
+        <COMPID name="Status" mc="Standard.Class" uid="68d05ada-35dd-433d-bab8-eb324a9492f5"/>
+        <COMPID name="InputHandler" mc="Standard.Class" uid="efa912eb-25dc-4bfd-9a40-2905c5219d7f"/>
+        <COMPID name="map&lt;SDL_Keysym,int&gt;" mc="Standard.DataType" uid="500cc65d-b8df-451e-b58a-8d044e7739c9"/>
+        <COMPID name="SDL_Event*" mc="Standard.DataType" uid="a87c508c-3618-47e0-bb74-f5ff0cacf260"/>
+        <COMPID name="UIState*" mc="Standard.DataType" uid="6a00e078-9b9c-45ac-9c86-c848c81c8859"/>
+        <COMPID name="iHandler" mc="Standard.Interface" uid="f98f10a3-bb10-4b8b-ba6d-77cf0d687aa2"/>
+      </COMP>
+      <COMP relation="Product">
+        <COMPID name="overview diagram" mc="Standard.ClassDiagram" uid="465a48ff-870f-48f0-9276-07cc243377d2"/>
+        <COMPID name="GFX Classes" mc="Standard.ClassDiagram" uid="94e72abf-1244-45ea-a191-3917a2600348"/>
+        <COMPID name="Engine Core" mc="Standard.ClassDiagram" uid="971f9f94-cb11-4f3c-a58f-63fba7bb0a56"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

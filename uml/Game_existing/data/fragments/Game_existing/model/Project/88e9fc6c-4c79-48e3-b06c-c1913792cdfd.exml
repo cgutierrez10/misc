@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Game_existing" version="4">
+  <OBJECT>
+    <ID name="Game_existing" mc="Standard.Project" uid="88e9fc6c-4c79-48e3-b06c-c1913792cdfd"/>
+    <ATTRIBUTES>
+      <ATT name="ProjectContext"></ATT>
+      <ATT name="ProjectDescr"></ATT>
+      <ATT name="Name"><![CDATA[Game_existing]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DiagramRoot">
+        <COMPID name="Game_existing" mc="Standard.DiagramSet" uid="f47c3c55-261b-477b-8e4f-0780852c844e"/>
+      </COMP>
+      <COMP relation="Model">
+        <COMPID name="game_existing" mc="Standard.Package" uid="d76348f4-f02b-4d1e-94d1-5afbe5b42c31"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

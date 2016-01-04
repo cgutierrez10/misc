@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Game_Idealized" version="4">
+  <OBJECT>
+    <ID name="Game_Idealized" mc="Standard.AnalystProject" uid="a43fa931-6762-4eb3-821f-f57548ae6ce4"/>
+    <ATTRIBUTES>
+      <ATT name="Name"><![CDATA[Game_Idealized]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="PropertyRoot">
+        <COMPID name="Game_Idealized" mc="Standard.PropertyContainer" uid="0af7305e-e9b8-4cfa-9c17-b83e8d4c0ba9"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>
