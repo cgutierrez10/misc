@@ -1,80 +1,63 @@
 package com.rezdron.chris.agame;
+import android.util.Pair;
+import java.util.Vector;
 
 /**
  * Created by Chris on 1/4/2016.
  */
-public interface GameMode {
-    void OnTouch(View v);
-    void update(GameMode mode);
-};
 
-// Additional game states
-
-    public class TitleState implements GameMode {
-
-        public void OnTouch (View v) {
-        /* Pseudo code
-        if input == (input L) { // Switch mode to L }
-            else if input == (input E) { // Switch mode to E }
-            }
-
-            virtual void update(eMode& mode) {
-                    // continue displaying screen and waiting for input
-            }
-            */
-        }
-        public void update(GameMode mode) {}
-    };
-
-    public class LoadStat implements GameMode {
-        public void OnTouch(View v) {
-            /* Pseudo code
-            if input == (input GP) { // Switch mode to GP }
-                else if input == (input P) { // Switch mode to P }
-                }
-
-                virtual void update(eMode& mode) {
-                        // continue loading screen ticks
-                        // Eventually handle as switch mode to GP
-                }
-                */
-
-        }
-
-        public void update(GameMode mode) {
-        }
+public class GameMode {
+    public enum MODE {
+        TITLE,
+        LOADING,
+        GAMEPLAY,
+        PAUSE,
+        GAMEOVER,
+        EXIT
     }
 
+    MODE gameState;
+    Vector<Pair<MODE,MODE>> sMap; // = new EnumMap<MODE,MODE>(MODE.class);
+    GameMode()
+    {
+        // Configure sMap for valid state transitions
+        sMap = new Vector<Pair<MODE,MODE>>();
+        sMap.add(new Pair<MODE,MODE>(MODE.TITLE,MODE.LOADING));
 
-    public class PlayState implements GameMode {
-        public void OnTouch(View v) {
-                /* Pseudo code
-                if input == (input P) { // Switch mode to L }
-                    else if input == (input GP) { // Switch mode to E }
-                        else { // Handle all other input as gameplay inputs }
-                        }
+        sMap.add(new Pair<MODE,MODE>(MODE.TITLE, MODE.EXIT));
+        sMap.add(new Pair<MODE,MODE>(MODE.LOADING, MODE.GAMEPLAY));
+        sMap.add(new Pair<MODE,MODE>(MODE.LOADING, MODE.PAUSE));
+        sMap.add(new Pair<MODE,MODE>(MODE.PAUSE, MODE.GAMEPLAY));
+        sMap.add(new Pair<MODE,MODE>(MODE.PAUSE, MODE.EXIT));
+        sMap.add(new Pair<MODE,MODE>(MODE.PAUSE, MODE.GAMEOVER));
+        sMap.add(new Pair<MODE,MODE>(MODE.PAUSE,MODE.TITLE));
+        sMap.add(new Pair<MODE,MODE>(MODE.GAMEOVER,MODE.TITLE));
+        sMap.add(new Pair<MODE,MODE>(MODE.GAMEOVER,MODE.LOADING));
+        sMap.add(new Pair<MODE,MODE>(MODE.GAMEOVER,MODE.EXIT));
 
-                        virtual void update(eMode& mode) {
-                                // continue displaying screen and waiting for input
-                        }
-                    }*/
+        // This last one is implied not having any mapping to leave the exit state
+        // Is accurate to exiting without prompt
+        // With a do you want to quit prompt additional options:
+        // EXIT -> TITLE
+        // EXIT -> PAUSE
+        // Would definitely be valid and possibly other transitions
+        //sMap.add(new Pair<MODE,MODE>(MODE.EXIT,MODE.EXIT));
+    }
+
+    public MODE getMode(){return gameState;}
+
+    public boolean changeMode(MODE newState)
+    {
+        for (Pair<MODE,MODE> transition : sMap)
+        {
+            if ((transition.first == gameState) && (transition.second == newState)) {
+                gameState = newState;
+                return(true);
+            }
+
         }
 
-        public void update(GameMode mode) {
-            // Handle state change interactions from play mode
-        }
-    };
+            return false;
 
-    public class PauseState implements GameMode {
-        public void OnTouch(View v) {
-            /* Pseudo code
-            if input == (input GP) { // Switch mode to GP }
-            else if input == (input E) { // Switch mode to E }
-            else if input == (input GO) { // Switch mode to GO }
-            else if input == (input T-I) { // Switch mode to T-I } */
-        }
-
-        public void update(GameMode mode) {
-            // Continue displaying handling pause menu interactions
-        }
-    };
+    }
+};
