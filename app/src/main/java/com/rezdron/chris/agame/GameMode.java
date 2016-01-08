@@ -21,19 +21,19 @@ public class GameMode {
     GameMode()
     {
         // Configure sMap for valid state transitions
-        sMap = new Vector<Pair<MODE,MODE>>();
-        sMap.add(new Pair<MODE,MODE>(MODE.TITLE,MODE.LOADING));
+        sMap = new Vector<>();
+        sMap.add(new Pair<>(MODE.TITLE,MODE.LOADING));
 
-        sMap.add(new Pair<MODE,MODE>(MODE.TITLE, MODE.EXIT));
-        sMap.add(new Pair<MODE,MODE>(MODE.LOADING, MODE.GAMEPLAY));
-        sMap.add(new Pair<MODE,MODE>(MODE.LOADING, MODE.PAUSE));
-        sMap.add(new Pair<MODE,MODE>(MODE.PAUSE, MODE.GAMEPLAY));
-        sMap.add(new Pair<MODE,MODE>(MODE.PAUSE, MODE.EXIT));
-        sMap.add(new Pair<MODE,MODE>(MODE.PAUSE, MODE.GAMEOVER));
-        sMap.add(new Pair<MODE,MODE>(MODE.PAUSE,MODE.TITLE));
-        sMap.add(new Pair<MODE,MODE>(MODE.GAMEOVER,MODE.TITLE));
-        sMap.add(new Pair<MODE,MODE>(MODE.GAMEOVER,MODE.LOADING));
-        sMap.add(new Pair<MODE,MODE>(MODE.GAMEOVER,MODE.EXIT));
+        sMap.add(new Pair<>(MODE.TITLE, MODE.EXIT));
+        sMap.add(new Pair<>(MODE.LOADING, MODE.GAMEPLAY));
+        sMap.add(new Pair<>(MODE.LOADING, MODE.PAUSE));
+        sMap.add(new Pair<>(MODE.PAUSE, MODE.GAMEPLAY));
+        sMap.add(new Pair<>(MODE.PAUSE, MODE.EXIT));
+        sMap.add(new Pair<>(MODE.PAUSE, MODE.GAMEOVER));
+        sMap.add(new Pair<>(MODE.PAUSE,MODE.TITLE));
+        sMap.add(new Pair<>(MODE.GAMEOVER,MODE.TITLE));
+        sMap.add(new Pair<>(MODE.GAMEOVER,MODE.LOADING));
+        sMap.add(new Pair<>(MODE.GAMEOVER,MODE.EXIT));
 
         // This last one is implied not having any mapping to leave the exit state
         // Is accurate to exiting without prompt
@@ -60,4 +60,4 @@ public class GameMode {
             return false;
 
     }
-};
+}
