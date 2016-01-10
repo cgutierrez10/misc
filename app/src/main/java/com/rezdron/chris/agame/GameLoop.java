@@ -70,6 +70,7 @@ public class GameLoop {
 
 
     }
+
     public void tick() {
         // Run each engine module one tick forward
 
@@ -82,7 +83,9 @@ public class GameLoop {
         // UI.Tick();
 
         // Update gfx
+        // Wipe surface to prep for new render
         // Render(progress,mobs);
+        // If anything is needed to flip the buffer add here
 
         // Check game conditions (did player just lose? did any things bounce off each other? etc)
         // Physics.Collision();
