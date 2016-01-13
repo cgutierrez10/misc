@@ -1,6 +1,4 @@
-package com.rezdron.chris;
-
-import com.rezdron.chris.agame.Token;
+package com.rezdron.chris.agame;
 
 import java.util.Stack;
 
