@@ -1,5 +1,7 @@
 package com.rezdron.chris.agame;
 
+import android.graphics.drawable.Drawable;
+
 /**
  * Created by Chris on 1/9/2016.
  */
@@ -23,6 +25,8 @@ public class Token {
     Integer points;
     Boolean active;
     Boolean scoreable;
+    Boolean collide;
+    String gfx_type;
     Integer x;
     Integer y;
 
@@ -35,12 +39,19 @@ public class Token {
         //this.x = [rightmost edge of screen]
         this.points = score;
         active = true;
+        collide = true;
+
+        // Don't store drawables on each token, save them in one place and call to draw on location as needed
+        gfx_type = "" // Identifier for gfx type and a matching collision shadow
     }
 
     public void onDraw()
     {
         // tokennotifier will call each onDraw()
         // in lifo order so older objects render above newer
+
+        // If physics object then also draw to collision canvas
+
     }
 
     public void onCollide()

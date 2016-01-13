@@ -30,6 +30,18 @@ public class GameLoop {
 
     public void loop()
     {
+        while (gameState.getMode() == GameMode.MODE.LOADING)
+        {
+
+            // Perform loading operations
+
+            // Map build
+            // Player initialize
+            // Zero score
+            // Reset music/sound
+            // Operate a loading graphic
+            // Idle a moment just for effect. :)
+        }
         while (gameState.getMode() != GameMode.MODE.EXIT)
         {
             // Gather inputs (not written yet)
