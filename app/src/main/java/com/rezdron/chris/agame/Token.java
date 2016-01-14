@@ -29,8 +29,12 @@ public class Token {
     String gfx_type;
     Integer x;
     Integer y;
+    Float dvy;
+    Float dvx;
+    TokenPhysics phys;
 
-    Token(Integer height, Integer score)
+
+    public Token(Integer height, Integer score, TokenPhysics movement)
     {
         // Register self with tokenhandler event/listener controller
         // Accept a motion function defined elsewhere and assigned in
@@ -43,6 +47,8 @@ public class Token {
 
         // Don't store drawables on each token, save them in one place and call to draw on location as needed
         gfx_type = "" // Identifier for gfx type and a matching collision shadow
+
+        // Save a physics object which will take x,y,dvy,dvx and make x,y available
     }
 
     public void onDraw()
@@ -72,12 +78,13 @@ public class Token {
         // Assuming 32pixel sprites + 12 more for wiggle space
         // When player is 2/3rds past object score it could potentially allow player to score
         // A point while also dying on it but not a problem
+        // Not the place to implement this
         if (Player.getX() < (this.x + 24))
         {
             scoreable = true;
         }
         // Once object is at screen edge flip activity
-        if (this.x < -48) // Presuming 0 is leftmost pixel and approx 32pixel sprites with a little extra space
+        if (this.phys.getX() < -48) // Presuming 0 is leftmost pixel and approx 32pixel sprites with a little extra space
         {
             active = false;
         }
