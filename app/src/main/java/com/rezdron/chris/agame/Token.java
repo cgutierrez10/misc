@@ -4,8 +4,10 @@ import android.graphics.drawable.Drawable;
 
 /**
  * Created by Chris on 1/9/2016.
+ * Creates abstract class, only requires tick() to be filled in
+ * May be possible to reduce this further tick() may not need to be specific ever
  */
-public class Token {
+public abstract class Token {
     // Each token should represent itself as an object that can be
     // Drawn on screen, render()
     // Provide a collision boundary for itself or not register for such, collision()
@@ -27,26 +29,22 @@ public class Token {
     Boolean scoreable;
     Boolean collide;
     String gfx_type;
-    Integer x;
-    Integer y;
-    Float dvy;
-    Float dvx;
-    TokenPhysics phys;
+    public TokenPhysics phys;
 
 
-    public Token(Integer height, Integer score, TokenPhysics movement)
+    public Token(Integer score, TokenPhysics movement)
     {
         // Register self with tokenhandler event/listener controller
         // Accept a motion function defined elsewhere and assigned in
         // Can always assume sidescrolling, will appear at rightmost edge at 'height'
-        this.y = height;
+        phys = movement;
         //this.x = [rightmost edge of screen]
         this.points = score;
         active = true;
         collide = true;
 
         // Don't store drawables on each token, save them in one place and call to draw on location as needed
-        gfx_type = "" // Identifier for gfx type and a matching collision shadow
+        gfx_type = ""; // Identifier for gfx type and a matching collision shadow
 
         // Save a physics object which will take x,y,dvy,dvx and make x,y available
     }
@@ -71,15 +69,28 @@ public class Token {
 
     public boolean getActive() { return active; }
 
+    public Integer getX()
+    {
+        return phys.getX();
+    }
+
+    public Integer getY()
+    {
+        return phys.getY();
+    }
+
+    public abstract void tick();
+    /*
     public void tick()
     {
+        phys.tick();
         // Handle score check if player is past this then score its value
         // Player is a static Token setup when game enters loading phase
         // Assuming 32pixel sprites + 12 more for wiggle space
         // When player is 2/3rds past object score it could potentially allow player to score
         // A point while also dying on it but not a problem
         // Not the place to implement this
-        if (Player.getX() < (this.x + 24))
+        if (Player.getX() < (phys.getX() + 24))
         {
             scoreable = true;
         }
@@ -89,4 +100,5 @@ public class Token {
             active = false;
         }
     }
+    */
 }

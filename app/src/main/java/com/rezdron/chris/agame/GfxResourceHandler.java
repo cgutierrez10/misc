@@ -1,18 +1,12 @@
 package com.rezdron.chris.agame;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.util.DisplayMetrics;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.support.v4.content.res.ResourcesCompat.*;
 
 /**
  * Created by Chris on 1/12/2016.
@@ -24,14 +18,14 @@ import static android.support.v4.content.res.ResourcesCompat.*;
  */
 public class GfxResourceHandler {
     Map<String,Drawable> gfxResource = new HashMap<>();
-    Resources context;
+    Context state;
     private Context appContext;
     public GfxResourceHandler(Context c)
     {
-        appContext = c;
+        state = c;
         // What gfx size to pull? may not be needed best practices unclear
-        DisplayMetrics metrics = new DisplayMetrics();
         /*
+        DisplayMetrics metrics = new DisplayMetrics();
         if (metrics.densityDpi <= 160)
         {
             // Medium density minimum to support
@@ -48,7 +42,7 @@ public class GfxResourceHandler {
 
     public void resetContext(Context c)
     {
-
+        state = c;
     }
 
     public Drawable getRsx(String request)
@@ -59,9 +53,10 @@ public class GfxResourceHandler {
         else
         {
             // Load the resource on demand
-            // If things get choppy or need to be precached this function
+            // If things get choppy or need to be pre cached this function
             // Could be called in the load area to load the necessary graphics ahead of time
-            gfxResource.put(request, ResourcesCompat.getDrawable(appContext.getResources(),[id lookup],null));
+            gfxResource.put(request, ResourcesCompat.getDrawable(appContext.getResources(),0,null));
+            return gfxResource.get(request);
         }
     }
 }
