@@ -9,15 +9,18 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.rezdron.chris.agame.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="com.rezdron.chris.agame.MainActivity">
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Menu"
-        android:id="@+id/button" />
+        android:id="@+id/button"
+        android:clickable="true"
+        android:enabled="true"
+        android:tag="Menu"
+        android:onClick="stateButton" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -27,7 +30,11 @@
         android:id="@+id/button2"
         android:layout_below="@+id/button"
         android:layout_alignLeft="@+id/button"
-        android:layout_alignStart="@+id/button" />
+        android:layout_alignStart="@+id/button"
+        android:tag="Game"
+        android:onClick="stateButton"
+        android:clickable="true"
+        android:enabled="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -37,7 +44,11 @@
         android:id="@+id/button3"
         android:layout_below="@+id/button2"
         android:layout_alignLeft="@+id/button2"
-        android:layout_alignStart="@+id/button2" />
+        android:layout_alignStart="@+id/button2"
+        android:tag="Pause"
+        android:onClick="stateButton"
+        android:enabled="true"
+        android:clickable="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -47,7 +58,11 @@
         android:id="@+id/button4"
         android:layout_below="@+id/button5"
         android:layout_alignLeft="@+id/button5"
-        android:layout_alignStart="@+id/button5" />
+        android:layout_alignStart="@+id/button5"
+        android:tag="Exit"
+        android:onClick="stateButton"
+        android:enabled="true"
+        android:clickable="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -57,7 +72,11 @@
         android:id="@+id/button5"
         android:layout_below="@+id/button3"
         android:layout_alignLeft="@+id/button3"
-        android:layout_alignStart="@+id/button3" />
+        android:layout_alignStart="@+id/button3"
+        android:tag="Loading"
+        android:onClick="stateButton"
+        android:clickable="true"
+        android:enabled="true" />
 
     <TextView
         android:layout_width="wrap_content"

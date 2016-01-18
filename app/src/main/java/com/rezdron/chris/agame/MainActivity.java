@@ -8,24 +8,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    GameMode state = new GameMode();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.content_main);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
     }
 
     @Override
@@ -48,5 +51,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void stateButton(View v)
+    {
+        switch ((String)v.getTag())
+        {
+            case "Loading":
+                state.changeMode(GameMode.MODE.LOADING);
+                break;
+            case "Menu":
+                state.changeMode(GameMode.MODE.TITLE);
+                break;
+            case "Game":
+                state.changeMode(GameMode.MODE.GAMEPLAY);
+                break;
+            case "Pause":
+                state.changeMode(GameMode.MODE.PAUSE);
+                break;
+            case "Exit":
+                state.changeMode(GameMode.MODE.EXIT);
+                break;
+            default:
+                break;
+        }
+        TextView status = (TextView)findViewById(R.id.textView2);
+        status.setText(state.getText());
+
     }
 }

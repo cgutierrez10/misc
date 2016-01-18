@@ -32,11 +32,11 @@ public class GameLoop {
     {
         while (gameState.getMode() == GameMode.MODE.LOADING)
         {
-
+            // TODO add somethign here to avoid warnings
             // Perform loading operations
 
             // Map build
-            // Player initialize
+            // com.rezdron.chris.agame.Player initialize
             // Zero score
             // Reset music/sound
             // Operate a loading graphic
@@ -54,18 +54,19 @@ public class GameLoop {
             // Event Handling
             // Event from input gathering needs to be available to this method
             // Several inputs may switch modes
-            // Others apply to gameplay and will update the Player token
-            // Player.Input();
+            // Others apply to gameplay and will update the com.rezdron.chris.agame.Player token
+            // com.rezdron.chris.agame.Player.Input();
 
             // Only process tick() while game is still in gameplay
             if (gameState.getMode() == GameMode.MODE.GAMEPLAY) {
                 tick();
-                //if (Player.dead() == true) {
+                //if (com.rezdron.chris.agame.Player.dead() == true) {
                 //    gameState.setMode(GameMode.MODE.GAMEOVER);
                 //}
             }
             else if (gameState.getMode() == GameMode.MODE.GAMEOVER)
             {
+                // TODO add somethign here to avoid warnings
                 // Scoring is handled by mobs tracking point values of each object
                 // Render game over screen
                 // renderGameOver(mobs.getScore());

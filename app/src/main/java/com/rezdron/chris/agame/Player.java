@@ -1,3 +1,5 @@
+package com.rezdron.chris.agame;
+
 import com.rezdron.chris.agame.PhysVert;
 import com.rezdron.chris.agame.Token;
 
@@ -8,13 +10,12 @@ import com.rezdron.chris.agame.Token;
 public class Player extends Token {
     Player()
     {
-        super(0, new PhysVert(32,48,(float)0.0,(float)0.0));
+        super(0, new PlayerPhys(32,48,(float)0.0,(float)0.0));
     }
 
     public void setAccel(Integer y)
     {
-        //phys.applyDvx(x);
-        phys.applyDvy(y);
+        ((PlayerPhys) phys).addDvy(y);
     }
 
     public void tick()

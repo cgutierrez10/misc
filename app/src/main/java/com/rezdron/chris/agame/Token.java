@@ -85,12 +85,12 @@ public abstract class Token {
     {
         phys.tick();
         // Handle score check if player is past this then score its value
-        // Player is a static Token setup when game enters loading phase
+        // com.rezdron.chris.agame.Player is a static Token setup when game enters loading phase
         // Assuming 32pixel sprites + 12 more for wiggle space
         // When player is 2/3rds past object score it could potentially allow player to score
         // A point while also dying on it but not a problem
         // Not the place to implement this
-        if (Player.getX() < (phys.getX() + 24))
+        if (com.rezdron.chris.agame.Player.getX() < (phys.getX() + 24))
         {
             scoreable = true;
         }
