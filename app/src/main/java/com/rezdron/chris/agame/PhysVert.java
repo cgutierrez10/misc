@@ -2,7 +2,7 @@ package com.rezdron.chris.agame;
 
 /**
  * Created by Chris on 1/14/2016.
- * Impliments vertical movement only physics as Player token would use
+ * Impliments vertical movement only physics as com.rezdron.chris.agame.Player token would use
  */
 public class PhysVert extends TokenPhysics {
 

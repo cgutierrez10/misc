@@ -6,10 +6,10 @@ package com.rezdron.chris.agame;
  * And allow to implement a movement function in tick()
  */
 public abstract class TokenPhysics {
-    Integer x = 64; // Starting pixel
-    Integer y = 32; // Starting pixel
-    float dvx = (float) 0.0;
-    float dvy = (float) 0.0;
+    protected Integer x = 64; // Starting pixel
+    protected Integer y = 32; // Starting pixel
+    protected float dvx = (float) 0.0;
+    protected float dvy = (float) 0.0;
     // Gravity will be -5.4 per second, tick is presuming 1/60th second per physics step
     // After 60 intervals should have come to -5.4m/s of velocity
     // Will be tuned with playtesting, desired sqrt(accel / 60) = 1/60th second accel
@@ -29,15 +29,6 @@ public abstract class TokenPhysics {
 
     public Integer getY() {
         return y;
-    }
-
-    public void setDvy(float dvy) {
-        this.dvy = dvy;
-    }
-
-    public void applyDvy(float input_dvy)
-    {
-        this.dvy = this.dvy + input_dvy;
     }
 
     abstract public void tick();

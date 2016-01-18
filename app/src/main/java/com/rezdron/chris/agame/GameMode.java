@@ -4,10 +4,11 @@ import java.util.Vector;
 
 /**
  * Created by Chris on 1/4/2016.
+ * Basic state machine for game operating modes.
  */
 
 public class GameMode {
-    public enum MODE {
+   public enum MODE {
         TITLE,
         LOADING,
         GAMEPLAY,
@@ -20,6 +21,7 @@ public class GameMode {
     Vector<Pair<MODE,MODE>> sMap; // = new EnumMap<MODE,MODE>(MODE.class);
     GameMode()
     {
+        gameState = MODE.TITLE;
         // Configure sMap for valid state transitions
         sMap = new Vector<>();
         sMap.add(new Pair<>(MODE.TITLE,MODE.LOADING));
@@ -27,8 +29,9 @@ public class GameMode {
         sMap.add(new Pair<>(MODE.TITLE, MODE.EXIT));
         sMap.add(new Pair<>(MODE.LOADING, MODE.GAMEPLAY));
         sMap.add(new Pair<>(MODE.LOADING, MODE.PAUSE));
-        sMap.add(new Pair<>(MODE.PAUSE, MODE.GAMEPLAY));
-        sMap.add(new Pair<>(MODE.PAUSE, MODE.EXIT));
+        sMap.add(new Pair<>(MODE.GAMEPLAY, MODE.PAUSE));
+        sMap.add(new Pair<>(MODE.GAMEPLAY, MODE.EXIT));
+        sMap.add(new Pair<>(MODE.GAMEPLAY, MODE.GAMEOVER));
         sMap.add(new Pair<>(MODE.PAUSE, MODE.GAMEOVER));
         sMap.add(new Pair<>(MODE.PAUSE,MODE.TITLE));
         sMap.add(new Pair<>(MODE.GAMEOVER,MODE.TITLE));
@@ -46,6 +49,25 @@ public class GameMode {
 
     public MODE getMode(){return gameState;}
 
+    public String getText(){
+        switch(gameState) {
+            case TITLE:
+                return "Title";
+            case LOADING:
+                return "Loading";
+            case GAMEPLAY:
+                return "Gameplay";
+            case PAUSE:
+                return "Pause";
+            case GAMEOVER:
+                return "Game Over";
+            case EXIT:
+                return "Exit";
+            default:
+                return "";
+        }
+    }
+
     public boolean changeMode(MODE newState)
     {
         for (Pair<MODE,MODE> transition : sMap)
@@ -54,10 +76,7 @@ public class GameMode {
                 gameState = newState;
                 return(true);
             }
-
         }
-
             return false;
-
     }
 }
