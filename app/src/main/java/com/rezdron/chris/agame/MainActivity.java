@@ -1,5 +1,6 @@
 package com.rezdron.chris.agame;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -55,10 +56,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void stateButton(View v)
     {
+        Intent switchmode = null;
         switch ((String)v.getTag())
         {
             case "Loading":
                 state.changeMode(GameMode.MODE.LOADING);
+                switchmode = new Intent(this, LoadActivity.class);
                 break;
             case "Menu":
                 state.changeMode(GameMode.MODE.TITLE);
@@ -75,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+
+        if (switchmode != null) {
+            startActivity(switchmode);
+        }
+
         TextView status = (TextView)findViewById(R.id.textView2);
         status.setText(state.getText());
 
