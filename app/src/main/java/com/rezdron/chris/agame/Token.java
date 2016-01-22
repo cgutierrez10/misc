@@ -49,14 +49,10 @@ public abstract class Token {
         // Save a physics object which will take x,y,dvy,dvx and make x,y available
     }
 
-    public void onDraw()
-    {
-        // tokennotifier will call each onDraw()
-        // in lifo order so older objects render above newer
-
-        // If physics object then also draw to collision canvas
-
-    }
+    public abstract void onDraw();
+    // tokennotifier will call each onDraw()
+    // in lifo order so older objects render above newer
+    // If physics object then also draw to collision canvas
 
     public void onCollide()
     {

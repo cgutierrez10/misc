@@ -19,7 +19,10 @@ import java.util.Map;
 public class GfxResourceHandler {
     Map<String,Drawable> gfxResource = new HashMap<>();
     Context state;
+    private static GfxResourceHandler instance = new GfxResourceHandler();
     private Context appContext;
+
+    /*
     public GfxResourceHandler(Context c)
     {
         state = c;
@@ -37,8 +40,11 @@ public class GfxResourceHandler {
         else if (metrics.densityDpi >= 360)
         {
             // XHigh density, highest that will be supported
-        }*/
+        }* /
     }
+    */
+
+    public static GfxResourceHandler getInstance() { return instance; }
 
     public void resetContext(Context c)
     {
@@ -58,5 +64,10 @@ public class GfxResourceHandler {
             gfxResource.put(request, ResourcesCompat.getDrawable(appContext.getResources(),0,null));
             return gfxResource.get(request);
         }
+    }
+
+    public void blitAt(String request, int x, int y)
+    {
+        // Implement a draw to the current context canvas of resource at location
     }
 }

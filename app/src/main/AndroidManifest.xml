@@ -14,17 +14,20 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.rezdron.chris.agame.LoadActivity"
+            android:name=".LoadActivity"
             android:label="Load_Activity"
-            android:parentActivityName="com.rezdron.chris.agame.MainActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.rezdron.chris.agame.MainActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.rezdron.chris.agame.MainActivity" />
         </activity>
+        <activity android:name=".GameRun" />
+        <activity android:name=".PauseActivity"></activity>
     </application>
 
 </manifest>
