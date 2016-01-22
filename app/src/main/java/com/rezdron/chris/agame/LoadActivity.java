@@ -50,6 +50,9 @@ public class LoadActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.load,
                     container, false);
+            // Create some tokens and initialize a tick emulate a basic game loop
+            TokenHandler mobs = TokenHandler.getInstance();
+            mobs.addToken(new TokenSheep(0));
             return rootView;
         }
     }
