@@ -1,5 +1,6 @@
 package com.rezdron.chris.agame;
 
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
 /**
@@ -19,7 +20,7 @@ public class TokenSheep extends Token {
     @Override
     public void onDraw()
     {
-        GfxResourceHandler.getInstance().getRsx("sheep");
+        GfxResourceHandler.getInstance().blitAt("sheep",0,0);
         // Possibly want to do gfxresource handler blit @string at <x,y>
     }
 }

@@ -1,6 +1,10 @@
 package com.rezdron.chris.agame;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 
@@ -21,6 +25,7 @@ public class GfxResourceHandler {
     Context state;
     private static GfxResourceHandler instance = new GfxResourceHandler();
     private Context appContext;
+    private Canvas rendered;
 
     /*
     public GfxResourceHandler(Context c)
@@ -61,13 +66,32 @@ public class GfxResourceHandler {
             // Load the resource on demand
             // If things get choppy or need to be pre cached this function
             // Could be called in the load area to load the necessary graphics ahead of time
-            gfxResource.put(request, ResourcesCompat.getDrawable(appContext.getResources(),0,null));
+            gfxResource.put(request, ResourcesCompat.getDrawable(appContext.getResources(),
+                    appContext.getResources().getIdentifier("drawable",
+                            request,
+                            appContext.getPackageName()),
+                    null));
             return gfxResource.get(request);
         }
+    }
+
+    // Re-render base bitmap layer as a subset of the level map
+    // Possibly elsewhere pre-render a new level map at various points
+    public void WipeDrawn() {
+        //rendered = BitMap
     }
 
     public void blitAt(String request, int x, int y)
     {
         // Implement a draw to the current context canvas of resource at location
+        Rect clipBounds = rendered.getClipBounds();
+
+        Drawable tokenImg = getRsx(request);
+        tokenImg.setBounds(clipBounds);
+        tokenImg.draw(rendered);
+    }
+
+    public Canvas getDrawn(){
+        return rendered;
     }
 }
