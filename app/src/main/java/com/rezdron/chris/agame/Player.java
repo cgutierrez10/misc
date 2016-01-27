@@ -23,4 +23,6 @@ public class Player extends Token {
         phys.tick();
     }
 
+    public void onDraw() {}
+
 }

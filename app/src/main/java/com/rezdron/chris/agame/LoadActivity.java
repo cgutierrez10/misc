@@ -1,6 +1,7 @@
 package com.rezdron.chris.agame;
 
 import android.app.Fragment;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
  * Activity for the load screen
  */
 public class LoadActivity extends AppCompatActivity {
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +53,20 @@ public class LoadActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.load,
                     container, false);
+
+            // Always need to do a resetContext for gfxhandler so it doesn't prevent GC of old activities
+            GfxResourceHandler.getInstance().resetContext(this.getActivity());
+
             // Create some tokens and initialize a tick emulate a basic game loop
             TokenHandler mobs = TokenHandler.getInstance();
             mobs.addToken(new TokenSheep(0));
+
             return rootView;
+        }
+
+        public void onDraw(Canvas layer)
+        {
+            Canvas temp = TokenHandler.getInstance().draw();
         }
     }
 }

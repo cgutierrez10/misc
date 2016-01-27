@@ -1,5 +1,6 @@
 package com.rezdron.chris.agame;
 
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
 /**

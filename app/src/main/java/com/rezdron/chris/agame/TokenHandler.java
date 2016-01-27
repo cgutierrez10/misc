@@ -1,9 +1,12 @@
 package com.rezdron.chris.agame;
 
+import android.graphics.Canvas;
+
 import java.util.Stack;
 
 /**
  * Created by Chris on 1/9/2016.
+ * small change to avoid unnecessary warning
  */
 public class TokenHandler
 {
@@ -70,5 +73,13 @@ public class TokenHandler
             }
         }
         cullTokens();
+    }
+
+    public Canvas draw() {
+        GfxResourceHandler.getInstance().WipeDrawn();
+        for (Token element:drawable) {
+            element.onDraw();
+        }
+        return GfxResourceHandler.getInstance().getDrawn();
     }
 }
