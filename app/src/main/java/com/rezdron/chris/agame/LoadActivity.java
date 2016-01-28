@@ -60,13 +60,13 @@ public class LoadActivity extends AppCompatActivity {
             // Create some tokens and initialize a tick emulate a basic game loop
             TokenHandler mobs = TokenHandler.getInstance();
             mobs.addToken(new TokenSheep(0));
-
+            rootView.invalidate();
             return rootView;
         }
 
         public void onDraw(Canvas layer)
         {
-            Canvas temp = TokenHandler.getInstance().draw();
+
         }
     }
 }

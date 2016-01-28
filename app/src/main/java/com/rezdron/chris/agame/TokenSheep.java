@@ -14,13 +14,13 @@ public class TokenSheep extends Token {
 
     @Override
     public void tick() {
-        phys.tick();
+        active = phys.tick();
     }
 
     @Override
     public void onDraw()
     {
-        GfxResourceHandler.getInstance().blitAt("sheep",0,0);
+        GfxResourceHandler.getInstance().blitAt("sheep",phys.getX(),phys.getY());
         // Possibly want to do gfxresource handler blit @string at <x,y>
     }
 }

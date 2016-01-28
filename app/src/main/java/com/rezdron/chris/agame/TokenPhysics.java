@@ -31,5 +31,5 @@ public abstract class TokenPhysics {
         return y;
     }
 
-    abstract public void tick();
+    abstract public Boolean tick();
 }

@@ -75,11 +75,10 @@ public class TokenHandler
         cullTokens();
     }
 
-    public Canvas draw() {
-        GfxResourceHandler.getInstance().WipeDrawn();
+    public void draw(Canvas layer) {
+        GfxResourceHandler.getInstance().setCanvas(layer);
         for (Token element:drawable) {
             element.onDraw();
         }
-        return GfxResourceHandler.getInstance().getDrawn();
     }
 }
