@@ -11,10 +11,11 @@ public class PhysVert extends TokenPhysics {
         super(input_x,input_y,input_dvx,input_dvy);
     }
 
-    public void tick()
+    public Boolean tick()
     {
         // Update internal variables for x,y and dvx dvy
         dvy = dvy + (grav * grav);
         y = Math.round(dvy) + y;
+        return (y < -100 || y > 1000) ? false : true;
     }
 }
