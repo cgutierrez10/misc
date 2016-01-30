@@ -5,11 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.res.ResourcesCompat;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,15 +22,16 @@ import java.util.Map;
  */
 public class GfxResourceHandler {
     Map<String,Bitmap> gfxResource = new HashMap<>();
-    Context state;
+    private Context state;
     private static GfxResourceHandler instance = new GfxResourceHandler();
-    private Context appContext;
+    //private Context appContext;
     private Canvas rendered;
+
 
     /*
     public GfxResourceHandler(Context c)
     {
-        state = c;
+        rsx = c;
         // What gfx size to pull? may not be needed best practices unclear
         /*
         DisplayMetrics metrics = new DisplayMetrics();
@@ -59,20 +57,40 @@ public class GfxResourceHandler {
         state = c;
     }
 
+    /* Debug function */
+    public Context getState() { return state; }
+
     public Bitmap getRsx(String request)
     {
         if (gfxResource.containsKey(request)) {
             return gfxResource.get(request);
         }
-        else
-        {
+        else {
             // Load the resource on demand
             // If things get choppy or need to be pre cached this function
             // Could be called in the load area to load the necessary graphics ahead of time
-            Resources rsx = appContext.getResources();
-            Bitmap loadRsx = BitmapFactory.decodeResource(rsx, rsx.getIdentifier("drawable",request,appContext.getPackageName()));
-            gfxResource.put(request, loadRsx);
-            return gfxResource.get(request);
+            Resources rsx = state.getResources();
+            Log.d("State", state.getPackageName());
+            Bitmap loadRsx = BitmapFactory.decodeResource(rsx, rsx.getIdentifier(request, "drawable", state.getPackageName()));
+
+            // Manual entry of resource id works, above state.getPackageName is the failpoint
+            //0x7f020049 xml
+            //0x7f02004a img
+            if (loadRsx != null) {
+                gfxResource.put(request, loadRsx);
+            } else{
+                Log.d("Bitmap","Load failed");
+            }
+
+            if (gfxResource.get(request) != null) {
+                return gfxResource.get(request);
+            }
+            else
+            {
+                Log.d("Bitmap","Load failed returning null");
+                return null;
+            }
+
         }
     }
 
@@ -92,9 +110,6 @@ public class GfxResourceHandler {
         //Drawable tokenImg = getRsx(request);
         //tokenImg.setBounds(clipBounds);
         //tokenImg.draw(rendered);
-        Paint background = new Paint();
-        background.setColor(Color.TRANSPARENT);
-        rendered.drawBitmap(blit,x,y,background);
-
+        rendered.drawBitmap(blit,x,y,null);
     }
 }
