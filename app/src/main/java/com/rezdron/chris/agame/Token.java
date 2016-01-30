@@ -43,6 +43,7 @@ public abstract class Token {
         this.points = score;
         active = true;
         collide = true;
+        scoreable = false;
 
         // Don't store drawables on each token, save them in one place and call to draw on location as needed
         gfx_type = ""; // Identifier for gfx type and a matching collision shadow

@@ -2,6 +2,7 @@ package com.rezdron.chris.agame;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -26,6 +28,7 @@ public class LoadSpinnerView extends View {
 
     public LoadSpinnerView(Context context) {
         super(context);
+
         init(null, 0);
     }
 
@@ -85,36 +88,23 @@ public class LoadSpinnerView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-
         super.onDraw(canvas);
-        // TODO: consider storing these as member variables to reduce
-        // allocations per draw cycle.
-        int paddingLeft = getPaddingLeft();
-        int paddingTop = getPaddingTop();
-        int paddingRight = getPaddingRight();
-        int paddingBottom = getPaddingBottom();
-
-        int contentWidth = getWidth() - paddingLeft - paddingRight;
-        int contentHeight = getHeight() - paddingTop - paddingBottom;
-
         TokenHandler.getInstance().draw(canvas);
+        //GfxResourceHandler.getInstance().blitAt("sheep",10,10);
 
-        // Draw the text.
-        canvas.drawLine(0,0,500,500,mTextPaint);
-        canvas.drawText("Test",
-                paddingLeft + (contentWidth - mTextWidth) / 2,
-                paddingTop + (contentHeight + mTextHeight) / 2,
-                mTextPaint);
-
-        // Draw the example drawable on top of the text.
-        if (mExampleDrawable != null) {
-            mExampleDrawable.setBounds(paddingLeft, paddingTop,
-                    paddingLeft + contentWidth, paddingTop + contentHeight);
-            mExampleDrawable.draw(canvas);
+        /*if (GfxResourceHandler.getInstance().getState() != null) {
+            Bitmap test = GfxResourceHandler.getInstance().getRsx("sheep");
+            //canvas.drawBitmap(test,100,100,null);
+            if (test != null){
+                canvas.drawBitmap(test,100,100,null);
+            } else{
+                Log.d("Bitmap", "Null reference");
+            }
+//                    GfxResourceHandler.getInstance().getRsx("sheep"), 100, 100, null);
         }
-
+        */
     }
+
 
     /**
      * Gets the example string attribute value.

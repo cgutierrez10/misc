@@ -1,11 +1,14 @@
 package com.rezdron.chris.agame;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,12 +16,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     GameMode state = new GameMode();
+    private Context mContext;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
+        mContext = getApplicationContext();
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
@@ -80,7 +85,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (switchmode != null) {
-            startActivity(switchmode);
+            GfxResourceHandler.getInstance().resetContext(mContext);
+            if (GfxResourceHandler.getInstance().getState() == null) {
+                Log.d("Error","Appcontext is null");
+            }
+            else {
+                startActivity(switchmode);
+            }
         }
 
         TextView status = (TextView)findViewById(R.id.textView2);

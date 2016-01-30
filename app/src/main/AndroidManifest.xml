@@ -20,8 +20,9 @@
         </activity>
         <activity
             android:name=".LoadActivity"
-            android:label="Load_Activity"
-            android:parentActivityName=".MainActivity">
+            android:label="LoadActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rezdron.chris.agame.MainActivity" />

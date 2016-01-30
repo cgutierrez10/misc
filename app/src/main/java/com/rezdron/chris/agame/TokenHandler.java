@@ -1,6 +1,7 @@
 package com.rezdron.chris.agame;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.Stack;
 
@@ -31,6 +32,8 @@ public class TokenHandler
 
     public void addToken(Token newToken)
     {
+        // Not being called for some reason
+        Log.d("TokenHandler", "Added token");
         // Everything must tick, if it does not tick it cannot be culled
         tickable.push(newToken);
 
@@ -76,6 +79,7 @@ public class TokenHandler
     }
 
     public void draw(Canvas layer) {
+        // Definitely being called
         GfxResourceHandler.getInstance().setCanvas(layer);
         for (Token element:drawable) {
             element.onDraw();

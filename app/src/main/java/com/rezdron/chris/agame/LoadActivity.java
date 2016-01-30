@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,16 +12,19 @@ import android.view.ViewGroup;
 
 /**
  * Created by Chris on 1/20/2016.
- * Activity for the load screen
+ * Activity for the activity_load screen
  */
 public class LoadActivity extends AppCompatActivity {
+    //private static TokenHandler mobs = TokenHandler.getInstance();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.load);
+        setContentView(R.layout.activity_load);
 
+        // Create some tokens and initialize a tick emulate a basic game loop
+        TokenHandler.getInstance().addToken(new TokenSheep(0));
         /*
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -41,6 +45,13 @@ public class LoadActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+            TokenHandler.getInstance().tick();
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -51,22 +62,18 @@ public class LoadActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.load,
+            View rootView = inflater.inflate(R.layout.activity_load,
                     container, false);
 
             // Always need to do a resetContext for gfxhandler so it doesn't prevent GC of old activities
-            GfxResourceHandler.getInstance().resetContext(this.getActivity());
-
-            // Create some tokens and initialize a tick emulate a basic game loop
-            TokenHandler mobs = TokenHandler.getInstance();
-            mobs.addToken(new TokenSheep(0));
+            //GfxResourceHandler.getInstance().resetContext();
             rootView.invalidate();
             return rootView;
         }
 
+
         public void onDraw(Canvas layer)
         {
-
         }
     }
 }
