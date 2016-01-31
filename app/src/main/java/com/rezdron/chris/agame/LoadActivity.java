@@ -2,6 +2,7 @@ package com.rezdron.chris.agame;
 
 import android.app.Fragment;
 import android.graphics.Canvas;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,8 +16,6 @@ import android.view.ViewGroup;
  * Activity for the activity_load screen
  */
 public class LoadActivity extends AppCompatActivity {
-    //private static TokenHandler mobs = TokenHandler.getInstance();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +24,6 @@ public class LoadActivity extends AppCompatActivity {
 
         // Create some tokens and initialize a tick emulate a basic game loop
         TokenHandler.getInstance().addToken(new TokenSheep(0));
-        /*
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment()).commit();
-        }
-        */
     }
 
     @Override
@@ -49,7 +42,7 @@ public class LoadActivity extends AppCompatActivity {
     public void onStart()
     {
         super.onStart();
-            TokenHandler.getInstance().tick();
+
     }
 
     /**
@@ -64,10 +57,6 @@ public class LoadActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.activity_load,
                     container, false);
-
-            // Always need to do a resetContext for gfxhandler so it doesn't prevent GC of old activities
-            //GfxResourceHandler.getInstance().resetContext();
-            rootView.invalidate();
             return rootView;
         }
 
