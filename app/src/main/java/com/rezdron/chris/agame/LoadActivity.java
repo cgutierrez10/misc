@@ -21,7 +21,6 @@ public class LoadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load);
-
         // Create some tokens and initialize a tick emulate a basic game loop
         TokenHandler.getInstance().addToken(new TokenSheep(0));
     }
@@ -38,13 +37,6 @@ public class LoadActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -58,11 +50,6 @@ public class LoadActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.activity_load,
                     container, false);
             return rootView;
-        }
-
-
-        public void onDraw(Canvas layer)
-        {
         }
     }
 }

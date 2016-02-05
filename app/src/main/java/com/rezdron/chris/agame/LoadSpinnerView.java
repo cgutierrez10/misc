@@ -16,48 +16,69 @@ import android.view.SurfaceView;
 import android.view.View;
 
 /**
- * TODO: document your custom view class.
+ * Loading animation, not technically a spinner
  */
-public class LoadSpinnerView extends SurfaceView {
-    private SurfaceHolder surfaceHolder = this.getHolder();
+public class LoadSpinnerView
+        extends SurfaceView
+        implements SurfaceHolder.Callback {
+    private LoadLoopThread mThread;
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+
+        mThread.setRunning(true);                     //will make calls to
+        mThread.start();                              //onDraw()
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        try {
+            mThread.setRunning(false);                //Tells thread to stop
+            mThread.join();                           //Removes thread from mem.
+        } catch (InterruptedException e) {}
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
+    {
+        TokenHandler.getInstance().cullAt(Math.max(width, height));
+    }
 
     public LoadSpinnerView(Context context) {
         super(context);
+        mThread = new LoadLoopThread(this);
+        mThread.setHolder(this.getHolder());
+        getHolder().addCallback(this);
     }
 
     public LoadSpinnerView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mThread = new LoadLoopThread(this);
+        mThread.setHolder(this.getHolder());
+        getHolder().addCallback(this);
     }
 
     public LoadSpinnerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        mThread = new LoadLoopThread(this);
+        mThread.setHolder(this.getHolder());
+        getHolder().addCallback(this);
+    }
+
+    public void init()
+    {
+        mThread = new LoadLoopThread(this);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        TokenHandler.getInstance().draw(canvas);
-        //GfxResourceHandler.getInstance().blitAt("sheep",10,10);
-
     }
 
-    public void start() {
-
-        new Thread(new Runnable() {
-            public void run() {
-                while(true) {
-                    final Canvas canvas = surfaceHolder.lockCanvas();
-                    try {
-                        synchronized (surfaceHolder) {
-                            TokenHandler.getInstance().tick();
-                            TokenHandler.getInstance().draw(canvas);
-                        }
-                    } finally {
-                        surfaceHolder.unlockCanvasAndPost(canvas);
-                    }
-                }
-            }
-        }).start();
+    @Override
+    public void draw(Canvas render)
+    {
+        super.draw(render);
+        TokenHandler.getInstance().draw(render);
     }
-
 }

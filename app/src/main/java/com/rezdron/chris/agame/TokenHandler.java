@@ -24,6 +24,7 @@ public class TokenHandler
     Stack<Token> scoreable = new Stack<>();
     Stack<Token> cullList = new Stack<>();
     Integer score = 0;
+    Integer offscreen = 100;
 
     public static TokenHandler getInstance()
     {
@@ -32,8 +33,6 @@ public class TokenHandler
 
     public void addToken(Token newToken)
     {
-        // Not being called for some reason
-        Log.d("TokenHandler", "Added token");
         // Everything must tick, if it does not tick it cannot be culled
         tickable.push(newToken);
 
@@ -60,12 +59,21 @@ public class TokenHandler
                 collideable.remove(rmvElement);
             }
         }
-        cullList.empty();
+
+        if (!cullList.isEmpty())
+        {
+            Log.d("Token","Culled one or more tokens");
+            cullList.removeAllElements();
+        }
+
     }
 
     public void tick() {
         for (Token element:tickable) {
-            element.tick();
+            if (element.getY() < offscreen)
+            {
+                element.deactivate();
+            }
             if (element.canScore()) {
                 score = element.getScore();
                 scoreable.remove(element); // Removed here for simplicity
@@ -76,6 +84,11 @@ public class TokenHandler
             }
         }
         cullTokens();
+    }
+
+    public void cullAt(int range)
+    {
+        offscreen = range;
     }
 
     public void draw(Canvas layer) {

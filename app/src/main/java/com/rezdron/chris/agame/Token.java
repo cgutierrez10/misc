@@ -56,6 +56,8 @@ public abstract class Token {
     // in lifo order so older objects render above newer
     // If physics object then also draw to collision canvas
 
+    public abstract void deactivate();
+
     public void onCollide()
     {
         // Only if type is player does collision change active state
