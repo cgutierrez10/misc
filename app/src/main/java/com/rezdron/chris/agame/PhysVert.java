@@ -1,5 +1,7 @@
 package com.rezdron.chris.agame;
 
+import android.util.Log;
+
 /**
  * Created by Chris on 1/14/2016.
  * Impliments vertical movement only physics as com.rezdron.chris.agame.Player token would use

@@ -9,21 +9,23 @@ import android.util.Log;
  * First try at creating a fully functional mobile, not intended for release
  */
 public class TokenSheep extends Token {
+    String gfx_type = "sheep";
+
     public TokenSheep(int score) {
         super(score, new PhysVert(10,10,(float) 0.0, (float) 5.0));
-        this.gfx_type = "sheep";
     }
 
     public TokenSheep(int score, int x, int y) {
         super(score, new PhysVert(x,y,(float) 0.0, (float) 5.0));
         this.gfx_type = "sheep";
     }
-
+    /*
     public TokenSheep(int score, TokenPhysics phys)
     {
         super(score, phys);
         this.gfx_type = "sheep";
     }
+    */
 
     public void deactivate() {
         active = false;

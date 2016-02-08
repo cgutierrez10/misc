@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
@@ -27,29 +29,6 @@ public class GfxResourceHandler {
     //private Context appContext;
     private Canvas rendered;
 
-
-    /*
-    public GfxResourceHandler(Context c)
-    {
-        rsx = c;
-        // What gfx size to pull? may not be needed best practices unclear
-        /*
-        DisplayMetrics metrics = new DisplayMetrics();
-        if (metrics.densityDpi <= 160)
-        {
-            // Medium density minimum to support
-        }
-        else if (metrics.densityDpi == 240)
-        {
-            // High density
-        }
-        else if (metrics.densityDpi >= 360)
-        {
-            // XHigh density, highest that will be supported
-        }* /
-    }
-    */
-
     public static GfxResourceHandler getInstance() { return instance; }
 
     public void resetContext(Context c)
@@ -71,6 +50,7 @@ public class GfxResourceHandler {
             // Could be called in the load area to load the necessary graphics ahead of time
             Resources rsx = state.getResources();
             Log.d("State", state.getPackageName());
+            Log.d("Resource",String.valueOf(rsx.getIdentifier(request, "drawable", state.getPackageName())));
             Bitmap loadRsx = BitmapFactory.decodeResource(rsx, rsx.getIdentifier(request, "drawable", state.getPackageName()));
 
             // Manual entry of resource id works, above state.getPackageName is the failpoint

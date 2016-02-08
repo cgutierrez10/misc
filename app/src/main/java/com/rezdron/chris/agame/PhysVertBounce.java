@@ -6,27 +6,30 @@ package com.rezdron.chris.agame;
  */
 public class PhysVertBounce extends TokenPhysics {
     int range;
-    int traveled = 0;
+    int offset;
+    int life = 425;
 
     public PhysVertBounce(int input_x, int input_y, float input_dvx, float input_dvy, int input_range)
     {
         super(input_x,input_y,input_dvx,input_dvy);
+        offset = input_y;
         this.range = input_range;
     }
 
     public Boolean tick()
     {
+        life--;
         // Update internal variables for x,y and dvx dvy
-        dvy = dvy + (grav * grav);
+        //dvy = dvy + (grav * grav);
         y = Math.round(dvy) + y;
-        if (traveled > range) {
+        if ((y - offset) > range) {
             dvy = dvy * -1;
         }
-        if (traveled <= 0)
+        if ((y - offset) < 0 - dvy)
         {
             dvy = dvy * -1;
         }
 
-        return (y < -100 || y > 1000) ? false : true;
+        return (life < 0) ? false : true;
     }
 }
