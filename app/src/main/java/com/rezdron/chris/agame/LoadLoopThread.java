@@ -34,16 +34,18 @@ public class LoadLoopThread extends Thread {
         TokenSpider bouncy = null;
         while (running) {
             /* Every 50 ticks load a new sheep 50 px over, modulo by screen width */
+
+
             if (tick % 100 == 0)
             {
-                TokenHandler.getInstance().addToken(new TokenSheep(0,10,tick % 400));
+                TokenHandler.getInstance().addToken(new TokenSheep(0,tick % 400,10));
             }
             if (tick % 500 == 0)
             {
                 if (bouncy != null) {
                     bouncy.deactivate();
                 }
-                bouncy = new TokenSpider(0,10,tick % 150);
+                bouncy = new TokenSpider(0,tick % 150,10);
                 TokenHandler.getInstance().addToken(bouncy);
             }
             tick++;

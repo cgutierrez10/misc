@@ -24,7 +24,7 @@ public class TokenHandler
     Stack<Token> scoreable = new Stack<>();
     Stack<Token> cullList = new Stack<>();
     Integer score = 0;
-    Integer offscreen = 100;
+    Integer offscreen = 1000;
 
     public static TokenHandler getInstance()
     {
@@ -70,7 +70,8 @@ public class TokenHandler
 
     public void tick() {
         for (Token element:tickable) {
-            if (element.getY() < offscreen)
+            element.tick();
+            if (element.getY() > offscreen)
             {
                 element.deactivate();
             }

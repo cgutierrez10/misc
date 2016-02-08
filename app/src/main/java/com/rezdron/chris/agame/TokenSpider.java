@@ -6,12 +6,12 @@ package com.rezdron.chris.agame;
  */
 public class TokenSpider extends Token {
     public TokenSpider(int score) {
-        super(score, new PhysVertBounce(10,10,(float) 0.0, (float) 5.0, 150));
+        super(score, new PhysVertBounce(10,10,(float) 0.0, (float) 5.0, 250));
         this.gfx_type = "spider";
     }
 
     public TokenSpider(int score, int x, int y) {
-        super(score, new PhysVertBounce(x,y,(float) 0.0, (float) 5.0, 150));
+        super(score, new PhysVertBounce(x,y,(float) 0.0, (float) 5.0, 250));
         this.gfx_type = "spider";
     }
 

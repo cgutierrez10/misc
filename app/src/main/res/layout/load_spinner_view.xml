@@ -6,7 +6,7 @@
     <com.rezdron.chris.agame.LoadSpinnerView
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:background="@android:color/white"
+        android:background="#ccc"
         android:paddingBottom="40dp"
         android:paddingLeft="20dp"
         android:textSize="35dp"

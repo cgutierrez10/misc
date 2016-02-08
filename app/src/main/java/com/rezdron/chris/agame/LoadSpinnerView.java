@@ -41,7 +41,8 @@ public class LoadSpinnerView
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
-        TokenHandler.getInstance().cullAt(Math.max(width, height));
+        Log.d("surface",String.valueOf(format) + " " + String.valueOf(width) + " " + String.valueOf(height));
+        //TokenHandler.getInstance().cullAt(Math.max(width, height));
     }
 
     public LoadSpinnerView(Context context) {
