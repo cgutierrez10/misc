@@ -23,9 +23,12 @@ public class Player extends Token {
         phys.tick();
     }
 
+    @Override
     public void deactivate() {
         // Player ded. Cleanup and start transition to gameover and scoring
     }
+
+    public int getWidth() { return 0;}
 
     public void onDraw() {}
 
