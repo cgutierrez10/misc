@@ -27,14 +27,13 @@ public class TokenSheep extends Token {
     }
     */
 
-    public void deactivate() {
-        active = false;
-    }
-
     @Override
     public void tick() {
         active = phys.tick();
     }
+
+    // Should return width of image
+    public int getWidth() { return 32; }
 
     @Override
     public void onDraw()

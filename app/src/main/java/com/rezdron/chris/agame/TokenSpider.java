@@ -21,9 +21,10 @@ public class TokenSpider extends Token {
         this.gfx_type = "spider";
     }
 
-    public void deactivate() {
-        active = false;
-    }
+
+
+    // Should return width of image
+    public int getWidth() { return 32; }
 
     @Override
     public void tick() {
