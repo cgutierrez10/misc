@@ -8,10 +8,13 @@ import java.util.Random;
  * Will provide functions for game thread to call for possible new tokens
  */
 public class ContentGen {
+    private static ContentGen instance = new ContentGen();
     Random rng = new Random(14641);
     int nextadd;
     // Difficulty should scale from very easy to very hard/impossible over 0-18,000 ticks
     int difficulty = 0; // Higher initial difficulty softer difficulty curve
+
+    public static ContentGen getInstance() { return instance; }
 
     public void tick(int tick)
     {
