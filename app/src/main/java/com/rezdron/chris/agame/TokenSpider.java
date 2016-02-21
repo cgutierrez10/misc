@@ -5,6 +5,8 @@ package com.rezdron.chris.agame;
  * First try at creating a fully functional mobile, not intended for release
  */
 public class TokenSpider extends Token {
+    int life = 500;
+
     public TokenSpider(int score) {
         super(score, new PhysVertBounce(10,10,(float) 0.0, (float) 5.0, 250));
         this.gfx_type = "spider";
@@ -29,6 +31,10 @@ public class TokenSpider extends Token {
     @Override
     public void tick() {
         active = phys.tick();
+        life--;
+        if (life <= 0)
+        if (life <= 0)
+        { active = false; }
     }
 
     @Override

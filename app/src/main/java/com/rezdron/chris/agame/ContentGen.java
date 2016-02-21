@@ -23,24 +23,30 @@ public class ContentGen {
         if (nextadd < difficulty) {
             // If eligable then add now?
             if (rng.nextFloat()*difficulty > nextadd ) {
-                // If added then what type
-                int type = rng.nextInt(2);
-                Token addtoken;
-                if (type == 0) {
-                    // Sheep!
-                } else {
-                    // Spider!
-                }
-
-                // If added then anything special? (inputs to physics?)
-
+                addToken();
                 // After add reset nextadd
                 difficulty++;
                 //nextadd = addtoken.getWidth() + difficulty;
 
             }
         }
+    }
 
+    public void addToken()
+    {
+        // rng nextint range should be up to difficulty to allow scaled new critters
+        int type = rng.nextInt(2);
+        Token addtoken;
+        if (type == 0) {
+            // Sheep!
+            addtoken = new TokenSheep(10);
+            // What physics?
+        } else {
+            // Spider!
+            addtoken = new TokenSpider(10);
+        }
+        nextadd = 50;
+        TokenHandler.getInstance().addToken(addtoken);
     }
 
 }
