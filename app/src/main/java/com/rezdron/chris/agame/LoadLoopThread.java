@@ -36,10 +36,12 @@ public class LoadLoopThread extends Thread {
             /* Every 50 ticks load a new sheep 50 px over, modulo by screen width */
 
 
-            if (tick % 100 == 0)
+            /*if (tick % 350 == 0)
             {
-                TokenHandler.getInstance().addToken(new TokenSheep(0,tick % 400,10));
-            }
+                //ContentGen.getInstance().tick(tick);
+                //TokenHandler.getInstance().addToken(new TokenSheep(0,tick % 400,10));
+            }*/
+            /*
             if (tick % 500 == 0)
             {
                 if (bouncy != null) {
@@ -47,7 +49,8 @@ public class LoadLoopThread extends Thread {
                 }
                 bouncy = new TokenSpider(0,tick % 150,10);
                 TokenHandler.getInstance().addToken(bouncy);
-            }
+            }*/
+            ContentGen.getInstance().tick(tick);
             tick++;
             TokenHandler.getInstance().tick();
             Canvas c = null;
