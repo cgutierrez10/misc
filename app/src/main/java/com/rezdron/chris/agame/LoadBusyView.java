@@ -18,7 +18,7 @@ import android.view.View;
 /**
  * Loading animation, not technically a spinner
  */
-public class LoadSpinnerView
+public class LoadBusyView
         extends SurfaceView
         implements SurfaceHolder.Callback {
     private LoadLoopThread mThread;
@@ -45,21 +45,21 @@ public class LoadSpinnerView
         //TokenHandler.getInstance().cullAt(Math.max(width, height));
     }
 
-    public LoadSpinnerView(Context context) {
+    public LoadBusyView(Context context) {
         super(context);
         mThread = new LoadLoopThread(this);
         mThread.setHolder(this.getHolder());
         getHolder().addCallback(this);
     }
 
-    public LoadSpinnerView(Context context, AttributeSet attrs) {
+    public LoadBusyView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mThread = new LoadLoopThread(this);
         mThread.setHolder(this.getHolder());
         getHolder().addCallback(this);
     }
 
-    public LoadSpinnerView(Context context, AttributeSet attrs, int defStyle) {
+    public LoadBusyView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mThread = new LoadLoopThread(this);
         mThread.setHolder(this.getHolder());
