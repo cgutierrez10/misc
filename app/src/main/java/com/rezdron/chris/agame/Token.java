@@ -77,6 +77,8 @@ public abstract class Token {
         return phys.getY();
     }
 
+    public void shift(int offset) { phys.shift(offset); }
+
     public void deactivate() {
         active = false;
     }

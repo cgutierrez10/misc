@@ -11,6 +11,7 @@ public class ContentGen {
     private static ContentGen instance = new ContentGen();
     Random rng = new Random(14641);
     int nextadd;
+    int x = 50;
     // Difficulty should scale from very easy to very hard/impossible over 0-18,000 ticks
     int difficulty = 0; // Higher initial difficulty softer difficulty curve
 
@@ -32,6 +33,8 @@ public class ContentGen {
         }
     }
 
+    public void setWidth(int width) { this.x = width; }
+
     public void addToken()
     {
         // rng nextint range should be up to difficulty to allow scaled new critters
@@ -39,11 +42,11 @@ public class ContentGen {
         Token addtoken;
         if (type == 0) {
             // Sheep!
-            addtoken = new TokenSheep(10);
+            addtoken = new TokenSheep(10,x,0);
             // What physics?
         } else {
             // Spider!
-            addtoken = new TokenSpider(10);
+            addtoken = new TokenSpider(10,x,0);
         }
         nextadd = 50;
         TokenHandler.getInstance().addToken(addtoken);

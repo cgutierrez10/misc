@@ -69,8 +69,10 @@ public class TokenHandler
     }
 
     public void tick() {
+        int speed = 10;
         for (Token element:tickable) {
             element.tick();
+            element.shift(speed);
             if (element.getY() > offscreen)
             {
                 element.deactivate();

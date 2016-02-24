@@ -25,7 +25,6 @@ public class LoadSpinnerView
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-
         mThread.setRunning(true);                     //will make calls to
         mThread.start();                              //onDraw()
     }
@@ -41,7 +40,8 @@ public class LoadSpinnerView
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
-        Log.d("surface",String.valueOf(format) + " " + String.valueOf(width) + " " + String.valueOf(height));
+        ContentGen.getInstance().setWidth(width);
+        Log.d("surface", String.valueOf(format) + " " + String.valueOf(width) + " " + String.valueOf(height));
         //TokenHandler.getInstance().cullAt(Math.max(width, height));
     }
 
@@ -79,7 +79,9 @@ public class LoadSpinnerView
     @Override
     public void draw(Canvas render)
     {
-        super.draw(render);
-        TokenHandler.getInstance().draw(render);
+        if (render != null) {
+            super.draw(render);
+            TokenHandler.getInstance().draw(render);
+        } else { Log.d("super.draw", ""); }
     }
 }
