@@ -11,6 +11,7 @@ import android.graphics.drawable.PaintDrawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -69,6 +70,18 @@ public class LoadBusyView
     public void init()
     {
         mThread = new LoadLoopThread(this);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent e)
+    {
+        if (e.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            // Player tap, bounce the player a little bit
+            Player.getInstance().setAccel(10);
+            // Currently no player object to bounce!
+        }
+        return true;
     }
 
     @Override

@@ -1,11 +1,8 @@
 package com.rezdron.chris.agame;
 
 import android.app.Fragment;
-import android.graphics.Canvas;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,17 +12,13 @@ import android.view.ViewGroup;
  * Created by Chris on 1/20/2016.
  * Activity for the activity_load screen
  */
-public class LoadActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_load);
-        // Ensure player is created
-        Player.getInstance();
-        //May need to replace, and reactivate the player token on game start/ends
-        //Player.revive(); // Set player active to true
-        //Player.place();
+
+        //setContentView(R.layout.activity_game);
     }
 
     @Override

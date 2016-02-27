@@ -6,11 +6,18 @@ import com.rezdron.chris.agame.Token;
 /**
  * Created by Chris on 1/14/2016.
  * Carries player token specific data including special physics functions
+ *
+ * Player is a special type of token, it is not part of the tokenhandling main logic
+ * The player will remain static wrt the leftmost edge and free to move vertically
+ *
+ * Player token is managed by gamerun rather than tokenhandler
  */
 public class Player extends Token {
+    static Player instance = new Player();
     Player()
     {
         super(0, new PlayerPhys(32,48,(float)0.0,(float)0.0));
+        this.gfx_type = "sheep";
     }
 
     public void setAccel(Integer y)
@@ -22,6 +29,8 @@ public class Player extends Token {
     {
         phys.tick();
     }
+
+    public static Player getInstance() {return instance;}
 
     @Override
     public void deactivate() {

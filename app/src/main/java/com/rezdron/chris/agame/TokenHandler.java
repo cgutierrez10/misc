@@ -87,6 +87,10 @@ public class TokenHandler
             }
         }
         cullTokens();
+        if (!Player.getInstance().getActive())
+        {
+            // Player b ded handle this with some cleanup and initialize a modeswitch to endscreen
+        }
     }
 
     public void cullAt(int range)

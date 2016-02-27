@@ -1,4 +1,6 @@
 package com.rezdron.chris.agame;
+import android.view.SurfaceHolder;
+
 import com.rezdron.chris.agame.GameMode;
 
 /**
@@ -16,11 +18,15 @@ import com.rezdron.chris.agame.GameMode;
  * is event-listener each object created by the map gen adds itself to this class
  * as each token adds itself to tokenhandler it can register for various events
  */
-public class GameLoop {
+public class GameLoop extends Thread {
+        private SurfaceHolder surfaceHolder;
+        private LoadBusyView view;
+        private boolean running = false;
+        int tick = 1;
 
     GameMode gameState;
     Integer tickCount;
-    //Some kind of object to define the level map unless all obstables are procedurally generated elsewhere?
+    //Some kind of object to define the level map unless all obstacles are procedurally generated elsewhere?
     //Level progress;
 
     //TokenHandler mobs = new TokenHandler();
