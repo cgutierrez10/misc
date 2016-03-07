@@ -1,6 +1,7 @@
 package com.rezdron.chris.agame;
 
 import android.graphics.Canvas;
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.util.Stack;
@@ -86,12 +87,18 @@ public class TokenHandler
                 cullList.add(element);
             }
         }
+        // Player moves after everything else and then physics cleanup
+        Player.getInstance().tick();
+
         cullTokens();
         if (!Player.getInstance().getActive())
         {
             // Player b ded handle this with some cleanup and initialize a modeswitch to endscreen
         }
+
     }
+
+    public int count() { return tickable.size(); }
 
     public void cullAt(int range)
     {
@@ -104,5 +111,7 @@ public class TokenHandler
         for (Token element:drawable) {
             element.onDraw();
         }
+        // Player always draws and always draws on top
+        Player.getInstance().onDraw();
     }
 }
