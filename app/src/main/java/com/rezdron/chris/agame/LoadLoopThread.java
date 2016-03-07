@@ -1,6 +1,7 @@
 package com.rezdron.chris.agame;
 
 import android.graphics.Canvas;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -13,7 +14,7 @@ public class LoadLoopThread extends Thread {
     private LoadBusyView view;
     private boolean running = false;
     int tick = 1;
-
+    long last = -1;
 
     public void setHolder(SurfaceHolder holder)
     {
@@ -31,7 +32,9 @@ public class LoadLoopThread extends Thread {
 
     @Override
     public void run() {
+        float interval = 0;
         while (running) {
+            last = SystemClock.currentThreadTimeMillis();
             ContentGen.getInstance().tick(tick);
             tick++;
             TokenHandler.getInstance().tick();
@@ -46,8 +49,22 @@ public class LoadLoopThread extends Thread {
                     view.getHolder().unlockCanvasAndPost(c);
                 }
             }
-            try{ Thread.sleep(17);
+
+            try{
+                if (17 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
+                    Thread.sleep(17 - (SystemClock.currentThreadTimeMillis() - last));
+                } else {
+                    Log.d("PerfCrit", "Tick took too long! Falling behind.");
+                }
             } catch(InterruptedException e){ }
+
+            interval = SystemClock.currentThreadTimeMillis() - last;
+            if (interval >= 16 && interval <= 18) {
+                Log.d("PerfDbg", "Fps: " + 1000 / interval);
+                Log.d("PerfDbg", "Tick interval " + interval);
+                Log.d("PerfDbg", "Tokens " + TokenHandler.getInstance().count());
+            }
         }
+
     }
 }

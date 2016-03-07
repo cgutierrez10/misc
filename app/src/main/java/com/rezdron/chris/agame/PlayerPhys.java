@@ -10,6 +10,7 @@ public class PlayerPhys extends PhysVert {
 
     public PlayerPhys(int init_x, int init_y, float init_dvx, float init_dvy) {
         super(init_x, init_y, init_dvx, init_dvy);
+        grav = grav * 3;
     }
 
     public void addDvx(float new_dvx)

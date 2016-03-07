@@ -79,7 +79,6 @@ public class LoadBusyView
         {
             // Player tap, bounce the player a little bit
             Player.getInstance().setAccel(10);
-            // Currently no player object to bounce!
         }
         return true;
     }
