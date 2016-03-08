@@ -51,15 +51,15 @@ public class LoadLoopThread extends Thread {
             }
 
             try{
-                if (17 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
-                    Thread.sleep(17 - (SystemClock.currentThreadTimeMillis() - last));
+                if (34 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
+                    Thread.sleep(34 - (SystemClock.currentThreadTimeMillis() - last));
                 } else {
                     Log.d("PerfCrit", "Tick took too long! Falling behind.");
                 }
             } catch(InterruptedException e){ }
 
             interval = SystemClock.currentThreadTimeMillis() - last;
-            if (interval >= 16 && interval <= 18) {
+            if (interval >= 30 && interval <= 36) {
                 Log.d("PerfDbg", "Fps: " + 1000 / interval);
                 Log.d("PerfDbg", "Tick interval " + interval);
                 Log.d("PerfDbg", "Tokens " + TokenHandler.getInstance().count());
