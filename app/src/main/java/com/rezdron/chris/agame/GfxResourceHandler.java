@@ -48,29 +48,31 @@ public class GfxResourceHandler {
             // Load the resource on demand
             // If things get choppy or need to be pre cached this function
             // Could be called in the load area to load the necessary graphics ahead of time
-            Resources rsx = state.getResources();
-            Log.d("State", state.getPackageName());
-            Log.d("Resource",String.valueOf(rsx.getIdentifier(request, "drawable", state.getPackageName())));
-            Bitmap loadRsx = BitmapFactory.decodeResource(rsx, rsx.getIdentifier(request, "drawable", state.getPackageName()));
+            try {
+                Resources rsx = state.getResources();
 
-            // Manual entry of resource id works, above state.getPackageName is the failpoint
-            //0x7f020049 xml
-            //0x7f02004a img
-            if (loadRsx != null) {
-                gfxResource.put(request, loadRsx);
-            } else{
-                Log.d("Bitmap","Load failed");
-            }
 
-            if (gfxResource.get(request) != null) {
-                return gfxResource.get(request);
-            }
-            else
-            {
-                Log.d("Bitmap","Load failed returning null");
-                return null;
-            }
+                Log.d("State", state.getPackageName());
+                Log.d("Resource", String.valueOf(rsx.getIdentifier(request, "drawable", state.getPackageName())));
+                Bitmap loadRsx = BitmapFactory.decodeResource(rsx, rsx.getIdentifier(request, "drawable", state.getPackageName()));
 
+                // Manual entry of resource id works, above state.getPackageName is the failpoint
+                //0x7f020049 xml
+                //0x7f02004a img
+                if (loadRsx != null) {
+                    loadRsx.setDensity(Bitmap.DENSITY_NONE);
+                    gfxResource.put(request, loadRsx);
+                } else {
+                    Log.d("Bitmap", "Load failed");
+                }
+
+                if (gfxResource.get(request) != null) {
+                    return gfxResource.get(request);
+                } else {
+                    Log.d("Bitmap", "Load failed returning null");
+                    return null;
+                }
+            } catch(Exception e) { return null; }
         }
     }
 
@@ -83,6 +85,8 @@ public class GfxResourceHandler {
     {
         // Implement a draw to the current context canvas of resource at location
         Bitmap blit = getRsx(request);
+        if (blit == null) { return; }
+
         Rect clipBounds = new Rect();
 
         clipBounds.set(x, y, x + blit.getHeight(), y + blit.getWidth());
@@ -90,6 +94,8 @@ public class GfxResourceHandler {
         //Drawable tokenImg = getRsx(request);
         //tokenImg.setBounds(clipBounds);
         //tokenImg.draw(rendered);
-        rendered.drawBitmap(blit,x,y,null);
+
+        //rendered.drawBitmap(blit,x,y,null);
+        rendered.drawBitmap(blit,null,clipBounds,null);
     }
 }
