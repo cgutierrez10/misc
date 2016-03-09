@@ -1,29 +1,19 @@
 package com.rezdron.chris.agame;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PaintDrawable;
-import android.opengl.GLSurfaceView;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 /**
  * Loading animation, not technically a spinner
  */
-public class LoadBusyView
-        extends GLSurfaceView
+public class LoadBusyView_bak
+        extends SurfaceView
         implements SurfaceHolder.Callback {
-    private final GLRenderer mRenderer;
     private LoadLoopThread mThread;
 
     @Override
@@ -48,36 +38,28 @@ public class LoadBusyView
         //TokenHandler.getInstance().cullAt(Math.max(width, height));
     }
 
-    public LoadBusyView(Context context) {
+    public LoadBusyView_bak(Context context) {
         super(context);
-        setEGLContextClientVersion(2);
-        mRenderer = new GLRenderer(context);
-        setRenderer(mRenderer);
-        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-        mThread = new LoadLoopThread(this);
+        //mThread = new LoadLoopThread(this);
         mThread.setHolder(this.getHolder());
         getHolder().addCallback(this);
     }
 
-    /*
-    public LoadBusyView(Context context, AttributeSet attrs) {
+    public LoadBusyView_bak(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mThread = new LoadLoopThread(this);
+        //mThread = new LoadLoopThread(this);
         mThread.setHolder(this.getHolder());
         getHolder().addCallback(this);
     }
 
-    public LoadBusyView(Context context, AttributeSet attrs, int defStyle) {
-        super(context,attrs);
-        mThread = new LoadLoopThread(this);
+    public LoadBusyView_bak(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        //mThread = new LoadLoopThread(this);
         mThread.setHolder(this.getHolder());
         getHolder().addCallback(this);
-    }*/
-
-    public void init()
-    {
-        mThread = new LoadLoopThread(this);
     }
+
+    public void init() {} // mThread = new LoadLoopThread(this); }
 
     @Override
     public boolean onTouchEvent(MotionEvent e)
