@@ -119,6 +119,7 @@ public class GLRenderer implements Renderer {
         SetupTriangle();
         GLES20.glClearColor(0.0f,0.0f,0.0f,1);
 
+        // These lines probably need to specify riGraphicTools.vs_Image and fs_Image instead of SolidColor
         int vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, riGraphicTools.vs_SolidColor);
         int fragmentShader = riGraphicTools.loadShader(GLES20.GL_FRAGMENT_SHADER, riGraphicTools.vs_SolidColor);
 
