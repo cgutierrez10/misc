@@ -43,6 +43,12 @@ public class LoadBusyView
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
+
+
+
+
+
+
         ContentGen.getInstance().setWidth(width);
         Log.d("surface", String.valueOf(format) + " " + String.valueOf(width) + " " + String.valueOf(height));
         //TokenHandler.getInstance().cullAt(Math.max(width, height));
@@ -58,21 +64,6 @@ public class LoadBusyView
         mThread.setHolder(this.getHolder());
         getHolder().addCallback(this);
     }
-
-    /*
-    public LoadBusyView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mThread = new LoadLoopThread(this);
-        mThread.setHolder(this.getHolder());
-        getHolder().addCallback(this);
-    }
-
-    public LoadBusyView(Context context, AttributeSet attrs, int defStyle) {
-        super(context,attrs);
-        mThread = new LoadLoopThread(this);
-        mThread.setHolder(this.getHolder());
-        getHolder().addCallback(this);
-    }*/
 
     public void init()
     {
