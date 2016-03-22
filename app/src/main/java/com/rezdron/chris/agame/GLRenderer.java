@@ -72,20 +72,20 @@ public class GLRenderer implements Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         // Get vertex shader pointer
-        int mPositionHandle = GLES20.glGetAttribLocation(riGraphicTools.sp_SolidColor, "vPosition");
+        int mPositionHandle = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "vPosition");
 
         GLES20.glEnableVertexAttribArray(mPositionHandle);
         GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 
-        int mTexCoordLoc = GLES20.glGetAttribLocation(riGraphicTools.sp_Image, "a_texCoord");
+        int mTexCoordLoc = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "a_texCoord");
         GLES20.glEnableVertexAttribArray(mTexCoordLoc);
         GLES20.glVertexAttribPointer(mTexCoordLoc, 2, GLES20.GL_FLOAT, false, 0, uvBuffer);
 
         // Get handle to shape's transformation matrix
-        int mtrxhandle = GLES20.glGetUniformLocation(riGraphicTools.sp_SolidColor, "uMVPMatrix");
+        int mtrxhandle = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "uMVPMatrix");
 
         GLES20.glUniformMatrix4fv(mtrxhandle, 1, false, m, 0);
-        int mSamplerLoc = GLES20.glGetUniformLocation(riGraphicTools.sp_Image, "s_texture" );
+        int mSamplerLoc = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "s_texture" );
 
         GLES20.glUniform1i(mSamplerLoc,0);
 
@@ -98,6 +98,19 @@ public class GLRenderer implements Renderer {
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
         mScreenWidth = width;
         mScreenHeight = height;
+
+        /* Fragment added to setup renderer for full screen 2d mode */
+        gl.glViewport(0, 0, width, height);
+        gl.glMatrixMode(GL10.GL_PROJECTION);
+        gl.glLoadIdentity();
+        gl.glOrthof(0.0f, width, 0.0f, height, 0.0f, 1.0f);
+
+        gl.glShadeModel(GL10.GL_FLAT);
+        gl.glEnable(GL10.GL_BLEND);
+        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        gl.glColor4x(0x10000, 0x10000, 0x10000, 0x10000);
+        gl.glEnable(GL10.GL_TEXTURE_2D);
+        /* End fragment added */
 
         // Ensure viewport is fullscreen
         GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
@@ -119,16 +132,16 @@ public class GLRenderer implements Renderer {
         SetupTriangle();
         GLES20.glClearColor(0.0f,0.0f,0.0f,1);
 
-        // These lines probably need to specify riGraphicTools.vs_Image and fs_Image instead of SolidColor
-        int vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, riGraphicTools.vs_SolidColor);
-        int fragmentShader = riGraphicTools.loadShader(GLES20.GL_FRAGMENT_SHADER, riGraphicTools.vs_SolidColor);
+        // These lines need to specify SpriteShader.vs_Sprite and fs_Sprite
+        int vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, SpriteShader.vs_Sprite);
+        int fragmentShader = riGraphicTools.loadShader(GLES20.GL_FRAGMENT_SHADER, SpriteShader.fs_Sprite);
 
-        riGraphicTools.sp_SolidColor = GLES20.glCreateProgram();
-        GLES20.glAttachShader(riGraphicTools.sp_SolidColor, vertexShader);
-        GLES20.glAttachShader(riGraphicTools.sp_SolidColor, fragmentShader);
-        GLES20.glLinkProgram(riGraphicTools.sp_SolidColor);
+        SpriteShader.sp_Sprite = GLES20.glCreateProgram();
+        GLES20.glAttachShader(SpriteShader.sp_Sprite, vertexShader);
+        GLES20.glAttachShader(SpriteShader.sp_Sprite, fragmentShader);
+        GLES20.glLinkProgram(SpriteShader.sp_Sprite);
 
-        GLES20.glUseProgram(riGraphicTools.sp_SolidColor);
+        GLES20.glUseProgram(SpriteShader.sp_Sprite);
     }
 
     public void SetupImage()
