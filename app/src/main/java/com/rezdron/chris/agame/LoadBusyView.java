@@ -23,7 +23,7 @@ import android.view.View;
 public class LoadBusyView
         extends GLSurfaceView
         implements SurfaceHolder.Callback {
-    private final GLRenderer mRenderer;
+    private GLRenderer mRenderer;
     private LoadLoopThread mThread;
 
     @Override
@@ -43,12 +43,6 @@ public class LoadBusyView
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
-
-
-
-
-
-
         ContentGen.getInstance().setWidth(width);
         Log.d("surface", String.valueOf(format) + " " + String.valueOf(width) + " " + String.valueOf(height));
         //TokenHandler.getInstance().cullAt(Math.max(width, height));
@@ -56,6 +50,7 @@ public class LoadBusyView
 
     public LoadBusyView(Context context) {
         super(context);
+        /*
         setEGLContextClientVersion(2);
         mRenderer = new GLRenderer(context);
         setRenderer(mRenderer);
@@ -63,10 +58,25 @@ public class LoadBusyView
         mThread = new LoadLoopThread(this);
         mThread.setHolder(this.getHolder());
         getHolder().addCallback(this);
+        */
+        init(context);
     }
 
-    public void init()
+    public LoadBusyView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+
+    public void init(Context context)
     {
+        setEGLContextClientVersion(2);
+        mRenderer = new GLRenderer(context);
+        setRenderer(mRenderer);
+        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        mThread = new LoadLoopThread(this);
+        mThread.setHolder(this.getHolder());
+        getHolder().addCallback(this);
         mThread = new LoadLoopThread(this);
     }
 
@@ -81,6 +91,7 @@ public class LoadBusyView
         return true;
     }
 
+    /*
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -94,4 +105,5 @@ public class LoadBusyView
             TokenHandler.getInstance().draw(render);
         } else { Log.d("super.draw", ""); }
     }
+    */
 }

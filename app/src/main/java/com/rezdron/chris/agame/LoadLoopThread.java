@@ -38,6 +38,8 @@ public class LoadLoopThread extends Thread {
             ContentGen.getInstance().tick(tick);
             tick++;
             TokenHandler.getInstance().tick();
+            // Throwing out canvas code trying again from opengl
+            /*
             Canvas c = null;
             try {
                 c = view.getHolder().lockCanvas();
@@ -48,7 +50,7 @@ public class LoadLoopThread extends Thread {
                 if (c != null) {
                     view.getHolder().unlockCanvasAndPost(c);
                 }
-            }
+            }*/
 
             try{
                 if (34 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
