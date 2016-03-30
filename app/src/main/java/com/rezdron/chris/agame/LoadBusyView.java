@@ -28,6 +28,9 @@ public class LoadBusyView
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        mRenderer.onSurfaceChanged(null,500,500);
+        mRenderer.onDrawFrame(null);
+        Log.d("Render","Called for a render");
         mThread.setRunning(true);                     //will make calls to
         mThread.start();                              //onDraw()
     }

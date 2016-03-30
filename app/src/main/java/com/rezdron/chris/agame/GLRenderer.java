@@ -8,6 +8,7 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -59,7 +60,7 @@ public class GLRenderer implements Renderer {
     public void onDrawFrame(GL10 unused) {
         long now = System.currentTimeMillis();
 
-        if (mLastTime > now) return;
+        //if (mLastTime > now) return;
 
         long elapsed = now - mLastTime;
 
@@ -67,7 +68,7 @@ public class GLRenderer implements Renderer {
         mLastTime = now;
     }
 
-    private void Render(float[] m) {
+    public void Render(float[] m) {
         // Screen clear
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
@@ -93,24 +94,17 @@ public class GLRenderer implements Renderer {
 
         GLES20.glDisableVertexAttribArray(mPositionHandle);
         GLES20.glDisableVertexAttribArray(mTexCoordLoc);
-
+        Log.d("Render", "OnDrawFrame completed");
     }
 
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
         mScreenWidth = width;
         mScreenHeight = height;
 
-        /* Fragment added to setup renderer for full screen 2d mode */
-        gl.glViewport(0, 0, width, height);
-        gl.glMatrixMode(GL10.GL_PROJECTION);
-        gl.glLoadIdentity();
-        gl.glOrthof(0.0f, width, 0.0f, height, 0.0f, 1.0f);
-        gl.glShadeModel(GL10.GL_FLAT);
-        gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-        gl.glColor4x(0x10000, 0x10000, 0x10000, 0x10000);
-        gl.glEnable(GL10.GL_TEXTURE_2D);
-        /* End fragment added */
+        RenderQuads();
+        SetupImage();
+        RenderSprite();
+
         // Ensure viewport is fullscreen
         GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
 
@@ -128,8 +122,9 @@ public class GLRenderer implements Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        SetupTriangle();
-        GLES20.glClearColor(0.0f,0.0f,0.0f,1);
+
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
 
         // These lines need to specify SpriteShader.vs_Sprite and fs_Sprite
         int vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, SpriteShader.vs_Sprite);
@@ -168,28 +163,11 @@ public class GLRenderer implements Renderer {
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, GfxResourceHandler.getInstance().getRsx("spider"), 0);
     }
 
-    public void SetupTriangle()
+    void RenderSprite()
+    //int spritesheet, int spritex, int spritey, int texturew, int textureh, int x, int y, int w, int h )
     {
-        vertices = new float[] {10.0f, 200f, 0.0f, 10.0f, 100f, 0.0f, 100f, 100f, 0.0f,};
-
-        indices = new short[] {0, 1, 2};
-
-        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
-        bb.order(ByteOrder.nativeOrder());
-        vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(vertices);
-        vertexBuffer.position(0);
-
-        ByteBuffer dlb = ByteBuffer.allocateDirect(indices.length * 2);
-        dlb.order(ByteOrder.nativeOrder());
-        drawListBuffer = dlb.asShortBuffer();
-        drawListBuffer.put(indices);
-        drawListBuffer.position(0);
-    }
-
-    void RenderSprite(int spritesheet, int spritex, int spritey, int texturew, int textureh, int x, int y, int w, int h )
-    {
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,spritesheet);
+        // Will eventually wrap setupimage and call renderquads directly as needed
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,0); //spritesheet);
         // Texturing, select texels from atlas
         uvs = new float[8];
         uvs[0] = 0;
