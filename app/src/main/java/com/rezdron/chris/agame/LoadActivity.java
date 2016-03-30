@@ -26,14 +26,10 @@ public class LoadActivity extends AppCompatActivity {
         /* Some changes for GL support */
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        Log.d("activity", "Started loading activity");
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Log.d("activity", "GL starting");
         glSurfaceView = new LoadBusyView(this);
-        Log.d("activity", "GLview created");
         setContentView(R.layout.activity_load);
         // Ensure player is created
-        Log.d("activity","GL initialized");
         Player.getInstance();
         //May need to replace, and reactivate the player token on game start/ends
         //Player.revive(); // Set player active to true
