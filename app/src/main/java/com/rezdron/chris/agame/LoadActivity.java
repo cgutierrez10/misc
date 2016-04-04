@@ -1,7 +1,11 @@
 package com.rezdron.chris.agame;
 
+import android.app.ActivityManager;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.pm.ConfigurationInfo;
 import android.graphics.Canvas;
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,25 +31,44 @@ public class LoadActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        glSurfaceView = new LoadBusyView(this);
-        setContentView(R.layout.activity_load);
+        //setContentView(R.layout.activity_load);
         // Ensure player is created
-        Player.getInstance();
+        //Player.getInstance();
+
+        glSurfaceView = new LoadBusyView(this);
+        setContentView(glSurfaceView);
+
         //May need to replace, and reactivate the player token on game start/ends
         //Player.revive(); // Set player active to true
         //Player.place();
+
     }
+
+    /*
+    // Check if the system supports OpenGL ES 2.0.
+    final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+    final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
+    final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000;
+
+    if (!(supportsEs2))
+    {
+        // This is where you could create an OpenGL ES 1.x compatible
+        // renderer if you wanted to support both ES 1 and ES 2.
+        Log.d("Render","OPEN GL ES 2.0 failed");
+    }
+    */
+
 
     @Override
     protected void onPause() {
         super.onPause();
-        glSurfaceView.onPause();
+        //glSurfaceView.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        glSurfaceView.onResume();
+        //glSurfaceView.onResume();
     }
 
     @Override
