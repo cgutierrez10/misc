@@ -22,7 +22,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by Chris on 3/9/2016.
  * Building whole shader pipeline?
  */
-public class GLRenderer implements Renderer {
+public class myGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mtrxProjection = new float[16];
     private final float[] mtrxView = new float[16];
     private final float[] mtrxProjectionAndView = new float[16];
@@ -42,7 +42,7 @@ public class GLRenderer implements Renderer {
     long mLastTime;
     int mProgram;
 
-    public GLRenderer(Context c)
+    public myGLRenderer(Context c)
     {
         mContext = c;
         mLastTime = System.currentTimeMillis() + 100;
@@ -64,11 +64,16 @@ public class GLRenderer implements Renderer {
 
         long elapsed = now - mLastTime;
 
-        Render(mtrxProjectionAndView);
+        //Render(mtrxProjectionAndView);
         mLastTime = now;
     }
 
     public void Render(float[] m) {
+    /*
+        // Below is debug code to ensure shader invokes
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
+
         // Screen clear
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
@@ -95,15 +100,29 @@ public class GLRenderer implements Renderer {
         GLES20.glDisableVertexAttribArray(mPositionHandle);
         GLES20.glDisableVertexAttribArray(mTexCoordLoc);
         Log.d("Render", "OnDrawFrame completed");
+    */
     }
 
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
+        GLES20.glViewport(0,0,width,height);
+        /*
+        int shader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
+        if (shader == 0) {
+            Log.d("Render", "109 Shader handle assign failed, onsurfacechanged");
+        } else {
+            Log.d("Render", "109 Shader handle assign success");
+        }
         mScreenWidth = width;
         mScreenHeight = height;
 
-        RenderQuads();
-        SetupImage();
-        RenderSprite();
+
+
+
+
+
+        //RenderQuads();
+        //SetupImage();
+        //RenderSprite();
 
         // Ensure viewport is fullscreen
         GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
@@ -118,17 +137,21 @@ public class GLRenderer implements Renderer {
         Matrix.orthoM(mtrxProjection, 0, 0.0f, mScreenWidth, 0.0f, mScreenHeight, 0, 50);
         Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
         Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
+        */
     }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
-
+        int shader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
+        if (shader == 0) {
+            Log.d("Render", "155 Shader handle assign failed, onsurfacechanged");
+        } else {
+            Log.d("Render", "155 Shader handle assign success");
+        }
         // These lines need to specify SpriteShader.vs_Sprite and fs_Sprite
-        int vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, SpriteShader.vs_Sprite);
-        int fragmentShader = riGraphicTools.loadShader(GLES20.GL_FRAGMENT_SHADER, SpriteShader.fs_Sprite);
+
+        int vertexShader = SpriteShader.loadShader(GLES20.GL_VERTEX_SHADER, SpriteShader.vs_Sprite);
+        int fragmentShader = SpriteShader.loadShader(GLES20.GL_FRAGMENT_SHADER, SpriteShader.fs_Sprite);
 
         SpriteShader.sp_Sprite = GLES20.glCreateProgram();
         GLES20.glAttachShader(SpriteShader.sp_Sprite, vertexShader);
@@ -136,6 +159,8 @@ public class GLRenderer implements Renderer {
         GLES20.glLinkProgram(SpriteShader.sp_Sprite);
 
         GLES20.glUseProgram(SpriteShader.sp_Sprite);
+        Log.d("Render", "162 Shader Invoked");
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
     }
 
     public void SetupImage()
