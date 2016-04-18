@@ -10,23 +10,23 @@ import android.view.SurfaceHolder;
  * Threading code for load spinner to be threaded updating
  */
 public class LoadLoopThread extends Thread {
-    private SurfaceHolder surfaceHolder;
+    //private SurfaceHolder surfaceHolder;
     private LoadBusyView view;
     private boolean running = false;
     int tick = 1;
     long last = -1;
 
-    public void setHolder(SurfaceHolder holder)
-    {
-        surfaceHolder = holder;
-    }
+    //public void setHolder(SurfaceHolder holder)
+    //{
+    //    surfaceHolder = holder;
+    //}
 
     public LoadLoopThread(LoadBusyView view) {
         this.view = view;
     }
 
     public void setRunning(boolean run) {
-        Log.d("Thread", "LoadLoop set " + String.valueOf(run));
+        Log.d("mThread", "LoadLoop set " + String.valueOf(run));
         running = run;
     }
 
@@ -38,6 +38,10 @@ public class LoadLoopThread extends Thread {
             ContentGen.getInstance().tick(tick);
             tick++;
             TokenHandler.getInstance().tick();
+            Log.d("mThread", "Inside run loop");
+            view.mRenderer.RenderQuads();
+            view.mRenderer.RenderSprite();
+
             // Throwing out canvas code trying again from opengl
             /*
             Canvas c = null;
@@ -52,21 +56,21 @@ public class LoadLoopThread extends Thread {
                 }
             }*/
 
-            try{
+            try {
                 if (34 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
                     Thread.sleep(34 - (SystemClock.currentThreadTimeMillis() - last));
                 } else {
                     Log.d("PerfCrit", "Tick took too long! Falling behind.");
                 }
-            } catch(InterruptedException e){ }
-
-            interval = SystemClock.currentThreadTimeMillis() - last;
-            if (interval >= 30 && interval <= 36) {
-                Log.d("PerfDbg", "Fps: " + 1000 / interval);
-                Log.d("PerfDbg", "Tick interval " + interval);
-                Log.d("PerfDbg", "Tokens " + TokenHandler.getInstance().count());
+            } catch (InterruptedException e) {
             }
         }
 
+        interval = SystemClock.currentThreadTimeMillis() - last;
+        if (interval >= 30 && interval <= 36) {
+            Log.d("PerfDbg", "Fps: " + 1000 / interval);
+            Log.d("PerfDbg", "Tick interval " + interval);
+            Log.d("PerfDbg", "Tokens " + TokenHandler.getInstance().count());
+        }
     }
 }

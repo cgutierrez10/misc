@@ -2,39 +2,59 @@ package com.rezdron.chris.agame;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 
 /**
  * Loading animation, not technically a spinner
  */
 public class LoadBusyView
         extends GLSurfaceView {
-    private myGLRenderer mRenderer;
+    protected mglRender mRenderer;
     private LoadLoopThread mThread;
 
 
     public LoadBusyView(Context context) {
         super(context);
         setEGLContextClientVersion(2);
-        Log.d("Render","About to create renderer");
-        mRenderer = new myGLRenderer(context);
+        Log.d("Render", "About to create renderer");
+        mRenderer = new mglRender(context);
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-        /*
+
+
         mThread = new LoadLoopThread(this);
-        mThread.setHolder(this.getHolder());
-        getHolder().addCallback(this);
-        */
+        mThread.setRunning(true);
+        mThread.start();
         //init(context);
+    }
+
+    /*
+    @Override
+    public void onPause()
+    {
+        mThread.setRunning(false);
+    }
+
+    @Override
+    public void onResume()
+    {
+        mThread.start();
+    }
+    */
+
+    @Override
+    public void onDetachedFromWindow()
+    {
+        super.onDetachedFromWindow();
+        mThread.setRunning(false);
+        mThread = null;
     }
 
     /*
     public void init(Context context)
     {
-        mRenderer = new myGLRenderer(context);
+        mRenderer = new mglRender(context);
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
         mThread = new LoadLoopThread(this);

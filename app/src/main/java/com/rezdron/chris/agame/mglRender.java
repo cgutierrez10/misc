@@ -22,7 +22,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by Chris on 3/9/2016.
  * Building whole shader pipeline?
  */
-public class myGLRenderer implements GLSurfaceView.Renderer {
+public class mglRender implements GLSurfaceView.Renderer {
     private final float[] mtrxProjection = new float[16];
     private final float[] mtrxView = new float[16];
     private final float[] mtrxProjectionAndView = new float[16];
@@ -42,7 +42,7 @@ public class myGLRenderer implements GLSurfaceView.Renderer {
     long mLastTime;
     int mProgram;
 
-    public myGLRenderer(Context c)
+    public mglRender(Context c)
     {
         mContext = c;
         mLastTime = System.currentTimeMillis() + 100;
@@ -114,11 +114,6 @@ public class myGLRenderer implements GLSurfaceView.Renderer {
         }
         mScreenWidth = width;
         mScreenHeight = height;
-
-
-
-
-
 
         //RenderQuads();
         //SetupImage();
@@ -247,6 +242,7 @@ public class myGLRenderer implements GLSurfaceView.Renderer {
 
     void RenderQuads()
     {
+        Log.d("Render","Quad render entered");
         // 32x32 triangles quad
         vertices = new float[]
                 {  10.0f, 42f, 0.0f,
