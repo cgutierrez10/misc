@@ -41,7 +41,6 @@ public class LoadActivity extends AppCompatActivity {
         //May need to replace, and reactivate the player token on game start/ends
         //Player.revive(); // Set player active to true
         //Player.place();
-
     }
 
     /*
@@ -62,14 +61,15 @@ public class LoadActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //glSurfaceView.onPause();
+        glSurfaceView.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //glSurfaceView.onResume();
+        glSurfaceView.onResume();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
