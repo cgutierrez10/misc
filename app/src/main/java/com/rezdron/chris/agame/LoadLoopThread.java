@@ -39,7 +39,7 @@ public class LoadLoopThread extends Thread {
             tick++;
             TokenHandler.getInstance().tick();
             Log.d("mThread", "Inside run loop");
-            view.mRenderer.RenderQuads();
+            //view.mRenderer.RenderQuads();
             view.mRenderer.RenderSprite();
 
             // Throwing out canvas code trying again from opengl
