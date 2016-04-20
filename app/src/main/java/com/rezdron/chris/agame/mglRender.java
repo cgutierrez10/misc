@@ -64,12 +64,20 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         long elapsed = now - mLastTime;
 
-        //Render(mtrxProjectionAndView);
+        Render(mtrxProjectionAndView);
         mLastTime = now;
     }
 
     public void Render(float[] m) {
-    /*
+        Log.d("Render","Render() invoked");
+        vertices = new float[]
+                {  10.0f, 42f, 0.0f,
+                        10.0f, 10.0f, 0.0f,
+                        42f, 10.0f, 0.0f,
+                        42f, 42f, 0.0f,
+                };
+
+        indices = new short[] {0,1,2,0,2,3};
         // Below is debug code to ensure shader invokes
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
@@ -95,12 +103,21 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         GLES20.glUniform1i(mSamplerLoc, 0);
 
-        GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
+        if (indices == null)
+        {
+            Log.d("Render","Indices is null");
+        }
+        if (drawListBuffer == null)
+        {
+            Log.d("Render","drawListBuffer is null");
+        }
+            GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
 
         GLES20.glDisableVertexAttribArray(mPositionHandle);
         GLES20.glDisableVertexAttribArray(mTexCoordLoc);
+
         Log.d("Render", "OnDrawFrame completed");
-    */
+
     }
 
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -154,6 +171,9 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLES20.glLinkProgram(SpriteShader.sp_Sprite);
 
         GLES20.glUseProgram(SpriteShader.sp_Sprite);
+        SetupImage();
+        RenderQuads();
+        RenderSprite();
         Log.d("Render", "162 Shader Invoked");
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
     }
@@ -239,6 +259,7 @@ public class mglRender implements GLSurfaceView.Renderer {
         gl.glEnd();
         */
     }
+
 
     void RenderQuads()
     {
