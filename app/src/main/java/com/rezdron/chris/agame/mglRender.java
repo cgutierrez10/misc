@@ -69,35 +69,21 @@ public class mglRender implements GLSurfaceView.Renderer {
     }
 
     public void Render(float[] m) {
-        Log.d("Render","Render() invoked");
-        vertices = new float[]
-                {  10.0f, 42f, 0.0f,
-                        10.0f, 10.0f, 0.0f,
-                        42f, 10.0f, 0.0f,
-                        42f, 42f, 0.0f,
-                };
-
-        indices = new short[] {0,1,2,0,2,3};
-        // Below is debug code to ensure shader invokes
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
-
         // Screen clear
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         // Get vertex shader pointer
         int mPositionHandle = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "vPosition");
-
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
         GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+        GLES20.glEnableVertexAttribArray(mPositionHandle);
 
         int mTexCoordLoc = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "a_texCoord");
-        GLES20.glEnableVertexAttribArray(mTexCoordLoc);
         GLES20.glVertexAttribPointer(mTexCoordLoc, 2, GLES20.GL_FLOAT, false, 0, uvBuffer);
+        GLES20.glEnableVertexAttribArray(mTexCoordLoc);
 
         // Get handle to shape's transformation matrix
         int mtrxhandle = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "uMVPMatrix");
-
         GLES20.glUniformMatrix4fv(mtrxhandle, 1, false, m, 0);
         int mSamplerLoc = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "s_texture" );
 
@@ -111,7 +97,8 @@ public class mglRender implements GLSurfaceView.Renderer {
         {
             Log.d("Render","drawListBuffer is null");
         }
-            GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
+
+        GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
 
         GLES20.glDisableVertexAttribArray(mPositionHandle);
         GLES20.glDisableVertexAttribArray(mTexCoordLoc);
@@ -121,24 +108,13 @@ public class mglRender implements GLSurfaceView.Renderer {
     }
 
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
-        GLES20.glViewport(0,0,width,height);
-        /*
-        int shader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
-        if (shader == 0) {
-            Log.d("Render", "109 Shader handle assign failed, onsurfacechanged");
-        } else {
-            Log.d("Render", "109 Shader handle assign success");
-        }
         mScreenWidth = width;
         mScreenHeight = height;
 
-        //RenderQuads();
-        //SetupImage();
-        //RenderSprite();
+        // Redo the Viewport, making it fullscreen.
+        GLES20.glViewport(0, 0, (int)mScreenWidth, (int)mScreenHeight);
 
-        // Ensure viewport is fullscreen
-        GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
-
+        // Clear our matrices
         for(int i=0;i<16;i++)
         {
             mtrxProjection[i] = 0.0f;
@@ -146,10 +122,14 @@ public class mglRender implements GLSurfaceView.Renderer {
             mtrxProjectionAndView[i] = 0.0f;
         }
 
-        Matrix.orthoM(mtrxProjection, 0, 0.0f, mScreenWidth, 0.0f, mScreenHeight, 0, 50);
+        // Setup our screen width and height for normal sprite translation.
+        Matrix.orthoM(mtrxProjection, 0, 0f, mScreenWidth, 0.0f, mScreenHeight, 0, 50);
+
+        // Set the camera position (View matrix)
         Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+
+        // Calculate the projection and view transformation
         Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
-        */
     }
 
     @Override
@@ -174,13 +154,11 @@ public class mglRender implements GLSurfaceView.Renderer {
         SetupImage();
         RenderQuads();
         RenderSprite();
-        Log.d("Render", "162 Shader Invoked");
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
     }
 
     public void SetupImage()
     {
-        uvs = new float[]{0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,};
+        uvs = new float[]{0.5f, 0.5f, 0.5f, 1.5f, 1.5f, 1.5f, 1.5f, 0.5f,};
 
         ByteBuffer bb = ByteBuffer.allocateDirect(uvs.length * 4);
         bb.order(ByteOrder.nativeOrder());
@@ -266,10 +244,10 @@ public class mglRender implements GLSurfaceView.Renderer {
         Log.d("Render","Quad render entered");
         // 32x32 triangles quad
         vertices = new float[]
-                {  10.0f, 42f, 0.0f,
+                {       10.0f,   40f, 0.0f,
                         10.0f, 10.0f, 0.0f,
-                        42f, 10.0f, 0.0f,
-                        42f, 42f, 0.0f,
+                        40f,   10.0f, 0.0f,
+                        40f,     40f, 0.0f,
                 };
 
         indices = new short[] {0,1,2,0,2,3};
