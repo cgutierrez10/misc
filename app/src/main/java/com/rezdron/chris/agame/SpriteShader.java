@@ -32,8 +32,11 @@ public class SpriteShader {
 
     public static String fs_Sprite = "precision mediump float; "
             + "precision mediump float; "
-            + "void main() { gl_FragColor = vec4(1.0,1.0,1.0,1.0); }";
-            // texture2D(my_color_texture, texture_coordinate); }";
+            + "varying vec2 v_texCoord;"
+            + "uniform sampler2D s_texture;"
+            //+ "void main() { gl_FragColor = vec4(1.0,1.0,1.0,1.0); }";
+            + "void main() { gl_FragColor = texture2D( s_texture, v_texCoord ); }";
+            //+ "texture2D(my_color_texture, texture_coordinate); }";
 
     public static int loadShader(int type, String shaderCode)
     {
