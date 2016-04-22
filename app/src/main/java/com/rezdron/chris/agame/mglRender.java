@@ -151,20 +151,22 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLES20.glLinkProgram(SpriteShader.sp_Sprite);
 
         GLES20.glUseProgram(SpriteShader.sp_Sprite);
-        SetupImage();
+        // Shapes first
         RenderQuads();
-        RenderSprite();
+        // Image/textures second
+        SetupImage();
     }
 
     public void SetupImage()
     {
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,0); //spritesheet);
         uvs = new float[]{0.5f, 0.5f, 0.5f, 1.5f, 1.5f, 1.5f, 1.5f, 0.5f,};
 
         ByteBuffer bb = ByteBuffer.allocateDirect(uvs.length * 4);
         bb.order(ByteOrder.nativeOrder());
-        vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(uvs);
-        vertexBuffer.position(0);
+        uvBuffer = bb.asFloatBuffer();
+        uvBuffer.put(uvs);
+        uvBuffer.position(0);
 
         //Textures, load one in
         int[] texturenames = new int[1];
@@ -178,76 +180,18 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
 
-        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, GfxResourceHandler.getInstance().getRsx("spider"), 0);
-    }
-
-    void RenderSprite()
-    //int spritesheet, int spritex, int spritey, int texturew, int textureh, int x, int y, int w, int h )
-    {
-        // Will eventually wrap setupimage and call renderquads directly as needed
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,0); //spritesheet);
-        // Texturing, select texels from atlas
-        uvs = new float[8];
-        uvs[0] = 0;
-        uvs[1] = 0;
-        uvs[2] = 0;
-        uvs[3] = 1;
-        uvs[4] = 1;
-        uvs[5] = 1;
-        uvs[6] = 1;
-        uvs[7] = 0;
-
-        // Texture Buffer
-        /* 4 bytes per float? Always true on android? */
-        ByteBuffer bb = ByteBuffer.allocateDirect(uvs.length * 4);
-        bb.order(ByteOrder.nativeOrder());
-        uvBuffer = bb.asFloatBuffer();
-        uvBuffer.put(uvs);
-        uvBuffer.position(0);
-
-        // Texture gen
-        int[] texturenames = new int[1];
-        GLES20.glGenTextures(1, texturenames, 0);
-
-        // Retrieve image from rsx, probably need to modify this to get lowerleft + h/w
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texturenames[0]);
-
-        // Set Filter
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S,GLES20.GL_CLAMP_TO_EDGE);
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T,GLES20.GL_CLAMP_TO_EDGE);
-
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, GfxResourceHandler.getInstance().getRsx("sheep"), 0);
-
-        /*
-        glColor4ub(255, 255, 255, 255);
-        glBindTexture(GL_TEXTURE_2D, spritesheet);
-        glBegin(GL_QUADS);
-        glTexCoord2d(spritex / (double) texturew, spritey / (double) textureh);
-        glVertex2f(x, y);
-        glTexCoord2d((spritex + w) / (double) texturew, spritey / (double) textureh);
-        glVertex2f(x + w, y);
-        glTexCoord2d((spritex + w) / (double) texturew, (spritey + h) / (double) textureh);
-        glVertex2f(x + w, y + h);
-        glTexCoord2d(spritex / (double) texturew, (spritey + h) / (double) textureh);
-        glVertex2f(x, y + h);
-        gl.glEnd();
-        */
     }
-
 
     void RenderQuads()
     {
         Log.d("Render","Quad render entered");
         // 32x32 triangles quad
         vertices = new float[]
-                {       10.0f,   40f, 0.0f,
+                {       10.0f,   400f, 0.0f,
                         10.0f, 10.0f, 0.0f,
-                        40f,   10.0f, 0.0f,
-                        40f,     40f, 0.0f,
+                        400f,   10.0f, 0.0f,
+                        400f,     400f, 0.0f,
                 };
 
         indices = new short[] {0,1,2,0,2,3};
