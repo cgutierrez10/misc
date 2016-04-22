@@ -78,6 +78,7 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
         GLES20.glEnableVertexAttribArray(mPositionHandle);
 
+        // Get texture pointer
         int mTexCoordLoc = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "a_texCoord");
         GLES20.glVertexAttribPointer(mTexCoordLoc, 2, GLES20.GL_FLOAT, false, 0, uvBuffer);
         GLES20.glEnableVertexAttribArray(mTexCoordLoc);
@@ -85,26 +86,15 @@ public class mglRender implements GLSurfaceView.Renderer {
         // Get handle to shape's transformation matrix
         int mtrxhandle = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "uMVPMatrix");
         GLES20.glUniformMatrix4fv(mtrxhandle, 1, false, m, 0);
+
         int mSamplerLoc = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "s_texture" );
 
         GLES20.glUniform1i(mSamplerLoc, 0);
-
-        if (indices == null)
-        {
-            Log.d("Render","Indices is null");
-        }
-        if (drawListBuffer == null)
-        {
-            Log.d("Render","drawListBuffer is null");
-        }
 
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
 
         GLES20.glDisableVertexAttribArray(mPositionHandle);
         GLES20.glDisableVertexAttribArray(mTexCoordLoc);
-
-        Log.d("Render", "OnDrawFrame completed");
-
     }
 
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -112,7 +102,7 @@ public class mglRender implements GLSurfaceView.Renderer {
         mScreenHeight = height;
 
         // Redo the Viewport, making it fullscreen.
-        GLES20.glViewport(0, 0, (int)mScreenWidth, (int)mScreenHeight);
+        GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
 
         // Clear our matrices
         for(int i=0;i<16;i++)
@@ -159,9 +149,13 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     public void SetupImage()
     {
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,0); //spritesheet);
-        uvs = new float[]{0.5f, 0.5f, 0.5f, 1.5f, 1.5f, 1.5f, 1.5f, 0.5f,};
+        //GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,0); //spritesheet);
+        uvs = new float[]{0.0f, 0.0f,
+                          0.0f, 1.0f,
+                          1.0f, 1.0f,
+                          1.0f, 0.0f,};
 
+        // Texture buffer
         ByteBuffer bb = ByteBuffer.allocateDirect(uvs.length * 4);
         bb.order(ByteOrder.nativeOrder());
         uvBuffer = bb.asFloatBuffer();
@@ -180,6 +174,10 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
 
+        if (GfxResourceHandler.getInstance().getRsx("sheep") == null)
+        {
+            Log.d("Render","Sheep texture failed to load");
+        }
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, GfxResourceHandler.getInstance().getRsx("sheep"), 0);
     }
 
