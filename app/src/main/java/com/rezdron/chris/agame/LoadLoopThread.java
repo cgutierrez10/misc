@@ -38,7 +38,6 @@ public class LoadLoopThread extends Thread {
             ContentGen.getInstance().tick(tick);
             tick++;
             TokenHandler.getInstance().tick();
-            Log.d("mThread", "Inside run loop");
             // Throwing out canvas code trying again from opengl
             /*
             Canvas c = null;
@@ -57,7 +56,7 @@ public class LoadLoopThread extends Thread {
                 if (34 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
                     Thread.sleep(34 - (SystemClock.currentThreadTimeMillis() - last));
                 } else {
-                    Log.d("PerfCrit", "Tick took too long! Falling behind.");
+                    Log.d("PerfCrit", "Loadloop tick took too long! Falling behind.");
                 }
             } catch (InterruptedException e) {
             }
