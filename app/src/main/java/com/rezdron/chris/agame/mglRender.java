@@ -27,41 +27,34 @@ import javax.microedition.khronos.opengles.GL10;
  * Building whole shader pipeline?
  */
 public class mglRender implements GLSurfaceView.Renderer {
-    private final int intsize = (Integer.SIZE/Byte.SIZE);
-    private final int shortsize = (Short.SIZE/Byte.SIZE);
-    private final int floatsize = (Float.SIZE/Byte.SIZE);
     private final float[] mtrxProjection = new float[16];
     private final float[] mtrxView = new float[16];
     private final float[] mtrxProjectionAndView = new float[16];
 
+    private static float[] shadowvertices;
+    private static short[] shadowindices;
+    private static float[] shadowuvs;
     public static float vertices[];
     public static short indices[];
     public static float uvs[];
-    public FloatBuffer vertexBuffer;
-    public ShortBuffer drawListBuffer;
-    public FloatBuffer uvBuffer;
-    public int indexcount;
-    public int renders = 0;
+    public static FloatBuffer vertexBuffer;
+    public static ShortBuffer drawListBuffer;
+    public static FloatBuffer uvBuffer;
+    public static int indexcount;
 
-    private float[] shadowvertices;
-    private short[] shadowindices;
-    private float[] shadowuvs;
-    private boolean flip;
-    private short lastidx;
-    private short arrayslen;
+    private static boolean flip;
+    private static short lastidx;
+    private static short arrayslen;
 
     float mScreenWidth = 1280;
     float mScreenHeight = 768;
 
-    Context mContext;
+    private static mglRender instance = new mglRender();
 
-    long mLastTime;
-    int mProgram;
+    public static mglRender getInstance() { return instance; }
 
-    public mglRender(Context c)
+    public mglRender()
     {
-        mContext = c;
-        mLastTime = System.currentTimeMillis() + 100;
     }
 
     public void onPause()
@@ -74,107 +67,67 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 unused) {
-        long now = System.currentTimeMillis();
-
-        //if (mLastTime > now) return;
-
-        long elapsed = now - mLastTime;
-
         Render(mtrxProjectionAndView);
-        mLastTime = now;
     }
 
     public void Render(float[] m) {
         long last = SystemClock.currentThreadTimeMillis();
-        // Try this just once
-        if (renders == 0) {
-            spriteBlit(300, 300, 128, 128, 0);
-            spriteBlit(600, 300, 128, 128, 0);
-            spriteBlit(300, 600, 128, 128, 0);
-            spriteBlit(100, 100, 128, 128, 0);
-            setFlip();
-            renders++;
-        }
-
         // Flip buffers if needed
         if (flip) {
-            // vertex buffer = vertexshadowbuffer
-            // texture buffer = textureshadowbuffer
-            // Discard both old buffers if needed
-            // allocate out both new buffers
-            // Vertex data
-            vertices = shadowvertices;
-            indices = shadowindices;
-            uvs = shadowuvs;
-
-            ByteBuffer bb = ByteBuffer.allocateDirect(shadowvertices.length * 4);
+            ByteBuffer bb = ByteBuffer.allocateDirect((vertices.length * 4)+16);
             bb.order(ByteOrder.nativeOrder());
             vertexBuffer = bb.asFloatBuffer();
-            vertexBuffer.put(shadowvertices);
+            vertexBuffer.put(vertices);
             vertexBuffer.position(0);
 
             // Vertex draw ordering data (all assumed as triangles, triangle fan may be better?)
-            ByteBuffer dlb = ByteBuffer.allocateDirect(shadowindices.length * 2);
+            ByteBuffer dlb = ByteBuffer.allocateDirect((indices.length * 2)+8);
             dlb.order(ByteOrder.nativeOrder());
             drawListBuffer = dlb.asShortBuffer();
-            drawListBuffer.put(shadowindices);
+            drawListBuffer.put(indices);
             drawListBuffer.position(0);
 
             // Texture coordinate data
-            ByteBuffer uvsb = ByteBuffer.allocateDirect(shadowuvs.length * 4);
+            ByteBuffer uvsb = ByteBuffer.allocateDirect((uvs.length * 4)+16);
             uvsb.order(ByteOrder.nativeOrder());
             uvBuffer = uvsb.asFloatBuffer();
-            uvBuffer.put(shadowuvs);
+            uvBuffer.put(uvs);
             uvBuffer.position(0);
 
-            indexcount = lastidx;
-            lastidx = 0;
-            arrayslen = 0;
             flip = false;
-            // Blank out original vertex lists
-            // This set breaks the render, seems the bytebuffers above are using these memory locations?
         }
-
 
         // Screen clear
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        if (vertexBuffer != null) {
+            // Get vertex shader pointer
+            int mPositionHandle = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "vPosition");
+            GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+            GLES20.glEnableVertexAttribArray(mPositionHandle);
 
-        // Get vertex shader pointer
-        int mPositionHandle = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "vPosition");
-        GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
+            // Get texture pointer
+            int mTexCoordLoc = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "a_texCoord");
+            GLES20.glVertexAttribPointer(mTexCoordLoc, 2, GLES20.GL_FLOAT, false, 0, uvBuffer);
+            GLES20.glEnableVertexAttribArray(mTexCoordLoc);
 
-        // Get texture pointer
-        int mTexCoordLoc = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "a_texCoord");
-        GLES20.glVertexAttribPointer(mTexCoordLoc, 2, GLES20.GL_FLOAT, false, 0, uvBuffer);
-        GLES20.glEnableVertexAttribArray(mTexCoordLoc);
+            // Get handle to shape's transformation matrix
+            int mtrxhandle = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "uMVPMatrix");
+            GLES20.glUniformMatrix4fv(mtrxhandle, 1, false, m, 0);
 
-        // Get handle to shape's transformation matrix
-        int mtrxhandle = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "uMVPMatrix");
-        GLES20.glUniformMatrix4fv(mtrxhandle, 1, false, m, 0);
+            int mSamplerLoc = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "s_texture");
 
-        int mSamplerLoc = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "s_texture");
+            GLES20.glUniform1i(mSamplerLoc, 0);
+            //GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
+            if (indexcount != 0) {
+                //Log.d("Render","Geometry draw called: " + String.valueOf(indexcount) );
+                GLES20.glDrawElements(GLES20.GL_TRIANGLES, indexcount * 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
+            }
 
-        GLES20.glUniform1i(mSamplerLoc, 0);
-        //GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
-        if (indexcount != 0) {
-            Log.d("Render","Geometry draw called: " + String.valueOf(indexcount) );
-            GLES20.glDrawElements(GLES20.GL_TRIANGLES, indexcount * 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
-        }
-        try {
             // If no geometry then just allow the screen to be clear
             GLES20.glDisableVertexAttribArray(mPositionHandle);
             GLES20.glDisableVertexAttribArray(mTexCoordLoc);
         }
-        catch (Exception e)
-        {
-            Log.d("Render", "empty uvs list: " + String.valueOf(uvBuffer.position()));
-            Log.d("Render", "empty vertex list: " + String.valueOf(vertexBuffer.position()));
-            Log.d("Render", "indexcount: " + String.valueOf(indexcount));
-        }
-
-
         try {
             if (34 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
                 Thread.sleep(34 - (SystemClock.currentThreadTimeMillis() - last));
@@ -204,7 +157,7 @@ public class mglRender implements GLSurfaceView.Renderer {
         Matrix.orthoM(mtrxProjection, 0, 0f, mScreenWidth, 0.0f, mScreenHeight, 0, 50);
 
         // Set the camera position (View matrix)
-            Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
@@ -212,14 +165,8 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            int shader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
-        if (shader == 0) {
-            Log.d("Render", "155 Shader handle assign failed, onsurfacechanged");
-        } else {
-            Log.d("Render", "155 Shader handle assign success");
-        }
+        int shader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
         // These lines need to specify SpriteShader.vs_Sprite and fs_Sprite
-
         int vertexShader = SpriteShader.loadShader(GLES20.GL_VERTEX_SHADER, SpriteShader.vs_Sprite);
         int fragmentShader = SpriteShader.loadShader(GLES20.GL_FRAGMENT_SHADER, SpriteShader.fs_Sprite);
 
@@ -230,28 +177,17 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         GLES20.glUseProgram(SpriteShader.sp_Sprite);
         // Shapes first
-        RenderQuads();
         // Image/textures second
         SetupImage();
+        arrayslen = 10;
+        lastidx = 0;
+        shadowvertices = new float[120];
+        shadowindices = new short[60];
+        shadowuvs = new float[80];
     }
 
     public void SetupImage()
     {
-
-        Log.d("Render","Setupimage entered");
-
-        uvs = new float[]{0.0f, 0.0f,
-                          0.0f, 1.0f,
-                          1.0f, 1.0f,
-                          1.0f, 0.0f,};
-
-        // Texture buffer
-        ByteBuffer bb = ByteBuffer.allocateDirect(uvs.length * 4);
-        bb.order(ByteOrder.nativeOrder());
-        uvBuffer = bb.asFloatBuffer();
-        uvBuffer.put(uvs);
-        uvBuffer.position(0);
-
         //Textures, load one in
         int[] texturenames = new int[1];
         GLES20.glGenTextures(1, texturenames, 0);
@@ -273,43 +209,19 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, GfxResourceHandler.getInstance().getRsx("sheep"), 0);
     }
 
-    void RenderQuads()
-    {
-        Log.d("Render","Quad render entered");
-        // 32x32 triangles quad
-        vertices = new float[]
-                {       10.0f,   400f, 0.0f,
-                        10.0f, 10.0f, 0.0f,
-                        400f,   10.0f, 0.0f,
-                        400f,     400f, 0.0f,
-                };
-
-        indices = new short[] {0,1,2,0,2,3};
-
-        // vertices is triangle pair forming quad
-        // Vertex buffer
-        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * floatsize);
-        bb.order(ByteOrder.nativeOrder());
-        bb.order(ByteOrder.nativeOrder());
-        vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(vertices);
-        vertexBuffer.position(0);
-
-        // Init byte buffer draw list
-        ByteBuffer dlb = ByteBuffer.allocateDirect(indices.length * 2);
-        dlb.order(ByteOrder.nativeOrder());
-        drawListBuffer = dlb.asShortBuffer();
-        drawListBuffer.put(indices);
-        drawListBuffer.position(0);
-    }
-
-    public void setFlip() {
+    public static void setFlip() {
         // If lastidx = 0 then no spriteblits were called since last flip
         // Ideally this would do a blank spriteblit then allow screen clears
-        if (lastidx != 0) {
-
+            vertices = shadowvertices;
+            indices = shadowindices;
+            uvs = shadowuvs;
             flip = true;
-        }
+            indexcount = lastidx;
+            lastidx = 0;
+            arrayslen = 10;
+            shadowvertices = new float[120];
+            shadowindices = new short[60];
+            shadowuvs = new float[80];
     }
 
     public void spriteBlit(int x, int y, int width, int height, int gfx)
@@ -317,16 +229,21 @@ public class mglRender implements GLSurfaceView.Renderer {
         // Each shadow buffer is expected to be allocated in render (when flip = yes)
         // And reallocated in render
         // Add pair of triangles to vertexbuffer
-        if (arrayslen == lastidx) {
-            float[] shadvert = new float[arrayslen + 120];
-            short[] shadindices = new short[arrayslen + 60];
-            float[] shaduvs = new float[arrayslen + 80];
+        if (shadowvertices == null) {
+            lastidx = 0;
+            arrayslen = 10;
+            shadowvertices = new float[120];
+            shadowindices = new short[60];
+            shadowuvs = new float[80];
+        }
+        if (arrayslen == lastidx+2) {
+            float[] shadvert = new float[arrayslen*12 + 120];
+            short[] shadindices = new short[arrayslen*6 + 60];
+            float[] shaduvs = new float[arrayslen*8 + 80];
             // Expand the arrays if this happened, arrayslen should be 1 set of values per each sprite
-            if (shadowvertices != null) {
-                System.arraycopy(shadowvertices, 0, shadvert, 0, arrayslen);
-                System.arraycopy(shadowindices, 0, shadindices, 0, arrayslen);
-                System.arraycopy(shadowuvs, 0, shaduvs, 0, arrayslen);
-            }
+            System.arraycopy(shadowvertices, 0, shadvert, 0, arrayslen * 12);
+            System.arraycopy(shadowindices, 0, shadindices, 0, arrayslen * 6);
+            System.arraycopy(shadowuvs, 0, shaduvs, 0, arrayslen * 8);
             shadowvertices = shadvert;
             shadowindices = shadindices;
             shadowuvs = shaduvs;
@@ -350,12 +267,12 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         // This isn't even needed
         // Indexes Ranges 0-5
-        shadowindices[0+(lastidx*6)] = (short)(0+(lastidx*6));
-        shadowindices[1+(lastidx*6)] = (short)(1+(lastidx*6));
-        shadowindices[2+(lastidx*6)] = (short)(2+(lastidx*6));
-        shadowindices[3+(lastidx*6)] = (short)(0+(lastidx*6));
-        shadowindices[4+(lastidx*6)] = (short)(2+(lastidx*6));
-        shadowindices[5+(lastidx*6)] = (short)(3+(lastidx*6));
+        shadowindices[0+(lastidx*6)] = (short)(0+(lastidx*4));
+        shadowindices[1+(lastidx*6)] = (short)(1+(lastidx*4));
+        shadowindices[2+(lastidx*6)] = (short)(2+(lastidx*4));
+        shadowindices[3+(lastidx*6)] = (short)(0+(lastidx*4));
+        shadowindices[4+(lastidx*6)] = (short)(2+(lastidx*4));
+        shadowindices[5+(lastidx*6)] = (short)(3+(lastidx*4));
 
         // UVS Ranges 0-7
         // May also not actually be needed?

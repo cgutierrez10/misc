@@ -35,23 +35,10 @@ public class LoadLoopThread extends Thread {
         float interval = 0;
         while (running) {
             last = SystemClock.currentThreadTimeMillis();
-            ContentGen.getInstance().tick(tick);
             tick++;
+            ContentGen.getInstance().tick(tick);
             TokenHandler.getInstance().tick();
-            // Throwing out canvas code trying again from opengl
-            /*
-            Canvas c = null;
-            try {
-                c = view.getHolder().lockCanvas();
-                synchronized (view.getHolder()) {
-                    view.draw(c);
-                }
-            } finally {
-                if (c != null) {
-                    view.getHolder().unlockCanvasAndPost(c);
-                }
-            }*/
-
+            TokenHandler.getInstance().draw();
             try {
                 if (34 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
                     Thread.sleep(34 - (SystemClock.currentThreadTimeMillis() - last));
