@@ -27,7 +27,6 @@ public class GfxResourceHandler {
     private Context state;
     private static GfxResourceHandler instance = new GfxResourceHandler();
     //private Context appContext;
-    private Canvas rendered;
 
     public static GfxResourceHandler getInstance() { return instance; }
 
@@ -76,26 +75,10 @@ public class GfxResourceHandler {
         }
     }
 
-    public void setCanvas(Canvas layer)
-    {
-        rendered = layer;
-    }
-
     public void blitAt(String request, int x, int y)
     {
         // Implement a draw to the current context canvas of resource at location
         Bitmap blit = getRsx(request);
-        if (blit == null) { return; }
-
-        Rect clipBounds = new Rect();
-
-        clipBounds.set(x, y, x + blit.getHeight(), y + blit.getWidth());
-        //clipBounds.offset(x, y);
-        //Drawable tokenImg = getRsx(request);
-        //tokenImg.setBounds(clipBounds);
-        //tokenImg.draw(rendered);
-
-        //rendered.drawBitmap(blit,x,y,null);
-        rendered.drawBitmap(blit,null,clipBounds,null);
+        mglRender.getInstance().spriteBlit(600+x,600+y,256,256,0);
     }
 }

@@ -18,7 +18,8 @@ public class LoadBusyView
         super(context);
         setEGLContextClientVersion(2);
         Log.d("Render", "About to create renderer");
-        mRenderer = new mglRender(context);
+        //mRenderer = new mglRender(context);
+        mRenderer = new mglRender();
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 

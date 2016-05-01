@@ -105,13 +105,13 @@ public class TokenHandler
         offscreen = range;
     }
 
-    public void draw(Canvas layer) {
+    public void draw() {
         // Definitely being called
-        GfxResourceHandler.getInstance().setCanvas(layer);
         for (Token element:drawable) {
             element.onDraw();
         }
         // Player always draws and always draws on top
-        Player.getInstance().onDraw();
+        //Player.getInstance().onDraw();
+        mglRender.getInstance().setFlip();
     }
 }
