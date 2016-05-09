@@ -23,9 +23,12 @@ import java.util.Map;
  * Like TokenHandler this is also a singleton should not waste effort re-loading graphics ever
  */
 public class GfxResourceHandler {
-    Map<String,Bitmap> gfxResource = new HashMap<>();
+    Map<String, Bitmap> gfxResource = new HashMap<>();
+    Map<String, Float[]> texCoord = new HashMap<>();  // Resource name, resource x coord and resource height per frame
     private Context state;
     private static GfxResourceHandler instance = new GfxResourceHandler();
+    private Integer loadCount = 0;
+    private int loaded_textures = 0;
     //private Context appContext;
 
     public static GfxResourceHandler getInstance() { return instance; }
@@ -42,6 +45,7 @@ public class GfxResourceHandler {
     {
         if (gfxResource.containsKey(request)) {
             return gfxResource.get(request);
+            //return true;
         }
         else {
             // Load the resource on demand
@@ -59,6 +63,7 @@ public class GfxResourceHandler {
                 //0x7f020049 xml
                 //0x7f02004a img
                 if (loadRsx != null) {
+                    //loaded_count++;
                     loadRsx.setDensity(Bitmap.DENSITY_NONE);
                     gfxResource.put(request, loadRsx);
                 } else {
@@ -67,6 +72,7 @@ public class GfxResourceHandler {
 
                 if (gfxResource.get(request) != null) {
                     return gfxResource.get(request);
+                    //return true;
                 } else {
                     Log.d("Bitmap", "Load failed returning null");
                     return null;
@@ -75,10 +81,27 @@ public class GfxResourceHandler {
         }
     }
 
-    public void blitAt(String request, int x, int y)
+    // When bitmaps are all loaded generate texture mark these textures available by adding
+    // them to texcoords
+    public void renderTex()
+    {
+        // For each bitmap in the image add to the large bitmap to render as texture
+        // Add coordinates for texturing
+        // Lastly send texture to renderer to bind
+
+        // Maybe temp maybe permanent hardcoding spritesheet coords
+        loadCount = 3;
+        texCoord.put("sheep",new Float[] {0.0f,0.0f});
+        texCoord.put("spider",new Float[] {1.0f / loadCount,0.0f});
+        texCoord.put("player",new Float[] {2.0f / loadCount,0.0f});
+    }
+
+
+    public void blitAt(String request, int x, int y, int frame)
     {
         // Implement a draw to the current context canvas of resource at location
-        Bitmap blit = getRsx(request);
-        mglRender.getInstance().spriteBlit(600+x,600+y,256,256,0);
+        //Bitmap blit = getRsx(request);
+        Float[] loc = texCoord.get(request);
+        mglRender.getInstance().spriteBlit(600+x,600+y,256,256,loc[0],loc[1],frame,loadCount);
     }
 }

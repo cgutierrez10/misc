@@ -206,6 +206,7 @@ public class mglRender implements GLSurfaceView.Renderer {
         }
         // Need to modify gfxresourcehandler to provide a composite all setting
         // And ability to reference index in array
+        // Images are going to be compiled in gfxrsxhandler and provided via a separate call
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, GfxResourceHandler.getInstance().getRsx("sheep"), 0);
     }
 
@@ -224,7 +225,11 @@ public class mglRender implements GLSurfaceView.Renderer {
             shadowuvs = new float[80];
     }
 
-    public void spriteBlit(int x, int y, int width, int height, int gfx)
+    // x,y are drawat points
+    // width, height are drawsize
+    // gfx_x are texture cooridinates
+    // gfx_frame is a offset for animated frames, multiply by gfx_height to get vertical offset if needed
+    public void spriteBlit(int x, int y, int width, int height, float gfx_x, float gfx_height, int gfx_frame, int gfx_max)
     {
         // Each shadow buffer is expected to be allocated in render (when flip = yes)
         // And reallocated in render
