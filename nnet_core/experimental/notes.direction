@@ -1,0 +1,17 @@
+Create tool to export the results of a 
+  neural net with a given query matrix
+
+Create tool to convert csv to a 
+  query matrix (frames, direction offset etc)
+
+Create tool to load blank or par-trained net 
+  and query matrix and further train
+
+Create tool to set training configuration
+
+Steps to utilize:
+generate query matrix
+generate proper network matrix
+  Could use query matrix as base
+use training tool with both matrices to produce trained output matrix
+query to output spreadsheet

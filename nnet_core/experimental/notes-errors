@@ -1,0 +1,16 @@
+g++  -I./include -Wall export_net.cpp -c -o export_net.o
+export_net.cpp: In function ‘int main(int, char**)’:
+export_net.cpp:134:8: warning: variable ‘j’ set but not used [-Wunused-but-set-variable]
+export_net.cpp:75:6: warning: unused variable ‘direction’ [-Wunused-variable]
+export_net.cpp:76:6: warning: unused variable ‘frames’ [-Wunused-variable]
+export_net.cpp:83:15: warning: unused variable ‘LoadNet’ [-Wunused-variable]
+export_net.cpp:96:16: warning: unused variable ‘Net’ [-Wunused-variable]
+export_net.cpp:112:7: warning: unused variable ‘Recurrent’ [-Wunused-variable]
+export_net.cpp:120:7: warning: unused variable ‘next’ [-Wunused-variable]
+export_net.cpp:121:7: warning: unused variable ‘k’ [-Wunused-variable]
+export_net.cpp:122:7: warning: unused variable ‘j’ [-Wunused-variable]
+g++  -I./include -Wall test.cpp -c -o test.o
+test.cpp: In function ‘int main()’:
+test.cpp:17:3: error: ‘FeedForwardSaveToken’ was not declared in this scope
+test.cpp:17:25: error: ‘tokenA’ was not declared in this scope
+make: *** [test.o] Error 1

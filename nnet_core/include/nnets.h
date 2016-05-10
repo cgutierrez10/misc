@@ -1,0 +1,7 @@
+#include "HyperTangent.h"
+#include "Sigmoid.h"
+#include "Threshold.h"
+#include "FeedForward.h"
+#include "Hopfield.h"
+#include "RMSError.h"
+#include "Hebbs.h"
