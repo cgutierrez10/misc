@@ -43,7 +43,7 @@ public class Player extends Token {
     public int getWidth() { return 0;}
 
     public void onDraw() {
-        GfxResourceHandler.getInstance().blitAt(this.gfx_type,phys.getX(),phys.getY());
+        GfxResourceHandler.getInstance().blitAt(this.gfx_type,phys.getX(),phys.getY(),0);
     }
 
 }

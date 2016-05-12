@@ -281,13 +281,17 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         // UVS Ranges 0-7
         // May also not actually be needed?
-        shadowuvs[0+(lastidx*8)] = 0.0f;
+        /* 0,0 */
+        shadowuvs[0+(lastidx*8)] = gfx_x;
         shadowuvs[1+(lastidx*8)] = 0.0f;
-        shadowuvs[2+(lastidx*8)] = 0.0f;
+        /* 0,1 */
+        shadowuvs[2+(lastidx*8)] = gfx_x;
         shadowuvs[3+(lastidx*8)] = 1.0f;
-        shadowuvs[4+(lastidx*8)] = 1.0f;
+        /* 1,1 */
+        shadowuvs[4+(lastidx*8)] = gfx_x + 1.0f/3;
         shadowuvs[5+(lastidx*8)] = 1.0f;
-        shadowuvs[6+(lastidx*8)] = 1.0f;
+        /* 1,0 */
+        shadowuvs[6+(lastidx*8)] = gfx_x + 1.0f/3;
         shadowuvs[7+(lastidx*8)] = 0.0f;
         lastidx++;
     }

@@ -41,7 +41,50 @@ public class GfxResourceHandler {
     /* Debug function */
     public Context getState() { return state; }
 
-    public Bitmap getRsx(String request)
+    public Bitmap getRsx(String rq)
+    {
+        String request = "atlas";
+        if (loadCount == 0)
+        {
+            renderTex();
+        }
+        if (gfxResource.containsKey(request)) {
+            return gfxResource.get(request);
+            //return true;
+        }
+        else {
+            // Load the resource on demand
+            // If things get choppy or need to be pre cached this function
+            // Could be called in the load area to load the necessary graphics ahead of time
+            try {
+                Resources rsx = state.getResources();
+
+                Log.d("Bitmap", String.valueOf(rsx.getIdentifier(request, "drawable", state.getPackageName())));
+                Bitmap loadRsx = BitmapFactory.decodeResource(rsx, rsx.getIdentifier(request, "drawable", state.getPackageName()));
+
+                // Manual entry of resource id works, above state.getPackageName is the failpoint
+                //0x7f020049 xml
+                //0x7f02004a img
+                if (loadRsx != null) {
+                    //loaded_count++;
+                    loadRsx.setDensity(Bitmap.DENSITY_NONE);
+                    gfxResource.put(request, loadRsx);
+                } else {
+                    Log.d("Bitmap", "Load failed");
+                }
+
+                if (gfxResource.get(request) != null) {
+                    return gfxResource.get(request);
+                    //return true;
+                } else {
+                    Log.d("Bitmap", "Load failed returning null");
+                    return null;
+                }
+            } catch(Exception e) { return null; }
+        }
+    }
+
+    /*public Bitmap getRsx(String request)
     {
         if (gfxResource.containsKey(request)) {
             return gfxResource.get(request);
@@ -79,7 +122,7 @@ public class GfxResourceHandler {
                 }
             } catch(Exception e) { return null; }
         }
-    }
+    }*/
 
     // When bitmaps are all loaded generate texture mark these textures available by adding
     // them to texcoords
@@ -99,9 +142,13 @@ public class GfxResourceHandler {
 
     public void blitAt(String request, int x, int y, int frame)
     {
+        if (loadCount == 0)
+        {
+            getRsx("atlas");
+        }
         // Implement a draw to the current context canvas of resource at location
         //Bitmap blit = getRsx(request);
         Float[] loc = texCoord.get(request);
-        mglRender.getInstance().spriteBlit(600+x,600+y,256,256,loc[0],loc[1],frame,loadCount);
+        mglRender.getInstance().spriteBlit(600 + x, 600 + y, 256, 256, loc[0], 0, frame, loadCount);
     }
 }
