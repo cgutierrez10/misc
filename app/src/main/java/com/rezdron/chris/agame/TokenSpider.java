@@ -40,7 +40,7 @@ public class TokenSpider extends Token {
     @Override
     public void onDraw()
     {
-        GfxResourceHandler.getInstance().blitAt(this.gfx_type,phys.getX(),phys.getY());
+        GfxResourceHandler.getInstance().blitAt(this.gfx_type,phys.getX(),phys.getY(),0);
         // Possibly want to do gfxresource handler blit @string at <x,y>
     }
 }
