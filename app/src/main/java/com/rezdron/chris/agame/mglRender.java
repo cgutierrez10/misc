@@ -161,6 +161,7 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
+        Log.d("Render","Screen dims: " + String.valueOf(mScreenWidth) + " " + String.valueOf(mScreenHeight));
     }
 
     @Override
@@ -256,18 +257,20 @@ public class mglRender implements GLSurfaceView.Renderer {
         }
 
         // Vertices Ranges 0-11
-        shadowvertices[0+(lastidx*12)] = (float) x;
-        shadowvertices[1+(lastidx*12)] = (float) y+height;
+        shadowvertices[0+(lastidx*12)] = (mScreenWidth - (x+width));
+        shadowvertices[1+(lastidx*12)] = (mScreenHeight - y);
         shadowvertices[2+(lastidx*12)] = 0.0f;
-        shadowvertices[3+(lastidx*12)] = (float) x;
-        shadowvertices[4+(lastidx*12)] = (float) y;
+        shadowvertices[3+(lastidx*12)] = (mScreenWidth - (x+width));
+        shadowvertices[4+(lastidx*12)] = (mScreenHeight - (y+height));
         shadowvertices[5+(lastidx*12)] = 0.0f;
-        shadowvertices[6+(lastidx*12)] = (float) x+width;
-        shadowvertices[7+(lastidx*12)] = (float) y;
+
+        shadowvertices[6+(lastidx*12)] = (mScreenWidth - x);
+        shadowvertices[7+(lastidx*12)] = (mScreenHeight - (y+height));
         shadowvertices[8+(lastidx*12)] = 0.0f;
-        shadowvertices[9+(lastidx*12)] = (float) x+width;
-        shadowvertices[10+(lastidx*12)] = (float) y+height;
+        shadowvertices[9+(lastidx*12)] = (mScreenWidth - x);
+        shadowvertices[10+(lastidx*12)] = (mScreenHeight - y);
         shadowvertices[11+(lastidx*12)] = 0.0f;
+
         // Get atlas coords from gfxresourcehandler
 
         // This isn't even needed

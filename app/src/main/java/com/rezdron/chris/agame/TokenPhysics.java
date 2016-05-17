@@ -23,7 +23,7 @@ public abstract class TokenPhysics {
         dvy = input_dvy;
     }
 
-    public void shift(int offset) { this.x = this.x - offset; }
+    public void shift(int offset) { this.x = this.x + offset; }
 
     public Integer getX() {
         return x;

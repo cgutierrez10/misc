@@ -111,7 +111,7 @@ public class TokenHandler
             element.onDraw();
         }
         // Player always draws and always draws on top
-        //Player.getInstance().onDraw();
-        mglRender.getInstance().setFlip();
+        Player.getInstance().onDraw();
+        mglRender.setFlip();
     }
 }
