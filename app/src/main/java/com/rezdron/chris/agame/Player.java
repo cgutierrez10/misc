@@ -19,7 +19,7 @@ public class Player extends Token {
     static Player instance = new Player();
     Player()
     {
-        super(0, new PlayerPhys(16,120,(float)0.0,(float)-15.0));
+        super(0, new PlayerPhys(500,50,(float)0.0,(float)-15.0));
         this.gfx_type = "player";
     }
 
@@ -43,7 +43,7 @@ public class Player extends Token {
     public int getWidth() { return 0;}
 
     public void onDraw() {
-        GfxResourceHandler.getInstance().blitAt(this.gfx_type,phys.getX(),phys.getY(),0);
+        //Log.d("player","Player drawn at" + String.valueOf(phys.getX()) + "," + String.valueOf(phys.getY()));
+        GfxResourceHandler.getInstance().blitAt(this.gfx_type, phys.getX(), phys.getY(), 0);
     }
-
 }

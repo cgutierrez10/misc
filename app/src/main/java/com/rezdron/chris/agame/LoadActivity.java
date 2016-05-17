@@ -33,7 +33,7 @@ public class LoadActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //setContentView(R.layout.activity_load);
         // Ensure player is created
-        //Player.getInstance();
+        Player.getInstance();
 
         glSurfaceView = new LoadBusyView(this);
         setContentView(glSurfaceView);
@@ -93,9 +93,12 @@ public class LoadActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.activity_load,
+            //View rootView = inflater.inflate(R.layout.activity_load,
+            //        container, false);
+            return inflater.inflate(R.layout.activity_load,
                     container, false);
-            return rootView;
+
+            //return rootView;
         }
     }
 }

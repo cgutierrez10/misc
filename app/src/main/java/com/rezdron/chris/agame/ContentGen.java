@@ -42,11 +42,11 @@ public class ContentGen {
         Token addtoken;
         if (type == 0) {
             // Sheep!
-            addtoken = new TokenSheep(10,x,0);
+            addtoken = new TokenSheep(10,0,0);
             // What physics?
         } else {
             // Spider!
-            addtoken = new TokenSpider(10,x,0);
+            addtoken = new TokenSpider(10,0,0);
         }
         nextadd = 50;
         TokenHandler.getInstance().addToken(addtoken);
