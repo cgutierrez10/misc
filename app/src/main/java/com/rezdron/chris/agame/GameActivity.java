@@ -1,24 +1,66 @@
 package com.rezdron.chris.agame;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 /**
  * Created by Chris on 1/20/2016.
  * Activity for the activity_load screen
  */
 public class GameActivity extends AppCompatActivity {
+    private GLSurfaceView glSurfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setContentView(R.layout.activity_game);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Player.getInstance();
+
+        glSurfaceView = new LoadBusyView(this);
+        setContentView(glSurfaceView);
+
+        //May need to replace, and reactivate the player token on game start/ends
+        //Player.revive(); // Set player active to true
+        //Player.place();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        glSurfaceView.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        glSurfaceView.onResume();
+    }
+
+    public void transition(String mode) {
+        if ((mode == "pause") && (GameMode.getInstance().changeMode(GameMode.MODE.PAUSE))) {
+            // Will need this to call to the view to suspend
+            //glSurfaceView.onPause();
+            startActivity(new Intent(this, PauseActivity.class));
+        }
+        else if ((mode == "gameover") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
+            // No gameover activity yet
+            //startActivity(new Intent(this, PauseActivity.class));
+        }
+        // No transition to title, loading, gameplay or exit, only to pause and gameover
+        // Does not directly transition to exiting must go through pause -> exit
     }
 
     @Override

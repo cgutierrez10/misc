@@ -11,7 +11,7 @@ import android.view.SurfaceHolder;
  */
 public class LoadLoopThread extends Thread {
     //private SurfaceHolder surfaceHolder;
-    private LoadBusyView view;
+    //private LoadBusyView view;
     private boolean running = false;
     int tick = 1;
     long last = -1;
@@ -21,9 +21,9 @@ public class LoadLoopThread extends Thread {
     //    surfaceHolder = holder;
     //}
 
-    public LoadLoopThread(LoadBusyView view) {
-        this.view = view;
-    }
+    //public LoadLoopThread(LoadBusyView view) {
+    //    this.view = view;
+    //}
 
     public void setRunning(boolean run) {
         Log.d("mThread", "LoadLoop set " + String.valueOf(run));
