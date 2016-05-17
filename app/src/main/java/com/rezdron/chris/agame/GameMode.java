@@ -8,7 +8,9 @@ import java.util.Vector;
  */
 
 public class GameMode {
-   public enum MODE {
+    private static GameMode instance = new GameMode();
+    public static GameMode getInstance() { return instance; }
+    public enum MODE {
         TITLE,
         LOADING,
         GAMEPLAY,

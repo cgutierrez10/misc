@@ -1,13 +1,9 @@
 package com.rezdron.chris.agame;
 
-import android.app.ActivityManager;
 import android.app.Fragment;
-import android.content.Context;
-import android.content.pm.ConfigurationInfo;
-import android.graphics.Canvas;
+import android.content.Intent;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,7 +19,8 @@ import android.view.WindowManager;
  * Activity for the activity_load screen
  */
 public class LoadActivity extends AppCompatActivity {
-    private GLSurfaceView glSurfaceView;
+    //private GLSurfaceView glSurfaceView;
+    private LoadBusyView glSurfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +54,13 @@ public class LoadActivity extends AppCompatActivity {
     }
     */
 
+    public void loadComplete() {
+        // Load only proceeds forward -> gameplay
+        if (GameMode.getInstance().changeMode(GameMode.MODE.GAMEPLAY)) {
+            glSurfaceView.loadComplete();
+            startActivity(new Intent(this, GameActivity.class));
+        }
+    }
 
     @Override
     protected void onPause() {

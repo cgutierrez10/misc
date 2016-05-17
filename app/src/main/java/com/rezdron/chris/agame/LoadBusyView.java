@@ -24,10 +24,17 @@ public class LoadBusyView
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
 
-        mThread = new LoadLoopThread(this);
+        mThread = new LoadLoopThread();
         mThread.setRunning(true);
         mThread.start();
         //init(context);
+    }
+
+    public void loadComplete() {
+        if (GameMode.getInstance().getMode() != GameMode.MODE.LOADING) {
+            mThread.setRunning(false);
+            mThread = null;
+        }
     }
 
     /*
