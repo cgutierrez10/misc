@@ -22,7 +22,7 @@
             android:src="@drawable/pause"
             android:visibility="invisible" />
 
-        <com.rezdron.chris.agame.LoadBusyView
+        <com.rezdron.chris.agame.GameView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/LoadSpinnerView"

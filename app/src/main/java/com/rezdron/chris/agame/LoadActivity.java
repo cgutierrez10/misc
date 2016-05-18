@@ -2,11 +2,8 @@ package com.rezdron.chris.agame;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +17,7 @@ import android.view.WindowManager;
  */
 public class LoadActivity extends AppCompatActivity {
     //private GLSurfaceView glSurfaceView;
-    private LoadBusyView glSurfaceView;
+    private GameView glSurfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +29,7 @@ public class LoadActivity extends AppCompatActivity {
         // Ensure player is created
         Player.getInstance();
 
-        glSurfaceView = new LoadBusyView(this);
+        glSurfaceView = new GameView(this);
         setContentView(glSurfaceView);
 
         //May need to replace, and reactivate the player token on game start/ends

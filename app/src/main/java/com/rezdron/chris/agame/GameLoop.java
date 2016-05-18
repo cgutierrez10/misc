@@ -1,8 +1,6 @@
 package com.rezdron.chris.agame;
 import android.view.SurfaceHolder;
 
-import com.rezdron.chris.agame.GameMode;
-
 /**
  * Created by Chris on 1/7/2016.
  *
@@ -20,7 +18,7 @@ import com.rezdron.chris.agame.GameMode;
  */
 public class GameLoop extends Thread {
         private SurfaceHolder surfaceHolder;
-        private LoadBusyView view;
+        private GameView view;
         private boolean running = false;
         int tick = 1;
 
