@@ -8,13 +8,13 @@ import android.view.MotionEvent;
 /**
  * Loading animation, not technically a spinner
  */
-public class LoadBusyView
+public class GameView
         extends GLSurfaceView {
     protected mglRender mRenderer;
     private LoadLoopThread mThread;
 
 
-    public LoadBusyView(Context context) {
+    public GameView(Context context) {
         super(context);
         setEGLContextClientVersion(2);
         Log.d("Render", "About to create renderer");
