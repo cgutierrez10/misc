@@ -3,12 +3,16 @@ package com.rezdron.chris.agame;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class PauseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d("ActivityMode", "About to create renderer for PauseActivity");
+
         setContentView(R.layout.activity_pause);
     }
 

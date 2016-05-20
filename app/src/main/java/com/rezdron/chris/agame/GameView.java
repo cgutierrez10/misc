@@ -17,7 +17,7 @@ public class GameView
     public GameView(Context context) {
         super(context);
         setEGLContextClientVersion(2);
-        Log.d("Render", "About to create renderer");
+
         //mRenderer = new mglRender(context);
         mRenderer = new mglRender();
         setRenderer(mRenderer);
@@ -55,8 +55,10 @@ public class GameView
     public void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
-        mThread.setRunning(false);
-        mThread = null;
+        if (mThread != null) {
+            mThread.setRunning(false);
+            mThread = null;
+        }
     }
 
     /*

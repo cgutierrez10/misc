@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,9 @@ public class LoadActivity extends AppCompatActivity {
         /* Some changes for GL support */
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+
+        Log.d("ActivityMode", "About to create renderer for LoadActivity");
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //setContentView(R.layout.activity_load);
         // Ensure player is created
@@ -35,6 +39,9 @@ public class LoadActivity extends AppCompatActivity {
         //May need to replace, and reactivate the player token on game start/ends
         //Player.revive(); // Set player active to true
         //Player.place();
+
+        // Debugging, just move on to next activity immediately
+        loadComplete();
     }
 
     /*
