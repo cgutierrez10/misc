@@ -29,7 +29,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rezdron.chris.agame.MainActivity" />
         </activity>
-        <activity android:name=".GameRun" />
+        <activity android:name=".GameActivity"
+                  android:label="GameActivity"
+                  android:parentActivityName=".MainActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.rezdron.chris.agame.MainActivity" />
+        </activity>
         <activity android:name=".PauseActivity"></activity>
     </application>
 
