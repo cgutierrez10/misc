@@ -3,29 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.rezdron.chris.agame.GameRun">
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    tools:context="com.rezdron.chris.agame.GameRun"
+    android:clickable="false"
+    android:id="@+id/GameRunLayout">
+
+    <com.rezdron.chris.agame.GameView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/GameView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:visibility="visible"
+        android:padding="0dp"
+        android:nestedScrollingEnabled="true"
+        android:layout_margin="0dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pause"
-        android:id="@+id/button6"
-        android:layout_below="@+id/GameView"
+        android:layout_height="104dp"
+        android:text="@string/pause"
+        android:id="@+id/ButtonPause"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:onClick="transition(&quot;pause&quot;)"
-        android:visibility="visible" />
+        android:enabled="true"
+        android:clickable="true"
+        android:onClick="PauseButton" />
 
-    <com.rezdron.chris.agame.GameView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/GameView"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:visibility="visible" />
 </RelativeLayout>

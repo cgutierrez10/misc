@@ -18,7 +18,7 @@ import android.view.WindowManager;
  */
 public class LoadActivity extends AppCompatActivity {
     //private GLSurfaceView glSurfaceView;
-    private GameView glSurfaceView;
+    //private GameView glSurfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +33,15 @@ public class LoadActivity extends AppCompatActivity {
         // Ensure player is created
         Player.getInstance();
 
-        glSurfaceView = new GameView(this);
-        setContentView(glSurfaceView);
+        //glSurfaceView = new GameView(this);
+        setContentView(R.layout.activity_load);
 
         //May need to replace, and reactivate the player token on game start/ends
         //Player.revive(); // Set player active to true
         //Player.place();
 
         // Debugging, just move on to next activity immediately
+
         loadComplete();
     }
 
@@ -61,21 +62,25 @@ public class LoadActivity extends AppCompatActivity {
     public void loadComplete() {
         // Load only proceeds forward -> gameplay
         if (GameMode.getInstance().changeMode(GameMode.MODE.GAMEPLAY)) {
-            glSurfaceView.loadComplete();
+            //((GameView) findViewById(R.id.LoadingView)).loadComplete();
+            //Intent rungame = new Intent(this, GameActivity.class);
+            //rungame.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //startActivity(rungame);
             startActivity(new Intent(this, GameActivity.class));
+
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        glSurfaceView.onPause();
+        //glSurfaceView.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        glSurfaceView.onResume();
+        //glSurfaceView.onResume();
     }
 
 

@@ -2,6 +2,7 @@ package com.rezdron.chris.agame;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -30,6 +31,22 @@ public class GameView
         //init(context);
     }
 
+    public GameView(Context context, AttributeSet attrs) {
+        super(context,attrs);
+        setEGLContextClientVersion(2);
+
+        //mRenderer = new mglRender(context);
+        mRenderer = new mglRender();
+        setRenderer(mRenderer);
+        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+
+
+        mThread = new LoadLoopThread();
+        mThread.setRunning(true);
+        mThread.start();
+        //init(context);
+    }
+
     public void loadComplete() {
         if (GameMode.getInstance().getMode() != GameMode.MODE.LOADING) {
             mThread.setRunning(false);
@@ -37,6 +54,13 @@ public class GameView
         }
     }
 
+    public void Pause() {
+        mThread.setRunning(false);
+    }
+    public void unPause() {
+        mThread.setRunning(true);
+        mThread.start();
+    }
     /*
     @Override
     public void onPause()
