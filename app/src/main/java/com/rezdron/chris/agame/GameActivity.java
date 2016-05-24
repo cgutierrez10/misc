@@ -56,9 +56,15 @@ public class GameActivity extends AppCompatActivity {
         Log.d("transition", "Popup started?");
     }
 
+    public void unpause(View v)
+    {
+        transition("gameplay");
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
+
         //glSurfaceView.onPause();
         //((GameView) findViewById(R.id.GameView)).onPause();
     }
@@ -70,12 +76,17 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void transition(String mode) {
-        if ((mode == "pause") && (GameMode.getInstance().changeMode(GameMode.MODE.PAUSE))) {
+        if ((mode == "gameplay") && (GameMode.getInstance().changeMode(GameMode.MODE.PAUSE))) {
             // Will need this to call to the view to suspend
             //glSurfaceView.onPause();
             startActivity(new Intent(this, PauseActivity.class));
         }
-        else if ((mode == "gameover") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
+        else if ((mode == "pause") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEPLAY))) {
+            // Should always be able to go to gameactivity.onresume ?
+            ((GameView) findViewById(R.id.GameView)).unPause();
+            this.finish();
+        }
+        else if ((mode == "gameplay") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
             // No gameover activity yet
             //startActivity(new Intent(this, PauseActivity.class));
         }
@@ -94,7 +105,10 @@ public class GameActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    @Override
+    public void onBackPressed() {
+        PauseButton(new View(this));
+    }
     /**
      * A placeholder fragment containing a simple view.
      */
