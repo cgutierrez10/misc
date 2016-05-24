@@ -39,6 +39,7 @@ public class PauseActivity extends AppCompatActivity {
     }
 
 
+
     public void transition(String mode) {
         // Pause can go almost anywhere
         if ((mode == "title") && (GameMode.getInstance().changeMode(GameMode.MODE.TITLE))) {
@@ -48,6 +49,8 @@ public class PauseActivity extends AppCompatActivity {
         }
         else if ((mode == "gameplay") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEPLAY))) {
             // Should always be able to go to gameactivity.onresume ?
+            ((GameView) findViewById(R.id.GameView)).unPause();
+            this.finish();
         }
         else if ((mode == "gameover") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
             // No gameover activity yet

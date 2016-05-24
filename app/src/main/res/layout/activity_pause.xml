@@ -15,7 +15,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/button9"
         android:layout_alignLeft="@+id/button9"
-        android:layout_alignStart="@+id/button9" />
+        android:layout_alignStart="@+id/button9"
+        android:enabled="false"
+        android:clickable="false" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -32,10 +34,13 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/unpause"
         android:id="@+id/button9"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:enabled="true"
+        android:onClick="unpause" />
 
 </RelativeLayout>
