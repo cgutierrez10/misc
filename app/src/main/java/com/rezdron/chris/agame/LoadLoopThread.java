@@ -13,6 +13,7 @@ public class LoadLoopThread extends Thread {
     //private SurfaceHolder surfaceHolder;
     //private LoadBusyView view;
     private boolean running = false;
+    private boolean paused = true;
     int tick = 1;
     long last = -1;
 
@@ -25,20 +26,21 @@ public class LoadLoopThread extends Thread {
     //    this.view = view;
     //}
 
-    public void setRunning(boolean run) {
-        Log.d("mThread", "LoadLoop set " + String.valueOf(run));
-        running = run;
-    }
+    public void setRunning(boolean run) { running = run; }
+
+    public void setPause(boolean pause) { paused = pause; }
 
     @Override
     public void run() {
-        float interval = 0;
+        float interval = 0.0f;
         while (running) {
             last = SystemClock.currentThreadTimeMillis();
-            tick++;
-            ContentGen.getInstance().tick(tick);
-            TokenHandler.getInstance().tick();
-            TokenHandler.getInstance().draw();
+            if (!paused) {
+                tick++;
+                ContentGen.getInstance().tick(tick);
+                TokenHandler.getInstance().tick();
+                TokenHandler.getInstance().draw();
+            }
             try {
                 if (34 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
                     Thread.sleep(34 - (SystemClock.currentThreadTimeMillis() - last));
@@ -47,6 +49,7 @@ public class LoadLoopThread extends Thread {
                 }
             } catch (InterruptedException e) {
             }
+
         }
 
         interval = SystemClock.currentThreadTimeMillis() - last;

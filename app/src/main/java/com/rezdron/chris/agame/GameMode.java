@@ -34,6 +34,7 @@ public class GameMode {
         sMap.add(new Pair<>(MODE.GAMEPLAY, MODE.PAUSE));
         sMap.add(new Pair<>(MODE.GAMEPLAY, MODE.EXIT));
         sMap.add(new Pair<>(MODE.GAMEPLAY, MODE.GAMEOVER));
+        sMap.add(new Pair<>(MODE.PAUSE, MODE.GAMEPLAY));
         sMap.add(new Pair<>(MODE.PAUSE, MODE.GAMEOVER));
         sMap.add(new Pair<>(MODE.PAUSE,MODE.TITLE));
         sMap.add(new Pair<>(MODE.GAMEOVER,MODE.TITLE));

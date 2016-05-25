@@ -40,13 +40,13 @@ public class GameView
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
-
         mThread = new LoadLoopThread();
         mThread.setRunning(true);
         mThread.start();
         //init(context);
     }
 
+        /* Not in use anymore */
     public void loadComplete() {
         if (GameMode.getInstance().getMode() != GameMode.MODE.LOADING) {
             mThread.setRunning(false);
@@ -55,12 +55,9 @@ public class GameView
     }
 
     public void Pause() {
-        mThread.setRunning(false);
+        mThread.setPause(true);
     }
-    public void unPause() {
-        mThread.setRunning(true);
-        mThread.start();
-    }
+    public void unPause() { Log.d("transition","Unpausing"); mThread.setPause(false); }
     /*
     @Override
     public void onPause()

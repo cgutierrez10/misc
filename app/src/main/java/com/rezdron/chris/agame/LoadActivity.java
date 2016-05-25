@@ -68,6 +68,7 @@ public class LoadActivity extends AppCompatActivity {
             //startActivity(rungame);
             startActivity(new Intent(this, GameActivity.class));
 
+
         }
     }
 

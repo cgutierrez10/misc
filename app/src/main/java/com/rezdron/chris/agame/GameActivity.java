@@ -23,6 +23,8 @@ import android.widget.PopupWindow;
  */
 public class GameActivity extends AppCompatActivity {
     //private GLSurfaceView glSurfaceView;
+    private AlertDialog pw;
+    boolean pause = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,25 +43,32 @@ public class GameActivity extends AppCompatActivity {
         //May need to replace, and reactivate the player token on game start/ends
         //Player.revive(); // Set player active to true
         //Player.place();
+        ((GameView) findViewById(R.id.GameView)).unPause();
     }
 
-    public void PauseButton(View v)
-    {
-        ((GameView) findViewById(R.id.GameView)).Pause();
-        //transition("pause");
-        Log.d("transition", "Popup tried to start");
-        AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        helpBuilder.setView(inflater.inflate(R.layout.activity_pause, null));
-        AlertDialog helpDialog = helpBuilder.create();
-        helpDialog.show();
-        Log.d("transition", "Popup started?");
+    /* Toggles between pausing and unpausing mode to handle double back-button presses */
+    public void PauseButton(View v) {
+        if (pause) {
+            Log.d("transition", "Unpausing");
+            unPause(new View(null));
+        } else {
+            transition("pause");
+            Log.d("transition", "Popup tried to start");
+            if (pw == null) {
+                AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+                LayoutInflater inflater = getLayoutInflater();
+                helpBuilder.setView(inflater.inflate(R.layout.activity_pause, null));
+                pw = helpBuilder.create();
+                pw.setCancelable(false);
+            }
+            pw.show();
+            Log.d("transition", "Popup started?");
+        }
     }
 
-    public void unpause(View v)
-    {
-        transition("gameplay");
-    }
+
+    /* Never use the view v here, it may be null */
+    public void unPause(View v) { transition("gameplay"); }
 
     @Override
     protected void onPause() {
@@ -76,17 +85,19 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void transition(String mode) {
-        if ((mode == "gameplay") && (GameMode.getInstance().changeMode(GameMode.MODE.PAUSE))) {
+        Log.d("transition",GameMode.getInstance().getMode().toString());
+        if ((mode == "pause") && (GameMode.getInstance().changeMode(GameMode.MODE.PAUSE))) {
             // Will need this to call to the view to suspend
-            //glSurfaceView.onPause();
-            startActivity(new Intent(this, PauseActivity.class));
+            ((GameView) findViewById(R.id.GameView)).Pause();
+            pause = true;
         }
-        else if ((mode == "pause") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEPLAY))) {
-            // Should always be able to go to gameactivity.onresume ?
+        else if ((mode == "gameplay") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEPLAY))) {
             ((GameView) findViewById(R.id.GameView)).unPause();
-            this.finish();
+            if (pw != null) { pw.hide();}
+            pause = false;
+            Log.d("transition","Unpaused");
         }
-        else if ((mode == "gameplay") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
+        else if ((mode == "gameover") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
             // No gameover activity yet
             //startActivity(new Intent(this, PauseActivity.class));
         }

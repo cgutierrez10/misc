@@ -16,8 +16,7 @@ public class PauseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_run);
-        Log.d("transition", "About to create renderer for PauseActivity");
-        Log.d("transition", "Popup tried to start");
+        Log.d("transition", "PauseActivity tried to start");
         //We need to get the instance of the LayoutInflater, use the context of this activity
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(this.getApplicationContext().LAYOUT_INFLATER_SERVICE);
         //Inflate the view from a predefined XML layout
@@ -35,7 +34,7 @@ public class PauseActivity extends AppCompatActivity {
         catch (Exception e) {
             Log.d("transition",e.getMessage());
         }
-        Log.d("transition", "Popup started?");
+        Log.d("transition", "PauseActivity started?");
     }
 
 
@@ -50,6 +49,7 @@ public class PauseActivity extends AppCompatActivity {
         else if ((mode == "gameplay") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEPLAY))) {
             // Should always be able to go to gameactivity.onresume ?
             ((GameView) findViewById(R.id.GameView)).unPause();
+            Log.d("transition", "Called to resume in pauseactivity");
             this.finish();
         }
         else if ((mode == "gameover") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
