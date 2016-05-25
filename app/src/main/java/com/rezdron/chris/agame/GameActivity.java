@@ -72,8 +72,18 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        transition("pause");
+        Log.d("transition", "Popup tried to start");
+        if (pw == null) {
+            AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = getLayoutInflater();
+            helpBuilder.setView(inflater.inflate(R.layout.activity_pause, null));
+            pw = helpBuilder.create();
+            pw.setCancelable(false);
+        }
+        pw.show();
+        Log.d("transition", "Popup started?");
         super.onPause();
-
         //glSurfaceView.onPause();
         //((GameView) findViewById(R.id.GameView)).onPause();
     }
