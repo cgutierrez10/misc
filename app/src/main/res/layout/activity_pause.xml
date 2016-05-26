@@ -38,7 +38,7 @@
         android:layout_gravity="center_horizontal"
         android:clickable="true"
         android:enabled="true"
-        android:onClick="unPause"
+        android:onClick="PauseButton"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 

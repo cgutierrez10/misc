@@ -95,6 +95,10 @@ public class GameView
         Log.d("Render", "Init called for glsurfaceview");
     } */
 
+    public int getActiveTime() {
+        return mThread.tick;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent e)
     {

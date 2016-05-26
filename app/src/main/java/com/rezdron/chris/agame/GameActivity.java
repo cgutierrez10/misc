@@ -25,6 +25,7 @@ public class GameActivity extends AppCompatActivity {
     //private GLSurfaceView glSurfaceView;
     private AlertDialog pw;
     boolean pause = false;
+    private int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +36,6 @@ public class GameActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Player.getInstance();
-        //glSurfaceView = new GameView(this);
-
-        //setContentView(glSurfaceView);
         setContentView(R.layout.activity_game_run);
 
         //May need to replace, and reactivate the player token on game start/ends
@@ -49,11 +47,9 @@ public class GameActivity extends AppCompatActivity {
     /* Toggles between pausing and unpausing mode to handle double back-button presses */
     public void PauseButton(View v) {
         if (pause) {
-            Log.d("transition", "Unpausing");
-            unPause(new View(null));
+            transition("gameplay");
         } else {
             transition("pause");
-            Log.d("transition", "Popup tried to start");
             if (pw == null) {
                 AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
                 LayoutInflater inflater = getLayoutInflater();
@@ -62,18 +58,12 @@ public class GameActivity extends AppCompatActivity {
                 pw.setCancelable(false);
             }
             pw.show();
-            Log.d("transition", "Popup started?");
         }
     }
-
-
-    /* Never use the view v here, it may be null */
-    public void unPause(View v) { transition("gameplay"); }
 
     @Override
     protected void onPause() {
         transition("pause");
-        Log.d("transition", "Popup tried to start");
         if (pw == null) {
             AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
             LayoutInflater inflater = getLayoutInflater();
@@ -82,20 +72,10 @@ public class GameActivity extends AppCompatActivity {
             pw.setCancelable(false);
         }
         pw.show();
-        Log.d("transition", "Popup started?");
         super.onPause();
-        //glSurfaceView.onPause();
-        //((GameView) findViewById(R.id.GameView)).onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //glSurfaceView.onResume();
     }
 
     public void transition(String mode) {
-        Log.d("transition",GameMode.getInstance().getMode().toString());
         if ((mode == "pause") && (GameMode.getInstance().changeMode(GameMode.MODE.PAUSE))) {
             // Will need this to call to the view to suspend
             ((GameView) findViewById(R.id.GameView)).Pause();
@@ -105,11 +85,13 @@ public class GameActivity extends AppCompatActivity {
             ((GameView) findViewById(R.id.GameView)).unPause();
             if (pw != null) { pw.hide();}
             pause = false;
-            Log.d("transition","Unpaused");
         }
         else if ((mode == "gameover") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
             // No gameover activity yet
-            //startActivity(new Intent(this, PauseActivity.class));
+            Intent go = new Intent(this, GameOverActivity.class);
+            go.putExtra("score",String.valueOf(score));
+            go.putExtra("time",String.valueOf(((GameView) findViewById(R.id.GameView)).getActiveTime()));
+            startActivity(new Intent(this, GameOverActivity.class));
         }
         // No transition to title, loading, gameplay or exit, only to pause and gameover
         // Does not directly transition to exiting must go through pause -> exit
@@ -129,20 +111,5 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         PauseButton(new View(this));
-    }
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() { }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.activity_load,
-                    container, false);
-            return rootView;
-        }
     }
 }
