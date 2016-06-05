@@ -67,8 +67,6 @@ public class LoadActivity extends AppCompatActivity {
             //rungame.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             //startActivity(rungame);
             startActivity(new Intent(this, GameActivity.class));
-
-
         }
     }
 
