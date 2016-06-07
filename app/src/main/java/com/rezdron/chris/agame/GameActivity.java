@@ -22,10 +22,15 @@ import android.widget.PopupWindow;
  * Activity for the activity_load screen
  */
 public class GameActivity extends AppCompatActivity {
+
     //private GLSurfaceView glSurfaceView;
     private AlertDialog pw;
     boolean pause = false;
     private int score = 0;
+
+    // Added for debugging
+    static GameActivity instance = new GameActivity();
+    static GameActivity getInstance() { return instance;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

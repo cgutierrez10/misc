@@ -9,7 +9,7 @@ import android.view.SurfaceHolder;
  * Created by Chris on 1/30/2016.
  * Threading code for load spinner to be threaded updating
  */
-public class LoadLoopThread extends Thread {
+public class GameThread extends Thread {
     //private SurfaceHolder surfaceHolder;
     //private LoadBusyView view;
     private boolean running = false;
@@ -22,7 +22,7 @@ public class LoadLoopThread extends Thread {
     //    surfaceHolder = holder;
     //}
 
-    //public LoadLoopThread(LoadBusyView view) {
+    //public GameThread(LoadBusyView view) {
     //    this.view = view;
     //}
 
@@ -33,7 +33,13 @@ public class LoadLoopThread extends Thread {
     @Override
     public void run() {
         float interval = 0.0f;
+        long start = SystemClock.currentThreadTimeMillis();
         while (running) {
+            if (SystemClock.currentThreadTimeMillis() - start > 3000)
+            {
+                //Call out to end the game as if player lost, used for testing at present
+                GameActivity.getInstance().transition("gameover");
+            }
             last = SystemClock.currentThreadTimeMillis();
             if (!paused) {
                 tick++;
