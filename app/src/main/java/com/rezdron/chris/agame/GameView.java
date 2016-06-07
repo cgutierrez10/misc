@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 public class GameView
         extends GLSurfaceView {
     protected mglRender mRenderer;
-    private LoadLoopThread mThread;
+    private GameThread mThread;
 
 
     public GameView(Context context) {
@@ -25,7 +25,7 @@ public class GameView
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
 
-        mThread = new LoadLoopThread();
+        mThread = new GameThread();
         mThread.setRunning(true);
         mThread.start();
         //init(context);
@@ -40,7 +40,7 @@ public class GameView
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
-        mThread = new LoadLoopThread();
+        mThread = new GameThread();
         mThread.setRunning(true);
         mThread.start();
         //init(context);
@@ -88,10 +88,10 @@ public class GameView
         mRenderer = new mglRender(context);
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-        mThread = new LoadLoopThread(this);
+        mThread = new GameThread(this);
         mThread.setHolder(this.getHolder());
         getHolder().addCallback(this);
-        mThread = new LoadLoopThread(this);
+        mThread = new GameThread(this);
         Log.d("Render", "Init called for glsurfaceview");
     } */
 
