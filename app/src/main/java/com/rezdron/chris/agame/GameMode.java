@@ -41,6 +41,8 @@ public class GameMode {
         sMap.add(new Pair<>(MODE.GAMEOVER,MODE.LOADING));
         sMap.add(new Pair<>(MODE.GAMEOVER,MODE.EXIT));
 
+        // This one added for testing, may want to remove above gameover -> loading in favor of this one.
+        sMap.add(new Pair<>(MODE.GAMEOVER,MODE.GAMEPLAY));
         // This last one is implied not having any mapping to leave the exit state
         // Is accurate to exiting without prompt
         // With a do you want to quit prompt additional options:

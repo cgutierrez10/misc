@@ -1,19 +1,18 @@
 package com.rezdron.chris.agame;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 public class GameOverActivity extends AppCompatActivity {
-    Bundle passedvals = getIntent().getExtras();
+    Bundle passedvals;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_over);
+        passedvals = getIntent().getExtras();
+        setContentView(R.layout.activity_gameover);
         ((TextView) findViewById(R.id.scoreVal)).setText(passedvals.getString("score"));
         ((TextView) findViewById(R.id.timeVal)).setText(passedvals.getString("time"));
     }
@@ -40,7 +39,7 @@ public class GameOverActivity extends AppCompatActivity {
     public void transition(String mode) {
         if ((mode == "title") && (GameMode.getInstance().changeMode(GameMode.MODE.TITLE))) {
             // Back to title, can be called manually or will default if backgrounded here
-            Intent title = new Intent();
+            Intent title = new Intent(this,MainActivity.class);
             title.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(title);
         }
