@@ -35,8 +35,9 @@ public class GameThread extends Thread {
         float interval = 0.0f;
         long start = SystemClock.currentThreadTimeMillis();
         while (running) {
-            if (SystemClock.currentThreadTimeMillis() - start > 3000)
+            if (last - start > 300)
             {
+                Log.d("thread","Calling quits");
                 //Call out to end the game as if player lost, used for testing at present
                 GameActivity.getInstance().transition("gameover");
             }

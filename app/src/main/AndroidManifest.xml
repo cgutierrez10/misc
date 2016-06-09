@@ -40,7 +40,15 @@
                 android:value="com.rezdron.chris.agame.MainActivity" />
         </activity>
         <activity android:name=".PauseActivity" />
-        <activity android:name=".GameOverActivity"></activity>
+        <activity android:name=".GameOverActivity">
+            android:name=".GameOverActivity"
+            android:label="GameOverActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.rezdron.chris.agame.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

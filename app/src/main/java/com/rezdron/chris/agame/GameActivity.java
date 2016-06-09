@@ -66,6 +66,11 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    public void QuitButton(View v) {
+        Log.d("thread","Quit called");
+        transition("gameover");
+    }
+
     @Override
     protected void onPause() {
         transition("pause");
@@ -94,9 +99,9 @@ public class GameActivity extends AppCompatActivity {
         else if ((mode == "gameover") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
             // No gameover activity yet
             Intent go = new Intent(this, GameOverActivity.class);
-            go.putExtra("score",String.valueOf(score));
+            go.putExtra("score",String.valueOf(TokenHandler.getInstance().score));
             go.putExtra("time",String.valueOf(((GameView) findViewById(R.id.GameView)).getActiveTime()));
-            startActivity(new Intent(this, GameOverActivity.class));
+            startActivity(go);
         }
         // No transition to title, loading, gameplay or exit, only to pause and gameover
         // Does not directly transition to exiting must go through pause -> exit
