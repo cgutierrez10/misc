@@ -58,6 +58,10 @@ public class GameView
         mThread.setPause(true);
     }
     public void unPause() { Log.d("transition","Unpausing"); mThread.setPause(false); }
+    public void newStart() {
+        mThread.resetGame();
+        Log.d("transition","Unpausing");
+        mThread.setPause(false); }
     /*
     @Override
     public void onPause()

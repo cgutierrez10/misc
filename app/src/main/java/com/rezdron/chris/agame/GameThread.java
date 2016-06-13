@@ -26,6 +26,13 @@ public class GameThread extends Thread {
     //    this.view = view;
     //}
 
+    public void resetGame() {
+        ContentGen.getInstance().reset();
+        TokenHandler.getInstance().reset();
+        // Maybe handle this as part of tokenhandler freeing everything?
+        //Player.getInstance().reset();
+    }
+
     public void setRunning(boolean run) { running = run; }
 
     public void setPause(boolean pause) { paused = pause; }

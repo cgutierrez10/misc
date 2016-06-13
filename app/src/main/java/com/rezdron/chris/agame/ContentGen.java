@@ -17,6 +17,16 @@ public class ContentGen {
 
     public static ContentGen getInstance() { return instance; }
 
+    public void reset() {
+        // Return this to an initialize state
+        x = 50;
+        difficulty = 0;
+        nextadd = 0;
+
+        // Eventually this will pick a new seed at all occasions
+        rng = new Random(14641);
+    }
+
     public void tick(int tick)
     {
         nextadd--;
