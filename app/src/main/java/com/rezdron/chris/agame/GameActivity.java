@@ -46,7 +46,8 @@ public class GameActivity extends AppCompatActivity {
         //May need to replace, and reactivate the player token on game start/ends
         //Player.revive(); // Set player active to true
         //Player.place();
-        ((GameView) findViewById(R.id.GameView)).unPause();
+        //((GameView) findViewById(R.id.GameView)).unPause();
+        ((GameView) findViewById(R.id.GameView)).newStart();
     }
 
     /* Toggles between pausing and unpausing mode to handle double back-button presses */

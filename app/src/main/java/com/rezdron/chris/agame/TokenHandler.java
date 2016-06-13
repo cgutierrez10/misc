@@ -32,6 +32,16 @@ public class TokenHandler
         return instance;
     }
 
+    public void reset() {
+        //Dump all the stacks preparing for a new game, create new player object
+        drawable.clear();
+        moveable.clear();
+        tickable.clear();
+        collideable.clear();
+        scoreable.clear();
+        cullList.clear();
+    }
+
     public void addToken(Token newToken)
     {
         // Everything must tick, if it does not tick it cannot be culled

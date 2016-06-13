@@ -23,6 +23,10 @@ public class Player extends Token {
         this.gfx_type = "player";
     }
 
+    public void reset() {
+        instance = new Player();
+    }
+
     public void setAccel(Integer y)
     {
         ((PlayerPhys) phys).addDvy(-y);
