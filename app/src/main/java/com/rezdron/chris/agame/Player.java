@@ -19,12 +19,16 @@ public class Player extends Token {
     static Player instance = new Player();
     Player()
     {
-        super(0, new PlayerPhys(500,50,(float)0.0,(float)-15.0));
+        super(0, new PlayerPhys(128,256,(float)0.0,(float)-15.0));
         this.gfx_type = "player";
     }
 
     public void reset() {
-        instance = new Player();
+        phys.x = 500;
+        phys.y = 50;
+        phys.dvy = -15.0f;
+        this.active = true;
+        //instance = new Player();
     }
 
     public void setAccel(Integer y)
@@ -42,8 +46,17 @@ public class Player extends Token {
     @Override
     public void deactivate() {
         // Player ded. Cleanup and start transition to gameover and scoring
+        this.active = false;
     }
 
+    public void collideWith(Token element) {
+        // Not sure if this should be 32 or 64
+        if (element.quickCollision(this.getX(),this.getY(),32,32))
+        {
+            this.deactivate();
+        }
+
+    }
     public int getWidth() { return 0;}
 
     public void onDraw() {

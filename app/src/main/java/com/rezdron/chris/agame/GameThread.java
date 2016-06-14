@@ -1,5 +1,6 @@
 package com.rezdron.chris.agame;
 
+import android.app.Activity;
 import android.graphics.Canvas;
 import android.os.SystemClock;
 import android.util.Log;
@@ -16,6 +17,7 @@ public class GameThread extends Thread {
     private boolean paused = true;
     int tick = 1;
     long last = -1;
+    Activity owner;
 
     //public void setHolder(SurfaceHolder holder)
     //{
@@ -29,6 +31,7 @@ public class GameThread extends Thread {
     public void resetGame() {
         ContentGen.getInstance().reset();
         TokenHandler.getInstance().reset();
+        Player.getInstance().reset();
         // Maybe handle this as part of tokenhandler freeing everything?
         //Player.getInstance().reset();
     }
@@ -36,6 +39,11 @@ public class GameThread extends Thread {
     public void setRunning(boolean run) { running = run; }
 
     public void setPause(boolean pause) { paused = pause; }
+
+    public void setOwner(Activity mActivity) {
+        Log.d("activity","Passed new owner to mthread");
+        owner = mActivity;
+    }
 
     @Override
     public void run() {
@@ -46,14 +54,26 @@ public class GameThread extends Thread {
             {
                 Log.d("thread","Calling quits");
                 //Call out to end the game as if player lost, used for testing at present
-                GameActivity.getInstance().transition("gameover");
+                ((GameActivity) owner).transition("gameover");
             }
             last = SystemClock.currentThreadTimeMillis();
             if (!paused) {
+                if (owner == null)
+                {
+                    setPause(true);
+                    Log.d("Activity","thread paused owner is null");
+                }
                 tick++;
                 ContentGen.getInstance().tick(tick);
+                TokenHandler.getInstance().collide();
                 TokenHandler.getInstance().tick();
                 TokenHandler.getInstance().draw();
+                if (!Player.getInstance().getActive())
+                {
+                    Log.d("thread","Player ded, moving along now.");
+                    //Call out to end the game as if player lost, used for testing at present
+                    ((GameActivity) owner).transition("gameover");
+                }
             }
             try {
                 if (34 - (SystemClock.currentThreadTimeMillis() - last) > 0) {

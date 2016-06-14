@@ -2,6 +2,7 @@ package com.rezdron.chris.agame;
 
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 /**
  * Created by Chris on 1/9/2016.
@@ -86,6 +87,17 @@ public abstract class Token {
     public abstract int getWidth();
 
     public abstract void tick();
+
+    // Basic bounding box, fuller collision detection can be used after quick check
+    public boolean quickCollision(int x, int y, int width, int height) {
+        //Check against bounding box for this sprite
+        // x,y represents center point of player and width/height is full range not half
+        int x_off = Math.abs(x - this.phys.getX()) - width/2;
+        int y_off = Math.abs(y - this.phys.getY()) - height/2;
+        Log.d("Physics_collision", "Inputs: " + x + " " + y + " " + width + " " + height + " Output: " + x_off + " " + y_off);
+        return (x_off < 0 && y_off < 0);
+    }
+
     /*
     public void tick()
     {
