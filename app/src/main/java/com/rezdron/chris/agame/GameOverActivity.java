@@ -3,6 +3,7 @@ package com.rezdron.chris.agame;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,8 +14,10 @@ public class GameOverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         passedvals = getIntent().getExtras();
         setContentView(R.layout.activity_gameover);
-        ((TextView) findViewById(R.id.scoreVal)).setText(passedvals.getString("score"));
-        ((TextView) findViewById(R.id.timeVal)).setText(passedvals.getString("time"));
+        if (passedvals != null) {
+            ((TextView) findViewById(R.id.scoreVal)).setText(passedvals.getString("score"));
+            ((TextView) findViewById(R.id.timeVal)).setText(passedvals.getString("time"));
+        }
     }
 
     // If this activity goes to background then it
@@ -45,6 +48,7 @@ public class GameOverActivity extends AppCompatActivity {
         }
         if ((mode == "gameplay") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEPLAY))) {
             // Start a new game, shouldn't need to go back to loading for performance issues
+            Log.d("Activity", "Attempting to restart game directly");
             startActivity(new Intent(this, GameActivity.class));
         }
     }

@@ -29,18 +29,9 @@ public class LoadActivity extends AppCompatActivity {
         Log.d("ActivityMode", "About to create renderer for LoadActivity");
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //setContentView(R.layout.activity_load);
         // Ensure player is created
-        Player.getInstance();
+        //Player.getInstance();
 
-        //glSurfaceView = new GameView(this);
-        setContentView(R.layout.activity_load);
-
-        //May need to replace, and reactivate the player token on game start/ends
-        //Player.revive(); // Set player active to true
-        //Player.place();
-
-        // Debugging, just move on to next activity immediately
 
         loadComplete();
     }
@@ -62,10 +53,6 @@ public class LoadActivity extends AppCompatActivity {
     public void loadComplete() {
         // Load only proceeds forward -> gameplay
         if (GameMode.getInstance().changeMode(GameMode.MODE.GAMEPLAY)) {
-            //((GameView) findViewById(R.id.LoadingView)).loadComplete();
-            //Intent rungame = new Intent(this, GameActivity.class);
-            //rungame.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            //startActivity(rungame);
             startActivity(new Intent(this, GameActivity.class));
         }
     }
@@ -73,13 +60,11 @@ public class LoadActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //glSurfaceView.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //glSurfaceView.onResume();
     }
 
 

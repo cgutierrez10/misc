@@ -51,6 +51,7 @@ public class TokenHandler
         drawable.push(newToken);
         moveable.push(newToken);
         scoreable.push(newToken);
+        collideable.push(newToken);
     }
 
     private void cullTokens()
@@ -104,6 +105,7 @@ public class TokenHandler
         if (!Player.getInstance().getActive())
         {
             // Player b ded handle this with some cleanup and initialize a modeswitch to endscreen
+
         }
 
     }
@@ -123,5 +125,12 @@ public class TokenHandler
         // Player always draws and always draws on top
         Player.getInstance().onDraw();
         mglRender.setFlip();
+    }
+
+    public void collide() {
+        // Definitely being called
+        for (Token element:collideable) {
+            Player.getInstance().collideWith(element);
+        }
     }
 }

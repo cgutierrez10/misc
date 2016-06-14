@@ -1,5 +1,6 @@
 package com.rezdron.chris.agame;
 
+import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
@@ -62,6 +63,10 @@ public class GameView
         mThread.resetGame();
         Log.d("transition","Unpausing");
         mThread.setPause(false); }
+
+    public void setOwner(Activity mActivity) {
+        mThread.setOwner(mActivity);
+    }
     /*
     @Override
     public void onPause()

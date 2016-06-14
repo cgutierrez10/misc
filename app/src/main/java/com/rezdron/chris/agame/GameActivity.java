@@ -1,7 +1,9 @@
 package com.rezdron.chris.agame;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.opengl.GLSurfaceView;
@@ -27,10 +29,11 @@ public class GameActivity extends AppCompatActivity {
     private AlertDialog pw;
     boolean pause = false;
     private int score = 0;
+    //private Context mContext = this.getApplicationContext();
 
     // Added for debugging
-    static GameActivity instance = new GameActivity();
-    static GameActivity getInstance() { return instance;}
+    //static GameActivity instance = new GameActivity();
+    //GameActivity getInstance() { return instance;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +43,14 @@ public class GameActivity extends AppCompatActivity {
         Log.d("ActivityMode", "About to create renderer for GameActivity");
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Player.getInstance();
+        //May need to replace, and reactivate the player token on game start/ends
+        Player.getInstance().reset();
+
         setContentView(R.layout.activity_game_run);
 
-        //May need to replace, and reactivate the player token on game start/ends
-        //Player.revive(); // Set player active to true
-        //Player.place();
-        //((GameView) findViewById(R.id.GameView)).unPause();
         ((GameView) findViewById(R.id.GameView)).newStart();
+        ((GameView) findViewById(R.id.GameView)).setOwner(this);
+        ((GameView) findViewById(R.id.GameView)).unPause();
     }
 
     /* Toggles between pausing and unpausing mode to handle double back-button presses */
@@ -68,21 +71,23 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void QuitButton(View v) {
-        Log.d("thread","Quit called");
+        Log.d("thread", "Quit called");
         transition("gameover");
     }
 
     @Override
     protected void onPause() {
-        transition("pause");
-        if (pw == null) {
-            AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
-            LayoutInflater inflater = getLayoutInflater();
-            helpBuilder.setView(inflater.inflate(R.layout.activity_pause, null));
-            pw = helpBuilder.create();
-            pw.setCancelable(false);
+        if (!isFinishing()) {
+            transition("pause");
+            if (pw == null) {
+                AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+                LayoutInflater inflater = getLayoutInflater();
+                helpBuilder.setView(inflater.inflate(R.layout.activity_pause, null));
+                pw = helpBuilder.create();
+                pw.setCancelable(false);
+            }
+            pw.show();
         }
-        pw.show();
         super.onPause();
     }
 
@@ -99,9 +104,12 @@ public class GameActivity extends AppCompatActivity {
         }
         else if ((mode == "gameover") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
             // No gameover activity yet
+            ((GameView) findViewById(R.id.GameView)).Pause();
             Intent go = new Intent(this, GameOverActivity.class);
-            go.putExtra("score",String.valueOf(TokenHandler.getInstance().score));
-            go.putExtra("time",String.valueOf(((GameView) findViewById(R.id.GameView)).getActiveTime()));
+            go.putExtra("score", String.valueOf(TokenHandler.getInstance().score));
+            //go.putExtra("score", "0");
+            go.putExtra("time", String.valueOf(((GameView) findViewById(R.id.GameView)).getActiveTime()));
+            //go.putExtra("time", "0");
             startActivity(go);
         }
         // No transition to title, loading, gameplay or exit, only to pause and gameover
