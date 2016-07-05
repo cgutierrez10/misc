@@ -2,6 +2,7 @@ package com.rezdron.chris.agame;
 
 import android.util.Pair;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -12,9 +13,23 @@ import java.util.Vector;
  * May need a special call to align existing area of high resolution to new values and keep sensible number of terms
  */
 public class FourierThread extends Thread {
-    private Vector<Pair<Integer,Integer>> matchCoords;
-    private Vector<Pair<Float,Float>> sineTerms;
-    private boolean pending;
+    // Maybe need to use a prime lookup table for simplicity
+    // 11,13,17,19,23,29 should offer range from low end of 2.3 seconds (1,000 samples/second) to 12.5 seconds
+    private Vector<Pair<Double,Float>> waveTerms;
+    private Float blendval = 1.0f;   // Value of blending scale between begin/next begin
+    private final int Length = 7163; // Length of series wavelength loop
+    private boolean blend = false;
+    private int xval = 0;  // Current x value over wavelength
+    private int calcx = 0; // Calculate x step
+
+    public FourierThread() {
+        waveTerms.add(new Pair<>(13.0d,ContentGen.getInstance().getAmplitude(15.0f)));
+        waveTerms.add(new Pair<>(17.0d,ContentGen.getInstance().getAmplitude(15.0f)));
+        waveTerms.add(new Pair<>(19.0d,ContentGen.getInstance().getAmplitude(15.0f)));
+        waveTerms.add(new Pair<>(13.0d,ContentGen.getInstance().getAmplitude(15.0f)));
+        waveTerms.add(new Pair<>(17.0d,ContentGen.getInstance().getAmplitude(15.0f)));
+        waveTerms.add(new Pair<>(19.0d,ContentGen.getInstance().getAmplitude(15.0f)));
+    }
 
     // General steps
     // Start a new wave from randaddcords
@@ -22,46 +37,57 @@ public class FourierThread extends Thread {
     // setCoords to end of existing wave
     // randaddcoords to new length
 
-    // add coords may never be used
-    public void setCoords(Vector<Pair<Integer,Integer>> newCoord)
-    {
-        // This one will completely replace list
-        matchCoords = newCoord;
-        pending = true;
+    // Get 3 random amplitudes, 3 random wavelengths
+    // Capped/minned to set a reasonable max height and length
+
+    // Determine the repeat point
+    // Find 3 more waves, multiple from 0->1 from the 9/10th, 11/10th to end of the wave
+    // while fading out other 1->0 9/10 ->11/10
+
+    // Need to pop some values off the end
+    public void setX(int newX) {
+        xval = newX;
     }
 
-    public void addCoords(Vector<Pair<Integer,Integer>> newCoord)
+    // Pop first 3 amplitudes and add 3 to end for next set
+    // Call after blendval = 0
+    private void shiftAmp()
     {
-        // This one will completely add the provided coords to the list
+        waveTerms.remove(0);
+        waveTerms.remove(0);
+        waveTerms.remove(0);
+        waveTerms.add(new Pair<>(13.0d,ContentGen.getInstance().getAmplitude(15.0f)));
+        waveTerms.add(new Pair<>(17.0d,ContentGen.getInstance().getAmplitude(15.0f)));
+        waveTerms.add(new Pair<>(19.0d,ContentGen.getInstance().getAmplitude(15.0f)));
+        blendval = 1.0f;
+        blend = false;
     }
 
-    // Important, set must be a power of 2
-    public void randAddCoords(Integer length)
-    {
-        // This one will add length of new <x,y> from randomizer to current list
-        for (int i = 0; i < length; i++)
-        {
-            Pair<Integer,Integer> datapoint = new Pair<>(i * 50, ContentGen.getInstance().rng.nextInt(50));
-            //matchCoords.add(new Pair(i * 50, ContentGen.getInstance().rng.nextInt(50)));
-            matchCoords.add(datapoint);
-        }
-        pending = true;
+    public float tan(int atX) {
+        // Need to return tangent at given point, other functions can use this for jump physics
+        // Stub as 0 for writing other functions around
+        return 0.0f;
     }
 
     // This one will nearly always be doing nothing
     @Override
     public void run()
     {
-        // Run fourier decomposition if pending == true
-        // Clear the coords list and pending = false;
-        if (pending)
-        {
-            // Verify FFT function requirements met (total samples power of 2 among others)
-            // Need an FFT function for uneven sampling
-
-            // Last things to call on the way out
-            setCoords(new Vector<Pair<Integer,Integer>>());
-            pending = false;
+        double waterline = 0;
+        if (blend) {
+            for (Pair<Double,Float> wave: waveTerms) {
+                waterline = waterline + (wave.second * Math.sin(wave.first) * blendval);
+                // Blend function for x vals
+            }
+        }
+        else {
+            Iterator<Pair<Double,Float>> itr = waveTerms.iterator();
+            Pair<Double,Float> wave;
+            for (int i = 0; i < 3; i++) {
+                wave = itr.next();
+                waterline = waterline + (wave.second * Math.sin(wave.first));
+            }
+            // Nonblend sum of first 3 terms
         }
     }
 

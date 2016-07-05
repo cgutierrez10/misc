@@ -61,5 +61,10 @@ public class ContentGen {
         nextadd = 50;
         TokenHandler.getInstance().addToken(addtoken);
     }
+    public float getAmplitude(float max)
+    {
+        // Should return a range limited value?
+        return rng.nextFloat()*max;
 
+    }
 }
