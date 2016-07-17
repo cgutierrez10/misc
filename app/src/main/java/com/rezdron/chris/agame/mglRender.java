@@ -9,6 +9,7 @@ import android.opengl.GLU;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.os.SystemClock;
+import android.renderscript.Matrix2f;
 import android.util.Log;
 
 import java.nio.ByteBuffer;
@@ -45,6 +46,9 @@ public class mglRender implements GLSurfaceView.Renderer {
     private static boolean flip;
     private static short lastidx;
     private static short arrayslen;
+    private static ByteBuffer wavevert;
+    private static ByteBuffer waveidx;
+    private static float time = SystemClock.uptimeMillis() / 250;
 
     float mScreenWidth = 1280;
     float mScreenHeight = 768;
@@ -55,6 +59,33 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     public mglRender()
     {
+
+        wavevert = ByteBuffer.allocateDirect(64);
+        waveidx = ByteBuffer.allocateDirect(20);
+        // Vertices Ranges 0-11
+        wavevert.position(0);
+        wavevert.putFloat(0);
+        wavevert.putFloat(mScreenHeight);
+        wavevert.putFloat(0);
+        wavevert.putFloat(0);
+        wavevert.putFloat(0);
+        wavevert.putFloat(0);
+        wavevert.putFloat(mScreenWidth);
+        wavevert.putFloat(0);
+        wavevert.putFloat(0);
+        wavevert.putFloat(mScreenWidth);
+        wavevert.putFloat(mScreenHeight);
+        wavevert.putFloat(0);
+        waveidx.position(0);
+        waveidx.putShort((short) 0);
+        waveidx.putShort((short) 1);
+        waveidx.putShort((short) 2);
+        waveidx.putShort((short) 0);
+        waveidx.putShort((short) 2);
+        waveidx.putShort((short) 3);
+
+        wavevert.position(0);
+        waveidx.position(0);
     }
 
     public void onPause()
@@ -63,6 +94,7 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     public void onResume()
     {
+        time = (SystemClock.uptimeMillis() / 250) - time;
     }
 
     @Override
@@ -99,10 +131,26 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         // Screen clear
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
         if (vertexBuffer != null) {
+            // Draw background waves
+            GLES20.glUseProgram(SpriteShader.sp_Wave);
+            int mPositionHandle = GLES20.glGetAttribLocation(SpriteShader.sp_Wave, "vPosition");
+            GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+            GLES20.glEnableVertexAttribArray(mPositionHandle);
+            GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(SpriteShader.sp_Wave, "uMVPMatrix"), 1, false, m, 0);
+            GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), mScreenWidth, mScreenHeight);
+            GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"time"), ((float) ContentGen.getInstance().tickCount) / 25);
+            GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
+
+            // Draw everything else
+            vertexBuffer.position(12);
+            uvBuffer.position(8);
+            drawListBuffer.position(0);
+            GLES20.glUseProgram(SpriteShader.sp_Sprite);
             // Get vertex shader pointer
-            int mPositionHandle = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "vPosition");
+            mPositionHandle = GLES20.glGetAttribLocation(SpriteShader.sp_Sprite, "vPosition");
             GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
             GLES20.glEnableVertexAttribArray(mPositionHandle);
 
@@ -118,15 +166,14 @@ public class mglRender implements GLSurfaceView.Renderer {
             int mSamplerLoc = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "s_texture");
 
             GLES20.glUniform1i(mSamplerLoc, 0);
-            //GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
-            if (indexcount != 0) {
-                //Log.d("Render","Geometry draw called: " + String.valueOf(indexcount) );
+
+            //if (indexcount != 0) {
                 GLES20.glDrawElements(GLES20.GL_TRIANGLES, indexcount * 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
-            }
+            //}
 
             // If no geometry then just allow the screen to be clear
-            GLES20.glDisableVertexAttribArray(mPositionHandle);
-            GLES20.glDisableVertexAttribArray(mTexCoordLoc);
+            //GLES20.glDisableVertexAttribArray(mPositionHandle);
+            //GLES20.glDisableVertexAttribArray(mTexCoordLoc);
         }
         try {
             if (34 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
@@ -141,6 +188,9 @@ public class mglRender implements GLSurfaceView.Renderer {
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
         mScreenWidth = width;
         mScreenHeight = height;
+
+        //mScreenWidth = 800;
+        //mScreenHeight = 1024;
 
         // Redo the Viewport, making it fullscreen.
         GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
@@ -166,15 +216,21 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        int shader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
+        SpriteShader.sp_Sprite = GLES20.glCreateProgram();
+        SpriteShader.sp_Wave = GLES20.glCreateProgram();
+
         // These lines need to specify SpriteShader.vs_Sprite and fs_Sprite
         int vertexShader = SpriteShader.loadShader(GLES20.GL_VERTEX_SHADER, SpriteShader.vs_Sprite);
         int fragmentShader = SpriteShader.loadShader(GLES20.GL_FRAGMENT_SHADER, SpriteShader.fs_Sprite);
 
-        SpriteShader.sp_Sprite = GLES20.glCreateProgram();
-            GLES20.glAttachShader(SpriteShader.sp_Sprite, vertexShader);
-            GLES20.glAttachShader(SpriteShader.sp_Sprite, fragmentShader);
+        GLES20.glAttachShader(SpriteShader.sp_Sprite, vertexShader);
+        GLES20.glAttachShader(SpriteShader.sp_Sprite, fragmentShader);
+
+        GLES20.glAttachShader(SpriteShader.sp_Wave, SpriteShader.loadShader(GLES20.GL_VERTEX_SHADER, SpriteShader.vs_Sprite));
+        GLES20.glAttachShader(SpriteShader.sp_Wave, SpriteShader.loadShader(GLES20.GL_FRAGMENT_SHADER, SpriteShader.fs_Wave));
+
         GLES20.glLinkProgram(SpriteShader.sp_Sprite);
+        GLES20.glLinkProgram(SpriteShader.sp_Wave);
 
         GLES20.glUseProgram(SpriteShader.sp_Sprite);
         // Shapes first
@@ -256,20 +312,26 @@ public class mglRender implements GLSurfaceView.Renderer {
             arrayslen = (short) (arrayslen + 10);
         }
 
+        if (lastidx == 0 && width != mScreenWidth) {
+            // Add full screen for wave draw
+            spriteBlit(0, 0, (int) mScreenWidth, (int) mScreenHeight, 1, 0, 0, 0);
+            Log.d("Sprite","Added fullscreen sprite:" + String.valueOf(mScreenWidth));
+        }
+
         // Vertices Ranges 0-11
         shadowvertices[0+(lastidx*12)] = (mScreenWidth - (x+width));
         shadowvertices[1+(lastidx*12)] = (mScreenHeight - y);
-        shadowvertices[2+(lastidx*12)] = 0.0f;
+        shadowvertices[2+(lastidx*12)] = 0;
         shadowvertices[3+(lastidx*12)] = (mScreenWidth - (x+width));
         shadowvertices[4+(lastidx*12)] = (mScreenHeight - (y+height));
-        shadowvertices[5+(lastidx*12)] = 0.0f;
+        shadowvertices[5+(lastidx*12)] = 0;
 
         shadowvertices[6+(lastidx*12)] = (mScreenWidth - x);
         shadowvertices[7+(lastidx*12)] = (mScreenHeight - (y+height));
-        shadowvertices[8+(lastidx*12)] = 0.0f;
+        shadowvertices[8+(lastidx*12)] = 0;
         shadowvertices[9+(lastidx*12)] = (mScreenWidth - x);
         shadowvertices[10+(lastidx*12)] = (mScreenHeight - y);
-        shadowvertices[11+(lastidx*12)] = 0.0f;
+        shadowvertices[11+(lastidx*12)] = 0;
 
         // Get atlas coords from gfxresourcehandler
 

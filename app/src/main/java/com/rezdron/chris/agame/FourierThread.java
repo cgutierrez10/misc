@@ -12,6 +12,29 @@ import java.util.Vector;
  * Which represents the fewest sine terms to match those x,y values
  * May need a special call to align existing area of high resolution to new values and keep sensible number of terms
  */
+
+
+/**
+ * #ifdef GL_ES
+ * precision mediump float;
+ * #endif
+ *
+ * //tigrou.ind@gmail.com 2012.11.22 (for gamedevstackexchange)
+ *
+ * uniform float time;
+ * uniform vec2 mouse;
+ * uniform vec2 resolution;
+ *
+ * void main( void ) {
+ *
+ * vec2 position = ( gl_FragCoord.xy / resolution.xy ) - mouse;
+ *
+ * float waves = sin(position.x*10.0)*0.05*sin(mouse[1]*5.0)   +  sin(position.x*10.0+1.3)*0.02*sin(mouse[0]*7.0);
+ * float color = position.y < waves ?(waves-position.y)*20.0 : 0.0;
+ * color = min(pow(color,0.5),1.0);
+ * gl_FragColor = vec4( position.y < waves ? mix(vec3(0.59,0.63,0.86),vec3(0.19,0.24,0.51),color) : vec3(0,0,0), 1.0 );
+ * }
+ */
 public class FourierThread extends Thread {
     // Maybe need to use a prime lookup table for simplicity
     // 11,13,17,19,23,29 should offer range from low end of 2.3 seconds (1,000 samples/second) to 12.5 seconds
@@ -70,6 +93,9 @@ public class FourierThread extends Thread {
     }
 
     // This one will nearly always be doing nothing
+    // Should buffer 80% or so of wave as renderable sprite coords, flat (gradient in shader) color
+    // Can periodically refresh the gl to render additional as needed
+    // Might create a large number of quads on screen?
     @Override
     public void run()
     {
