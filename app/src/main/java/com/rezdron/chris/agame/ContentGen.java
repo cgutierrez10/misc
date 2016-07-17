@@ -11,6 +11,7 @@ public class ContentGen {
     private static ContentGen instance = new ContentGen();
     Random rng = new Random(14641);
     int nextadd;
+    int tickCount = 0;
     int x = 50;
     // Difficulty should scale from very easy to very hard/impossible over 0-18,000 ticks
     int difficulty = 0; // Higher initial difficulty softer difficulty curve
@@ -19,9 +20,10 @@ public class ContentGen {
 
     public void reset() {
         // Return this to an initialize state
-        x = 50;
+        tickCount = 0;
         difficulty = 0;
         nextadd = 0;
+        x = 50;
 
         // Eventually this will pick a new seed at all occasions
         rng = new Random(14641);
@@ -41,6 +43,7 @@ public class ContentGen {
 
             }
         }
+        tickCount = tick;
     }
 
     public void setWidth(int width) { this.x = width; }
