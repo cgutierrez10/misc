@@ -44,15 +44,39 @@ public class SpriteShader {
     /* Maybe determine a wave function at start time using long long wavelengths? */
     // Second function for varying the amplitudes?
     // Whatever function chosen needs to match the physics wave function
+    // This is the best wave function I can come up with for now
+    // http://www.glslsandbox.com/e#34138.0
+
+    // Better method
+    // phase1 is prime, phase2 is 1-1.5 larger minimum up to 1.5 times phase1
+    // Higher end of 1.5 times is more evenly choppy, lower end flattens and rewidens
+    // Amplitudes calculated off phase contributes to choppy/flattening shapes
+    // Looks fairly even for any set of primes, larger phase1 prime shorter wavelengths
+    // Primes from 11 to 29 seems nice
+    //
+    // phase1 = 17.0;
+    // phase2 = 18.0;
+    // amp1 = (phase2/((phase1 + phase2) * 10.0));
+    // amp2 = (phase1/((phase1 + phase2) * 10.0));
+    // norm = 1.0/sqrt(phase1*phase1 + phase2*phase2);
+    // vec2 position = ( gl_FragCoord.xy / resolution.xy ) - 0.40;
+    // float waves = amp2*sin((position.x*phase1 + time)*phase1*norm)
+    //         + amp1*sin((position.x*phase2 - time)*phase2*norm)
+    //         + 0.035*sin(time*2.5 + position.x);
+    //
     public static String fs_Wave = "precision mediump float;"
     + "uniform float time;"
     + "uniform vec2 resolution;"
     + "void main( void ) {"
-    + "vec2 position = ( gl_FragCoord.xy / resolution.xy ) - 0.30;"
-    + "float waves = 0.05*sin((time+position.x)*7.0+time) + 0.02*sin((position.x-time)*3.0);"
-    + "float color = position.y < waves ?(waves-position.y)*20.0 : 0.0;"
-    + "color = min(pow(color,0.5),1.0);"
-    + "gl_FragColor = vec4( position.y < waves ? mix(vec3(0.59,0.63,0.86),vec3(0.1,0.5,50),color) : vec3(0.3,0.5,0.5), 1.0 );"
+    + "   vec2 position = ( gl_FragCoord.xy / resolution.xy ) - 0.30;"
+    + "   float waves = 0.065*sin(time*3.0 + position.x*7.0)"
+    + "               + 0.015*sin(position.x*17.0 - time*2.0)"
+    + "               :w" +
+            "+ 0.035*sin(time*2.5 + position.x);"
+    //+ "float waves = 0.05*sin((time+position.x)*7.0+time) + 0.02*sin((position.x-time)*3.0);"
+    + "   float color = position.y < waves ?(waves-position.y)*20.0 : 0.0;"
+    + "   color = min(pow(color,0.5),1.0);"
+    + "   gl_FragColor = vec4( position.y < waves ? mix(vec3(0.59,0.63,0.86),vec3(0.1,0.5,50),color) : vec3(0.3,0.5,0.5), 1.0 );"
     + "}";
 
     public static int loadShader(int type, String shaderCode)
