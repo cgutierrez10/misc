@@ -38,20 +38,23 @@ import java.util.Vector;
 public class FourierThread extends Thread {
     // Maybe need to use a prime lookup table for simplicity
     // 11,13,17,19,23,29 should offer range from low end of 2.3 seconds (1,000 samples/second) to 12.5 seconds
-    private Vector<Pair<Double,Float>> waveTerms;
+    private Vector<Pair<Float,Float>> waveTerms;
     private Float blendval = 1.0f;   // Value of blending scale between begin/next begin
     private final int Length = 7163; // Length of series wavelength loop
     private boolean blend = false;
     private int xval = 0;  // Current x value over wavelength
     private int calcx = 0; // Calculate x step
 
+    private float phase1 = 19.0f;
+    private float phase2 = 24.0f;
+    private float amp1   = (phase2/(phase1 + phase2) * 10);
+    private float amp2   = (phase1/(phase1 + phase2) * 10);
+    private float norm   = (float) (1.0/Math.sqrt(phase1 * phase1 + phase2 * phase2));
+
     public FourierThread() {
-        waveTerms.add(new Pair<>(13.0d,ContentGen.getInstance().getAmplitude(15.0f)));
-        waveTerms.add(new Pair<>(17.0d,ContentGen.getInstance().getAmplitude(15.0f)));
-        waveTerms.add(new Pair<>(19.0d,ContentGen.getInstance().getAmplitude(15.0f)));
-        waveTerms.add(new Pair<>(13.0d,ContentGen.getInstance().getAmplitude(15.0f)));
-        waveTerms.add(new Pair<>(17.0d,ContentGen.getInstance().getAmplitude(15.0f)));
-        waveTerms.add(new Pair<>(19.0d,ContentGen.getInstance().getAmplitude(15.0f)));
+        waveTerms.add(new Pair<>(phase1,amp1));
+        waveTerms.add(new Pair<>(phase2,amp2));
+        waveTerms.add(new Pair<>(2.0f,0.35f));
     }
 
     // General steps
@@ -76,14 +79,14 @@ public class FourierThread extends Thread {
     // Call after blendval = 0
     private void shiftAmp()
     {
-        waveTerms.remove(0);
+        /*waveTerms.remove(0);
         waveTerms.remove(0);
         waveTerms.remove(0);
         waveTerms.add(new Pair<>(13.0d,ContentGen.getInstance().getAmplitude(15.0f)));
         waveTerms.add(new Pair<>(17.0d,ContentGen.getInstance().getAmplitude(15.0f)));
         waveTerms.add(new Pair<>(19.0d,ContentGen.getInstance().getAmplitude(15.0f)));
         blendval = 1.0f;
-        blend = false;
+        blend = false;*/
     }
 
     public float tan(int atX) {
@@ -100,21 +103,33 @@ public class FourierThread extends Thread {
     public void run()
     {
         double waterline = 0;
+        /*
         if (blend) {
-            for (Pair<Double,Float> wave: waveTerms) {
+            for (Pair<Float,Float> wave: waveTerms) {
                 waterline = waterline + (wave.second * Math.sin(wave.first) * blendval);
                 // Blend function for x vals
             }
         }
-        else {
-            Iterator<Pair<Double,Float>> itr = waveTerms.iterator();
-            Pair<Double,Float> wave;
+        else {*/
+            Iterator<Pair<Float,Float>> itr = waveTerms.iterator();
+            Pair<Float,Float> wave;
+            float time = (ContentGen.getInstance().tickCount / 25);
             for (int i = 0; i < 3; i++) {
                 wave = itr.next();
-                waterline = waterline + (wave.second * Math.sin(wave.first));
+                // Time should be +/- on odd/even terms
+                if (i != 2) {
+                    waterline = waterline + (wave.second * Math.sin((/* player.x*wave.first  */ wave.first + time) * wave.first * norm));
+                    //                        amp1*             sin(    (position.x*phase2 - time)                *phase2    *norm)
+                } else{
+                    // Third wave not going to fit this code very well, 0.35amp fine, time*2.5 + pos.x is a problem to represent as above
+                    waterline = waterline + (wave.second * Math.sin((time*2.5 /* + player.x */)));
+                }
+
+
+
             }
             // Nonblend sum of first 3 terms
-        }
+        //}
     }
 
 }

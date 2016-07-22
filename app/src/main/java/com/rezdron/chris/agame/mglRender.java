@@ -140,7 +140,7 @@ public class mglRender implements GLSurfaceView.Renderer {
             GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
             GLES20.glEnableVertexAttribArray(mPositionHandle);
             GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(SpriteShader.sp_Wave, "uMVPMatrix"), 1, false, m, 0);
-            GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), mScreenWidth, mScreenHeight);
+            //GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), mScreenWidth, mScreenHeight);
             GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"time"), ((float) ContentGen.getInstance().tickCount) / 25);
             GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
 
@@ -231,6 +231,20 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         GLES20.glLinkProgram(SpriteShader.sp_Sprite);
         GLES20.glLinkProgram(SpriteShader.sp_Wave);
+
+        GLES20.glUseProgram(SpriteShader.sp_Wave);
+
+        // Additional uniforms for wave shader
+        GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), mScreenWidth, mScreenHeight);
+        // Variable setup for wave functions
+        // Should only have to push these values once
+        float p1 = 19.0f;
+        float p2 = 24.0f;
+        GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"phase1"), p1);
+        GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"phase2"), p2);
+        GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"amp1"), (p2/(p1 + p2) * 10));
+        GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"amp2"), (p1/(p1 + p2) * 10));
+        GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"norm"), (float) (1.0/Math.sqrt(p1 * p1 + p2 * p2)));
 
         GLES20.glUseProgram(SpriteShader.sp_Sprite);
         // Shapes first
