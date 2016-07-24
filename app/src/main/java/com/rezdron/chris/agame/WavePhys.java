@@ -34,8 +34,12 @@ import java.util.Vector;
  * color = min(pow(color,0.5),1.0);
  * gl_FragColor = vec4( position.y < waves ? mix(vec3(0.59,0.63,0.86),vec3(0.19,0.24,0.51),color) : vec3(0,0,0), 1.0 );
  * }
+ *
+ * This should be folded into playerphys and possibly made available to some other tokens?
+ *
+ * Depreciating out, can remove after revision 65
  */
-public class FourierThread extends Thread {
+public class WavePhys {
     // Maybe need to use a prime lookup table for simplicity
     // 11,13,17,19,23,29 should offer range from low end of 2.3 seconds (1,000 samples/second) to 12.5 seconds
     private Vector<Pair<Float,Float>> waveTerms;
@@ -51,7 +55,7 @@ public class FourierThread extends Thread {
     private float amp2   = (phase1/(phase1 + phase2) * 10);
     private float norm   = (float) (1.0/Math.sqrt(phase1 * phase1 + phase2 * phase2));
 
-    public FourierThread() {
+    public WavePhys() {
         waveTerms.add(new Pair<>(phase1,amp1));
         waveTerms.add(new Pair<>(phase2,amp2));
         waveTerms.add(new Pair<>(2.0f,0.35f));
@@ -99,7 +103,7 @@ public class FourierThread extends Thread {
     // Should buffer 80% or so of wave as renderable sprite coords, flat (gradient in shader) color
     // Can periodically refresh the gl to render additional as needed
     // Might create a large number of quads on screen?
-    @Override
+    //@Override
     public void run()
     {
         double waterline = 0;
