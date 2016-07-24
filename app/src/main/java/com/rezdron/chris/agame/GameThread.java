@@ -50,14 +50,23 @@ public class GameThread extends Thread {
         float interval = 0.0f;
         long start = SystemClock.currentThreadTimeMillis();
         while (running) {
-            if (last - start > 300)
+            // TODO: Debug end timer can maybe be removed?
+            // Pausing will reset the timed end interval and maybe throw off score counter
+            // Only used for debug
+            if (paused)
             {
-                Log.d("thread","Calling quits");
-                //Call out to end the game as if player lost, used for testing at present
-                ((GameActivity) owner).transition("gameover");
+                start = SystemClock.currentThreadTimeMillis();
             }
             last = SystemClock.currentThreadTimeMillis();
             if (!paused) {
+                // Debug auto-end timer -->
+                if (last - start > 300)
+                {
+                    Log.d("thread","Calling quits");
+                    //Call out to end the game as if player lost, used for testing at present
+                    ((GameActivity) owner).transition("gameover");
+                }
+                // <-- End of auto-end timer chunk
                 if (owner == null)
                 {
                     setPause(true);

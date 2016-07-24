@@ -26,6 +26,7 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  * Created by Chris on 3/9/2016.
  * Building whole shader pipeline?
+ * TODO: Debug screen resolution, possibly related to screen density, tablet is very off from phone displays
  */
 public class mglRender implements GLSurfaceView.Renderer {
     private final float[] mtrxProjection = new float[16];
