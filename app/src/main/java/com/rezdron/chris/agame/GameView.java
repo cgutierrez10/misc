@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -14,7 +15,7 @@ public class GameView
         extends GLSurfaceView {
     protected mglRender mRenderer;
     private GameThread mThread;
-
+    DisplayMetrics dm = new DisplayMetrics();
 
     public GameView(Context context) {
         super(context);
@@ -34,10 +35,13 @@ public class GameView
 
     public GameView(Context context, AttributeSet attrs) {
         super(context,attrs);
+        dm = context.getResources().getDisplayMetrics();
+        Log.d("Renderer","Display metrics configured");
         setEGLContextClientVersion(2);
 
         //mRenderer = new mglRender(context);
         mRenderer = new mglRender();
+        mRenderer.setResolution(dm.heightPixels,dm.widthPixels); //,dm.heightPixels);
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
