@@ -53,10 +53,11 @@ public class GameThread extends Thread {
             // TODO: Debug end timer can maybe be removed?
             // Pausing will reset the timed end interval and maybe throw off score counter
             // Only used for debug
+            /* This if breaks the pause function somehow
             if (paused)
             {
                 start = SystemClock.currentThreadTimeMillis();
-            }
+            }*/
             last = SystemClock.currentThreadTimeMillis();
             if (!paused) {
                 // Debug auto-end timer -->

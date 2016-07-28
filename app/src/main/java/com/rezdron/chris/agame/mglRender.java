@@ -10,6 +10,7 @@ import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.os.SystemClock;
 import android.renderscript.Matrix2f;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.nio.ByteBuffer;
@@ -50,6 +51,7 @@ public class mglRender implements GLSurfaceView.Renderer {
     private static ByteBuffer wavevert;
     private static ByteBuffer waveidx;
     private static float time = SystemClock.uptimeMillis() / 250;
+
 
     float mScreenWidth = 1280;
     float mScreenHeight = 768;
@@ -186,7 +188,14 @@ public class mglRender implements GLSurfaceView.Renderer {
         }
     }
 
+    public void setResolution(float x, float y)
+    {
+        mScreenWidth = x;
+        mScreenHeight = y;
+    }
+
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
+
         mScreenWidth = width;
         mScreenHeight = height;
 
@@ -203,9 +212,16 @@ public class mglRender implements GLSurfaceView.Renderer {
             mtrxView[i] = 0.0f;
             mtrxProjectionAndView[i] = 0.0f;
         }
+        if (mScreenWidth > mScreenHeight) {
+            Matrix.orthoM(mtrxProjection, 0, 0f, 1000, 0.0f, 1000*(mScreenWidth/mScreenHeight), 0, 50);
 
-        // Setup our screen width and height for normal sprite translation.
-        Matrix.orthoM(mtrxProjection, 0, 0f, mScreenWidth, 0.0f, mScreenHeight, 0, 50);
+        } else {
+            // Setup our screen width and height for normal sprite translation.
+            // Hardcoding pixel sizes may be necessary at this step?
+            Matrix.orthoM(mtrxProjection, 0, 0f, 1000, 0.0f, 1000*(mScreenHeight/mScreenWidth), 0, 50);
+        }
+
+        //Matrix.orthoM(mtrxProjection, 0, 0f, mScreenWidth, 0.0f, mScreenHeight, 0, 50);
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
@@ -217,6 +233,7 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+
         SpriteShader.sp_Sprite = GLES20.glCreateProgram();
         SpriteShader.sp_Wave = GLES20.glCreateProgram();
 
@@ -236,7 +253,7 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLES20.glUseProgram(SpriteShader.sp_Wave);
 
         // Additional uniforms for wave shader
-        GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), mScreenWidth, mScreenHeight);
+        GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), 800,1205); // mScreenWidth, mScreenHeight);
         // Variable setup for wave functions
         // Should only have to push these values once
         float p1 = 19.0f;
@@ -329,8 +346,8 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         if (lastidx == 0 && width != mScreenWidth) {
             // Add full screen for wave draw
-            spriteBlit(0, 0, (int) mScreenWidth, (int) mScreenHeight, 1, 0, 0, 0);
-            Log.d("Sprite","Added fullscreen sprite:" + String.valueOf(mScreenWidth));
+            spriteBlit(0, ((int) mScreenHeight) * -1, (int) mScreenWidth, (int) mScreenHeight * 2, 1, 0, 0, 0);
+            //Log.d("Sprite","Added fullscreen sprite:" + String.valueOf(mScreenWidth));
         }
 
         // Vertices Ranges 0-11

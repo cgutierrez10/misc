@@ -31,9 +31,9 @@ public class PlayerPhys extends TokenPhysics {
     public PlayerPhys(int init_x, int init_y, float init_dvx, float init_dvy) {
         super(init_x, init_y, init_dvx, init_dvy);
         grav = grav * 3;
-        waveTerms.add(new Pair<>(phase1,amp1));
-        waveTerms.add(new Pair<>(phase2,amp2));
-        waveTerms.add(new Pair<>(2.0f,0.35f));
+        //waveTerms.add(new Pair<>(phase1,amp1));
+        //waveTerms.add(new Pair<>(phase2,amp2));
+        //waveTerms.add(new Pair<>(2.0f,0.35f));
     }
 
     public Boolean tick()
@@ -42,7 +42,7 @@ public class PlayerPhys extends TokenPhysics {
         // Player aligned on a given x on average but allow to flex with jump activity?
         tick++;
         // Update internal variables for x,y and dvx dvy
-        jumpCheck(tick);
+        //jumpCheck(tick);
         dvy = dvy + (grav * grav);
         y = Math.round(dvy) + y;
         return (y < -100 || y > 1000) ? false : true;
