@@ -94,7 +94,7 @@ public abstract class Token {
         // x,y represents center point of player and width/height is full range not half
         int x_off = Math.abs(x - this.phys.getX()) - width/2;
         int y_off = Math.abs(y - this.phys.getY()) - height/2;
-        Log.d("Physics_collision", "Inputs: " + x + " " + y + " " + width + " " + height + " Output: " + x_off + " " + y_off);
+        //Log.d("Physics_collision", "Inputs: " + x + " " + y + " " + width + " " + height + " Output: " + x_off + " " + y_off);
         return (x_off < 0 && y_off < 0);
     }
 

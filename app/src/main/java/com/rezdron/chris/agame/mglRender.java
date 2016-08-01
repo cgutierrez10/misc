@@ -48,8 +48,8 @@ public class mglRender implements GLSurfaceView.Renderer {
     private static boolean flip;
     private static short lastidx;
     private static short arrayslen;
-    private static ByteBuffer wavevert;
-    private static ByteBuffer waveidx;
+    //private static ByteBuffer wavevert;
+    //private static ByteBuffer waveidx;
     private static float time = SystemClock.uptimeMillis() / 250;
 
 
@@ -62,7 +62,7 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     public mglRender()
     {
-
+        /*
         wavevert = ByteBuffer.allocateDirect(64);
         waveidx = ByteBuffer.allocateDirect(20);
         // Vertices Ranges 0-11
@@ -89,6 +89,7 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         wavevert.position(0);
         waveidx.position(0);
+        */
     }
 
     public void onPause()
@@ -203,8 +204,9 @@ public class mglRender implements GLSurfaceView.Renderer {
         //mScreenHeight = 1024;
 
         // Redo the Viewport, making it fullscreen.
-        GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
+        //GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
 
+        // Matrix for orthographic projection
         // Clear our matrices
         for(int i=0;i<16;i++)
         {
@@ -212,22 +214,27 @@ public class mglRender implements GLSurfaceView.Renderer {
             mtrxView[i] = 0.0f;
             mtrxProjectionAndView[i] = 0.0f;
         }
-        if (mScreenWidth > mScreenHeight) {
+        Matrix.orthoM(mtrxProjection, 0, 0f, 1921, 0.0f, 1921, 0, 50);
+        // Set the camera position (View matrix)
+        Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+
+        // Calculate the projection and view transformation
+        Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
+        
+        //GLES20.glScissor((int) (1921 - mScreenHeight), 0, (int) mScreenHeight, (int) mScreenWidth);
+
+        /*if (mScreenWidth > mScreenHeight) {
             Matrix.orthoM(mtrxProjection, 0, 0f, 1000, 0.0f, 1000*(mScreenWidth/mScreenHeight), 0, 50);
 
         } else {
             // Setup our screen width and height for normal sprite translation.
             // Hardcoding pixel sizes may be necessary at this step?
             Matrix.orthoM(mtrxProjection, 0, 0f, 1000, 0.0f, 1000*(mScreenHeight/mScreenWidth), 0, 50);
-        }
+        }*/
 
         //Matrix.orthoM(mtrxProjection, 0, 0f, mScreenWidth, 0.0f, mScreenHeight, 0, 50);
 
-        // Set the camera position (View matrix)
-        Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
-        // Calculate the projection and view transformation
-        Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
         Log.d("Render","Screen dims: " + String.valueOf(mScreenWidth) + " " + String.valueOf(mScreenHeight));
     }
 
@@ -254,6 +261,8 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         // Additional uniforms for wave shader
         GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), 800,1205); // mScreenWidth, mScreenHeight);
+        float sealevel = 500 * 0.8f;
+        GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"sealevel"), sealevel);
         // Variable setup for wave functions
         // Should only have to push these values once
         float p1 = 19.0f;
@@ -265,6 +274,7 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"norm"), (float) (1.0/Math.sqrt(p1 * p1 + p2 * p2)));
 
         GLES20.glUseProgram(SpriteShader.sp_Sprite);
+
         // Shapes first
         // Image/textures second
         SetupImage();
@@ -273,6 +283,11 @@ public class mglRender implements GLSurfaceView.Renderer {
         shadowvertices = new float[120];
         shadowindices = new short[60];
         shadowuvs = new float[80];
+
+        // Clip screen bounds losing bottom range and keeping stuck to left edge (where player is)
+
+        GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
+        GLES20.glScissor((int) (1921 - mScreenHeight), 0, (int) mScreenHeight, (int) mScreenWidth);
     }
 
     public void SetupImage()

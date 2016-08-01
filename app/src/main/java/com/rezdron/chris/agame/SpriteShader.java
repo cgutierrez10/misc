@@ -69,6 +69,7 @@ public class SpriteShader {
     public static String fs_Wave = "precision mediump float;"
     + "uniform float time;"
     + "uniform vec2 resolution;"
+    + "uniform float sealevel;"
     + "uniform float phase1;"
     + "uniform float phase2;"
     + "uniform float amp1;"
@@ -78,8 +79,8 @@ public class SpriteShader {
     //+ "norm = 1.0/sqrt(phase1*phase1 + phase2*phase2);"
     //+ "   vec2 position = (gl_FragCoord.xy);"
     + "   vec2 position = ( gl_FragCoord.xy );"
-    + "   position.x = gl_FragCoord.x / resolution.x;"
-    + "   position.y = gl_FragCoord.y / 5.0;"
+    + "   position.x = gl_FragCoord.x / resolution.x;" // Range [0,1]
+    + "   position.y = gl_FragCoord.y / 5.0;"          // Range appox [0,200] ? maybe let range == and adjust wave multiplier?
     //+ "   float waves = amp2*sin((gl_FragCoord.x*phase1 + time)*phase1*norm)"
     //+ "           + amp1*sin((gl_FragCoord.x*phase2 - time)*phase2*norm)"
     //+ "           - 0.035*sin(time*2.5 + gl_FragCoord.x);"
@@ -89,7 +90,7 @@ public class SpriteShader {
     //+ "   float waves = 0.065*sin(time*3.0 + position.x*7.0)"
     //+ "               + 0.015*sin(position.x*17.0 - time*2.0)"
     //+ "               + 0.035*sin(time*2.5 + position.x);"
-    + "   waves = waves + 200.0;"
+    + "   waves = waves + 200.0;" // Sea level ~200 y +/- waves?
     + "   float color = position.y < waves ? (waves - position.y)*20.0 : 0.0;"
     + "   color = min(pow(color,0.5),1.0);"
     + "   gl_FragColor = vec4( position.y < waves ? mix(vec3(0.59,0.63,0.86),vec3(0.1,0.5,50),color) : vec3(0.3,0.5,0.5), 1.0 );"
