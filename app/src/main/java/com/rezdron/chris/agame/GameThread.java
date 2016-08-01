@@ -59,6 +59,7 @@ public class GameThread extends Thread {
                 start = SystemClock.currentThreadTimeMillis();
             }*/
             last = SystemClock.currentThreadTimeMillis();
+            // TODO: Pause does not appear to work correctly on phone, works fine on tablet
             if (!paused) {
                 // Debug auto-end timer -->
                 if (last - start > 300)
