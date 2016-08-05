@@ -57,6 +57,7 @@ public class GameActivity extends AppCompatActivity {
     public void PauseButton(View v) {
         if (pause) {
             transition("gameplay");
+            pw.dismiss();
         } else {
             transition("pause");
             if (pw == null) {
@@ -86,7 +87,10 @@ public class GameActivity extends AppCompatActivity {
                 pw = helpBuilder.create();
                 pw.setCancelable(false);
             }
-            pw.show();
+            // This was working fine before but started throwing windowmanager violations
+            if (pw != null) {
+                pw.show();
+            }
         }
         super.onPause();
     }
@@ -99,7 +103,7 @@ public class GameActivity extends AppCompatActivity {
         }
         else if ((mode == "gameplay") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEPLAY))) {
             ((GameView) findViewById(R.id.GameView)).unPause();
-            if (pw != null) { pw.hide();}
+            if (pw != null) { pw.dismiss();}
             pause = false;
         }
         else if ((mode == "gameover") && (GameMode.getInstance().changeMode(GameMode.MODE.GAMEOVER))) {
@@ -110,6 +114,7 @@ public class GameActivity extends AppCompatActivity {
             //go.putExtra("score", "0");
             go.putExtra("time", String.valueOf(((GameView) findViewById(R.id.GameView)).getActiveTime()));
             //go.putExtra("time", "0");
+            if (pw != null) { pw.dismiss();}
             startActivity(go);
         }
         // No transition to title, loading, gameplay or exit, only to pause and gameover
@@ -129,6 +134,15 @@ public class GameActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
+        // Restarting the app from game over seems to be causing an exception
         PauseButton(new View(this));
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        if (pw != null) { pw.dismiss(); }
+        super.onDestroy();
+
     }
 }

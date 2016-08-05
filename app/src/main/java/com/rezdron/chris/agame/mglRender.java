@@ -191,8 +191,8 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     public void setResolution(float x, float y)
     {
-        mScreenWidth = x;
-        mScreenHeight = y;
+        //mScreenWidth = x;
+        //mScreenHeight = y;
     }
 
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -214,28 +214,24 @@ public class mglRender implements GLSurfaceView.Renderer {
             mtrxView[i] = 0.0f;
             mtrxProjectionAndView[i] = 0.0f;
         }
-        Matrix.orthoM(mtrxProjection, 0, 0f, 1921, 0.0f, 1921, 0, 50);
+        // Need to arrange the gl view and scissors so game renders with deepest possible
+        // sea level is full screen on both dimensions then if screen rotation
+        // is to shorter then scale down and ensure stretch keeps aspect ratio square
+        // Either rotation should end up trimming or adding to the right edge while keeping vertical
+        // same
+        // Max of mscreenheight, mscreenwidth for both?
+        // Set 3000px of height  and arrange width to be longer than any possible scaling
+        // Then glscissor it down on length to fit and scale height up
+        float aspectRatio = (float) mScreenWidth / (float) mScreenHeight;
+        //Matrix.orthoM(mtrxProjection, 0, -aspectRatio, aspectRatio, -1, 1, -1, 1);
+        Matrix.orthoM(mtrxProjection, 0, 0f, 1000.0f, 0.0f, 1000.0f, 0, 50);
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
-        
-        //GLES20.glScissor((int) (1921 - mScreenHeight), 0, (int) mScreenHeight, (int) mScreenWidth);
 
-        /*if (mScreenWidth > mScreenHeight) {
-            Matrix.orthoM(mtrxProjection, 0, 0f, 1000, 0.0f, 1000*(mScreenWidth/mScreenHeight), 0, 50);
-
-        } else {
-            // Setup our screen width and height for normal sprite translation.
-            // Hardcoding pixel sizes may be necessary at this step?
-            Matrix.orthoM(mtrxProjection, 0, 0f, 1000, 0.0f, 1000*(mScreenHeight/mScreenWidth), 0, 50);
-        }*/
-
-        //Matrix.orthoM(mtrxProjection, 0, 0f, mScreenWidth, 0.0f, mScreenHeight, 0, 50);
-
-
-        Log.d("Render","Screen dims: " + String.valueOf(mScreenWidth) + " " + String.valueOf(mScreenHeight));
+        //Log.d("Render","Screen dims: " + String.valueOf(mScreenWidth) + " " + String.valueOf(mScreenHeight));
     }
 
     @Override
@@ -260,8 +256,8 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLES20.glUseProgram(SpriteShader.sp_Wave);
 
         // Additional uniforms for wave shader
-        GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), 800,1205); // mScreenWidth, mScreenHeight);
-        float sealevel = 500 * 0.8f;
+        GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), 512,512); // mScreenWidth, mScreenHeight);
+        float sealevel = 512 * 0.8f;
         GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"sealevel"), sealevel);
         // Variable setup for wave functions
         // Should only have to push these values once
@@ -286,8 +282,8 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         // Clip screen bounds losing bottom range and keeping stuck to left edge (where player is)
 
-        GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
-        GLES20.glScissor((int) (1921 - mScreenHeight), 0, (int) mScreenHeight, (int) mScreenWidth);
+        //GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
+        //GLES20.glScissor((int) (1921 - mScreenHeight), 0, (int) mScreenHeight, (int) mScreenWidth);
     }
 
     public void SetupImage()
