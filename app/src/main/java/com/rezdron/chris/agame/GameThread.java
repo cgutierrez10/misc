@@ -62,7 +62,7 @@ public class GameThread extends Thread {
             // TODO: Pause does not appear to work correctly on phone, works fine on tablet
             if (!paused) {
                 // Debug auto-end timer -->
-                if (last - start > 300)
+                if ((last - start) > 300)
                 {
                     Log.d("thread","Calling quits");
                     //Call out to end the game as if player lost, used for testing at present
