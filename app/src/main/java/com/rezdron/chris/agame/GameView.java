@@ -25,7 +25,7 @@ public class GameView
         mRenderer = new mglRender();
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-        this.getHolder().setFixedSize(512,512);
+        this.getHolder().setFixedSize(1092,1080);
 
 
         mThread = new GameThread();
@@ -42,7 +42,7 @@ public class GameView
 
         //mRenderer = new mglRender(context);
         mRenderer = new mglRender();
-        mRenderer.setResolution(dm.heightPixels,dm.widthPixels); //,dm.heightPixels);
+        //mRenderer.setResolution(dm.heightPixels,dm.widthPixels); //,dm.heightPixels);
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
@@ -122,5 +122,11 @@ public class GameView
             Player.getInstance().setAccel(10);
         }
         return true;
+    }
+
+    public void rotate(boolean orientation)
+    {
+        // True is landscape
+        // False is portrait
     }
 }

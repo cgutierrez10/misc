@@ -62,34 +62,6 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     public mglRender()
     {
-        /*
-        wavevert = ByteBuffer.allocateDirect(64);
-        waveidx = ByteBuffer.allocateDirect(20);
-        // Vertices Ranges 0-11
-        wavevert.position(0);
-        wavevert.putFloat(0);
-        wavevert.putFloat(mScreenHeight);
-        wavevert.putFloat(0);
-        wavevert.putFloat(0);
-        wavevert.putFloat(0);
-        wavevert.putFloat(0);
-        wavevert.putFloat(mScreenWidth);
-        wavevert.putFloat(0);
-        wavevert.putFloat(0);
-        wavevert.putFloat(mScreenWidth);
-        wavevert.putFloat(mScreenHeight);
-        wavevert.putFloat(0);
-        waveidx.position(0);
-        waveidx.putShort((short) 0);
-        waveidx.putShort((short) 1);
-        waveidx.putShort((short) 2);
-        waveidx.putShort((short) 0);
-        waveidx.putShort((short) 2);
-        waveidx.putShort((short) 3);
-
-        wavevert.position(0);
-        waveidx.position(0);
-        */
     }
 
     public void onPause()
@@ -144,8 +116,7 @@ public class mglRender implements GLSurfaceView.Renderer {
             GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
             GLES20.glEnableVertexAttribArray(mPositionHandle);
             GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(SpriteShader.sp_Wave, "uMVPMatrix"), 1, false, m, 0);
-            //GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), mScreenWidth, mScreenHeight);
-            GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"time"), ((float) ContentGen.getInstance().tickCount) / 25);
+            GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave, "time"), ((float) ContentGen.getInstance().tickCount) / 25);
             GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
 
             // Draw everything else
@@ -163,21 +134,10 @@ public class mglRender implements GLSurfaceView.Renderer {
             GLES20.glVertexAttribPointer(mTexCoordLoc, 2, GLES20.GL_FLOAT, false, 0, uvBuffer);
             GLES20.glEnableVertexAttribArray(mTexCoordLoc);
 
-            // Get handle to shape's transformation matrix
-            int mtrxhandle = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "uMVPMatrix");
-            GLES20.glUniformMatrix4fv(mtrxhandle, 1, false, m, 0);
+            GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "uMVPMatrix"), 1, false, m, 0);
+            GLES20.glUniform1i(GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "s_texture"), 0);
 
-            int mSamplerLoc = GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "s_texture");
-
-            GLES20.glUniform1i(mSamplerLoc, 0);
-
-            //if (indexcount != 0) {
-                GLES20.glDrawElements(GLES20.GL_TRIANGLES, indexcount * 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
-            //}
-
-            // If no geometry then just allow the screen to be clear
-            //GLES20.glDisableVertexAttribArray(mPositionHandle);
-            //GLES20.glDisableVertexAttribArray(mTexCoordLoc);
+            GLES20.glDrawElements(GLES20.GL_TRIANGLES, indexcount * 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
         }
         try {
             if (34 - (SystemClock.currentThreadTimeMillis() - last) > 0) {
@@ -222,9 +182,12 @@ public class mglRender implements GLSurfaceView.Renderer {
         // Max of mscreenheight, mscreenwidth for both?
         // Set 3000px of height  and arrange width to be longer than any possible scaling
         // Then glscissor it down on length to fit and scale height up
-        float aspectRatio = (float) mScreenWidth / (float) mScreenHeight;
         //Matrix.orthoM(mtrxProjection, 0, -aspectRatio, aspectRatio, -1, 1, -1, 1);
-        Matrix.orthoM(mtrxProjection, 0, 0f, 1000.0f, 0.0f, 1000.0f, 0, 50);
+        // Setting this to something too small seems to break sprite drawings?
+        Matrix.orthoM(mtrxProjection, 0, 0f, mScreenHeight, 0.0f, mScreenWidth, 0, 50);
+
+        // This scalem seems to be what is needed but need to find the right aspects
+        Matrix.scaleM(mtrxProjection, 0, mScreenHeight/mScreenWidth, 2.0f, 1.0f);
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
@@ -256,7 +219,7 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLES20.glUseProgram(SpriteShader.sp_Wave);
 
         // Additional uniforms for wave shader
-        GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), 512,512); // mScreenWidth, mScreenHeight);
+        GLES20.glUniform2f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"resolution"), 1920,1080); // mScreenWidth, mScreenHeight);
         float sealevel = 512 * 0.8f;
         GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave,"sealevel"), sealevel);
         // Variable setup for wave functions
@@ -299,6 +262,7 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+
 
         if (GfxResourceHandler.getInstance().getRsx("sheep") == null)
         {
