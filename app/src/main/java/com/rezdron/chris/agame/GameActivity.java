@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -144,5 +145,19 @@ public class GameActivity extends AppCompatActivity {
         if (pw != null) { pw.dismiss(); }
         super.onDestroy();
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // True is landscape
+            ((GameView) findViewById(R.id.GameView)).rotate(true);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            // False is portrait
+            ((GameView) findViewById(R.id.GameView)).rotate(false);
+        }
     }
 }
