@@ -184,10 +184,10 @@ public class mglRender implements GLSurfaceView.Renderer {
         // Then glscissor it down on length to fit and scale height up
         //Matrix.orthoM(mtrxProjection, 0, -aspectRatio, aspectRatio, -1, 1, -1, 1);
         // Setting this to something too small seems to break sprite drawings?
-        Matrix.orthoM(mtrxProjection, 0, 0f, mScreenHeight, 0.0f, mScreenWidth, 0, 50);
+        Matrix.orthoM(mtrxProjection, 0, 0f, 1080, 0.0f, 1080*(mScreenWidth/mScreenHeight), 0, 50);
 
         // This scalem seems to be what is needed but need to find the right aspects
-        Matrix.scaleM(mtrxProjection, 0, mScreenHeight/mScreenWidth, 2.0f, 1.0f);
+        Matrix.scaleM(mtrxProjection, 0, mScreenWidth/mScreenHeight, 1.0f, 1.0f);
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
