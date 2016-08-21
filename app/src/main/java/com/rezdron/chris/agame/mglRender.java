@@ -160,12 +160,6 @@ public class mglRender implements GLSurfaceView.Renderer {
         mScreenWidth = width;
         mScreenHeight = height;
 
-        //mScreenWidth = 800;
-        //mScreenHeight = 1024;
-
-        // Redo the Viewport, making it fullscreen.
-        //GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
-
         // Matrix for orthographic projection
         // Clear our matrices
         for(int i=0;i<16;i++)
@@ -174,6 +168,7 @@ public class mglRender implements GLSurfaceView.Renderer {
             mtrxView[i] = 0.0f;
             mtrxProjectionAndView[i] = 0.0f;
         }
+
         // Need to arrange the gl view and scissors so game renders with deepest possible
         // sea level is full screen on both dimensions then if screen rotation
         // is to shorter then scale down and ensure stretch keeps aspect ratio square
@@ -184,17 +179,17 @@ public class mglRender implements GLSurfaceView.Renderer {
         // Then glscissor it down on length to fit and scale height up
         //Matrix.orthoM(mtrxProjection, 0, -aspectRatio, aspectRatio, -1, 1, -1, 1);
         // Setting this to something too small seems to break sprite drawings?
-        Matrix.orthoM(mtrxProjection, 0, 0f, 1080, 0.0f, 1080*(mScreenWidth/mScreenHeight), 0, 50);
+        // Setting this too large causes letterboxing
+        float bigdim = Math.max(mScreenWidth,mScreenHeight);
+        float mindim = Math.min(mScreenWidth,mScreenHeight);
+        Matrix.orthoM(mtrxProjection,0,0f, mindim*(mScreenWidth/bigdim), 0.0f, mindim*(mScreenHeight/bigdim), 0, 50);
 
-        // This scalem seems to be what is needed but need to find the right aspects
-        Matrix.scaleM(mtrxProjection, 0, mScreenWidth/mScreenHeight, 1.0f, 1.0f);
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
-
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
-
-        //Log.d("Render","Screen dims: " + String.valueOf(mScreenWidth) + " " + String.valueOf(mScreenHeight));
+        GLES20.glViewport(0, 0, width, height);
+        //Also need to reset the sealevel since it is based on actual pixels not projection pixels?
     }
 
     @Override
