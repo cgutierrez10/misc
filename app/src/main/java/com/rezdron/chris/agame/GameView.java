@@ -25,7 +25,7 @@ public class GameView
         mRenderer = new mglRender();
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-        this.getHolder().setFixedSize(1092,1080);
+        //this.getHolder().setFixedSize(512,512);
 
 
         mThread = new GameThread();
