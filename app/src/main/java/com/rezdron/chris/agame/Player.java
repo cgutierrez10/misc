@@ -24,7 +24,7 @@ public class Player extends Token {
     }
 
     public void reset() {
-        phys.x = 512;
+        phys.x = 1000;
         phys.y = 128;
         phys.dvy = -15.0f;
         this.active = true;
