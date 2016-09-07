@@ -183,12 +183,14 @@ public class mglRender implements GLSurfaceView.Renderer {
         float bigdim = Math.max(mScreenWidth,mScreenHeight);
         float mindim = Math.min(mScreenWidth,mScreenHeight);
         Matrix.orthoM(mtrxProjection,0,0f, mindim*(mScreenWidth/bigdim), 0.0f, mindim*(mScreenHeight/bigdim), 0, 50);
+        //Matrix.scaleM(mtrxProjection,0,64,64,1.0f);
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
         GLES20.glViewport(0, 0, width, height);
+
         //Also need to reset the sealevel since it is based on actual pixels not projection pixels?
     }
 
@@ -242,6 +244,7 @@ public class mglRender implements GLSurfaceView.Renderer {
 
         //GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
         //GLES20.glScissor((int) (1921 - mScreenHeight), 0, (int) mScreenHeight, (int) mScreenWidth);
+
     }
 
     public void SetupImage()

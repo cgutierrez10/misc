@@ -60,6 +60,8 @@ public class GfxResourceHandler {
                 Resources rsx = state.getResources();
 
                 Log.d("Bitmap", String.valueOf(rsx.getIdentifier(request, "drawable", state.getPackageName())));
+                //final BitmapFactory.Options options = new BitmapFactory.Options();
+                //options.inScaled = false;	// No pre-scaling
                 Bitmap loadRsx = BitmapFactory.decodeResource(rsx, rsx.getIdentifier(request, "drawable", state.getPackageName()));
 
                 // Manual entry of resource id works, above state.getPackageName is the failpoint
@@ -149,6 +151,6 @@ public class GfxResourceHandler {
         // Implement a draw to the current context canvas of resource at location
         //Bitmap blit = getRsx(request);
         Float[] loc = texCoord.get(request);
-        mglRender.getInstance().spriteBlit(x, y, 256, 256, loc[0], 0, frame, loadCount);
+        mglRender.getInstance().spriteBlit(x, y, 16, 16, loc[0], 0, frame, loadCount);
     }
 }

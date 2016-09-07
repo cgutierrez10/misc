@@ -51,7 +51,10 @@ public class TokenHandler
         drawable.push(newToken);
         moveable.push(newToken);
         scoreable.push(newToken);
-        collideable.push(newToken);
+
+        if (newToken.collide) {
+            collideable.push(newToken);
+        }
     }
 
     private void cullTokens()
