@@ -1,5 +1,7 @@
 package com.rezdron.chris.agame;
 
+import android.util.Log;
+
 /**
  * Created by Chris on 1/22/2016.
  * First try at creating a fully functional mobile, not intended for release
@@ -12,7 +14,8 @@ public class TokenBobber extends Token {
     }
 
     public TokenBobber(int score, int x, int y) {
-        super(score, new PhysFloat(x,y+50,(float) 0.0, (float) 5.0));
+        super(score, new PhysFloat(x,y,(float) 0.0, (float) 0.0));
+        Log.d("token","Adding bobber");
         this.gfx_type = "player";
         this.collide = false;
     }
@@ -39,9 +42,13 @@ public class TokenBobber extends Token {
     public void shift(int offset) {}
 
     @Override
+    public String name() { return "bobber"; }
+
+    @Override
     public void onDraw()
     {
         GfxResourceHandler.getInstance().blitAt(this.gfx_type,phys.getX(),phys.getY(),0);
+        Log.d("token",this.name() + " at " + phys.getX().toString() + " : " + phys.getY().toString());
         // Possibly want to do gfxresource handler blit @string at <x,y>
     }
 }

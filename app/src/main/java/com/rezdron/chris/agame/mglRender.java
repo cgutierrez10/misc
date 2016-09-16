@@ -110,6 +110,9 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         if (vertexBuffer != null) {
+            // Not sure why uMVPMatrix isn't sticking as a uniform, should be possible to set only
+            // at onchange screen orientation and load and not per-frame
+
             // Draw background waves
             GLES20.glUseProgram(SpriteShader.sp_Wave);
             int mPositionHandle = GLES20.glGetAttribLocation(SpriteShader.sp_Wave, "vPosition");
@@ -149,12 +152,6 @@ public class mglRender implements GLSurfaceView.Renderer {
         }
     }
 
-    public void setResolution(float x, float y)
-    {
-        //mScreenWidth = x;
-        //mScreenHeight = y;
-    }
-
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
 
         mScreenWidth = width;
@@ -182,15 +179,20 @@ public class mglRender implements GLSurfaceView.Renderer {
         // Setting this too large causes letterboxing
         float bigdim = Math.max(mScreenWidth,mScreenHeight);
         float mindim = Math.min(mScreenWidth,mScreenHeight);
+        //This may rebreak the orientation changes, trying to work towards proper scaling
         Matrix.orthoM(mtrxProjection,0,0f, mindim*(mScreenWidth/bigdim), 0.0f, mindim*(mScreenHeight/bigdim), 0, 50);
-        //Matrix.scaleM(mtrxProjection,0,64,64,1.0f);
+        //Matrix.orthoM(mtrxProjection, 0, 0.0f, 0.05f, 0.0f, 0.05f, -1.0f, 1.0f);
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mtrxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
-        GLES20.glViewport(0, 0, width, height);
 
+        GLES20.glViewport(0, 0, width, height);
+        // Be sure renderers know about the current projection
+        // Should be possible to set these once and leave them until changed but not working maybe need to pass in copy?
+        //GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(SpriteShader.sp_Wave, "uMVPMatrix"), 1, false, mtrxProjectionAndView, 0);
+        //GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "uMVPMatrix"), 1, false, mtrxProjectionAndView, 0);
         //Also need to reset the sealevel since it is based on actual pixels not projection pixels?
     }
 
@@ -324,18 +326,19 @@ public class mglRender implements GLSurfaceView.Renderer {
         }
 
         // Vertices Ranges 0-11
-        shadowvertices[0+(lastidx*12)] = (mScreenWidth - (x+width));
-        shadowvertices[1+(lastidx*12)] = (mScreenHeight - y);
+        // Going to rewrite this to use normal lower left origin instead of trying to correct from upper right
+        shadowvertices[0+(lastidx*12)] = x+width;
+        shadowvertices[1+(lastidx*12)] = y;
         shadowvertices[2+(lastidx*12)] = 0;
-        shadowvertices[3+(lastidx*12)] = (mScreenWidth - (x+width));
-        shadowvertices[4+(lastidx*12)] = (mScreenHeight - (y+height));
+        shadowvertices[3+(lastidx*12)] = x+width;
+        shadowvertices[4+(lastidx*12)] = y+height;
         shadowvertices[5+(lastidx*12)] = 0;
 
-        shadowvertices[6+(lastidx*12)] = (mScreenWidth - x);
-        shadowvertices[7+(lastidx*12)] = (mScreenHeight - (y+height));
+        shadowvertices[6+(lastidx*12)] = x;
+        shadowvertices[7+(lastidx*12)] = y+height;
         shadowvertices[8+(lastidx*12)] = 0;
-        shadowvertices[9+(lastidx*12)] = (mScreenWidth - x);
-        shadowvertices[10+(lastidx*12)] = (mScreenHeight - y);
+        shadowvertices[9+(lastidx*12)] = x;
+        shadowvertices[10+(lastidx*12)] = y;
         shadowvertices[11+(lastidx*12)] = 0;
 
         // Get atlas coords from gfxresourcehandler

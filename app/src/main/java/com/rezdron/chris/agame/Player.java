@@ -26,14 +26,17 @@ public class Player extends Token {
     public void reset() {
         phys.x = 1000;
         phys.y = 128;
+        phys.x = 16;
+        phys.y = 128;
         phys.dvy = -15.0f;
+        phys.dvy = 15.0f;
         this.active = true;
         //instance = new Player();
     }
 
     public void setAccel(Integer y)
     {
-        ((PlayerPhys) phys).addDvy(-y);
+        ((PlayerPhys) phys).addDvy(y);
     }
 
     public void tick()
@@ -62,5 +65,6 @@ public class Player extends Token {
     public void onDraw() {
         //Log.d("player","Player drawn at" + String.valueOf(phys.getX()) + "," + String.valueOf(phys.getY()));
         GfxResourceHandler.getInstance().blitAt(this.gfx_type, phys.getX(), phys.getY(), 0);
+        //Log.d("token",this.gfx_type + " at " + phys.getX().toString() + " : " + phys.getY().toString());
     }
 }

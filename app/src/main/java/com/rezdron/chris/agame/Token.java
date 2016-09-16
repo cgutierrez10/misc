@@ -88,6 +88,8 @@ public abstract class Token {
 
     public abstract void tick();
 
+    public String name() { return "debug"; }
+
     // Basic bounding box, fuller collision detection can be used after quick check
     public boolean quickCollision(int x, int y, int width, int height) {
         //Check against bounding box for this sprite

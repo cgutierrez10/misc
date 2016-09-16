@@ -55,11 +55,11 @@ public class ContentGen {
         Token addtoken;
         if (type == 0) {
             // Sheep!
-            addtoken = new TokenSheep(10,0,0);
+            addtoken = new TokenSheep(10,1080,80);
             // What physics?
         } else {
             // Spider!
-            addtoken = new TokenSpider(10,0,0);
+            addtoken = new TokenSpider(10,1080,80);
         }
         nextadd = 50;
         TokenHandler.getInstance().addToken(addtoken);

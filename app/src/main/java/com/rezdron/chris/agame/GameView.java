@@ -66,6 +66,7 @@ public class GameView
     public void unPause() { Log.d("transition","Unpausing"); mThread.setPause(false); }
     public void newStart() {
         mThread.resetGame();
+        TokenHandler.getInstance().addToken(new TokenBobber(0,70,75));
         Log.d("transition","Unpausing");
         mThread.setPause(false); }
 

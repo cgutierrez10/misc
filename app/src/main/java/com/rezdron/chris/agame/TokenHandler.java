@@ -40,6 +40,7 @@ public class TokenHandler
         collideable.clear();
         scoreable.clear();
         cullList.clear();
+        Log.d("token","Clearing tokens");
     }
 
     public void addToken(Token newToken)
@@ -48,6 +49,10 @@ public class TokenHandler
         tickable.push(newToken);
 
         // Everything should draw if it isn't visible why does it exist
+        if (newToken.name() == "bobber")
+        {
+            Log.d("token","Adding " + newToken.name() + " to drawable");
+        }
         drawable.push(newToken);
         moveable.push(newToken);
         scoreable.push(newToken);
@@ -123,6 +128,7 @@ public class TokenHandler
     public void draw() {
         // Definitely being called
         for (Token element:drawable) {
+            //Log.d("token","Drawing " + element.name());
             element.onDraw();
         }
         // Player always draws and always draws on top

@@ -151,6 +151,6 @@ public class GfxResourceHandler {
         // Implement a draw to the current context canvas of resource at location
         //Bitmap blit = getRsx(request);
         Float[] loc = texCoord.get(request);
-        mglRender.getInstance().spriteBlit(x, y, 16, 16, loc[0], 0, frame, loadCount);
+        mglRender.getInstance().spriteBlit(x, y, 64, 64, loc[0], 0, frame, loadCount);
     }
 }
