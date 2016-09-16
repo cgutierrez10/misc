@@ -43,7 +43,7 @@ public class PlayerPhys extends TokenPhysics {
         tick++;
         // Update internal variables for x,y and dvx dvy
         //jumpCheck(tick);
-        dvy = dvy + (grav * grav);
+        dvy = dvy - (grav * grav);
         y = Math.round(dvy) + y;
         return (y < -100 || y > 1000) ? false : true;
     }

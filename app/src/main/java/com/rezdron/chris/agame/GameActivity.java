@@ -46,9 +46,7 @@ public class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //May need to replace, and reactivate the player token on game start/ends
         Player.getInstance().reset();
-        TokenHandler.getInstance().addToken(new TokenBobber(0,1000,0));
-        TokenHandler.getInstance().addToken(new TokenBobber(0,1600,0));
-        TokenHandler.getInstance().addToken(new TokenBobber(0,1900,0));
+
 
         setContentView(R.layout.activity_game_run);
 

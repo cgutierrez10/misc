@@ -10,11 +10,12 @@ public class PhysFloat extends TokenPhysics {
     double amp1 = (phase2/(phase1 + phase2) * 10);
     double amp2 = (phase1/(phase1 + phase2) * 10);
     double norm = (1.0/Math.sqrt(phase1 * phase1 + phase2 * phase2));
-    int sealevel = 50;
+    int sealevel = 0;
 
     public PhysFloat(int input_x, int input_y, float input_dvx, float input_dvy)
     {
         super(input_x,input_y,input_dvx,input_dvy);
+        sealevel = y;
     }
 
     public Boolean tick()
@@ -25,6 +26,8 @@ public class PhysFloat extends TokenPhysics {
         //dvy = dvy + (grav * grav);
         //y = Math.round(dvy) + y;
         //y = WaterLine.getInstance().
+        // This needs a scaling factor and a way to sync sea level to align to graphics height and range of motion
+        // Looks to be vaguely accurate right now but might be out of time sync?
         y = (int) Math.round(amp2*Math.sin((x*phase1 + timecount)*phase1*norm)
                 + amp1*Math.sin((x*phase2 - timecount)*phase2*norm)
                 - 0.035*Math.sin(timecount*2.5 + x))
