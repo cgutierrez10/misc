@@ -53,8 +53,8 @@ public class mglRender implements GLSurfaceView.Renderer {
     private static float time = SystemClock.uptimeMillis() / 250;
 
 
-    float mScreenWidth = 1280;
-    float mScreenHeight = 768;
+    public float mScreenWidth = 1280;
+    public float mScreenHeight = 768;
 
     private static mglRender instance = new mglRender();
 
@@ -119,6 +119,7 @@ public class mglRender implements GLSurfaceView.Renderer {
             GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
             GLES20.glEnableVertexAttribArray(mPositionHandle);
             GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(SpriteShader.sp_Wave, "uMVPMatrix"), 1, false, m, 0);
+            // Debugging by setting a constant here
             GLES20.glUniform1f(GLES20.glGetUniformLocation(SpriteShader.sp_Wave, "time"), ((float) ContentGen.getInstance().tickCount) / 25);
             GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
 
@@ -152,6 +153,11 @@ public class mglRender implements GLSurfaceView.Renderer {
         }
     }
 
+    public float[] getMVP()
+    {
+        return mtrxProjectionAndView;
+    }
+
     @Override public void onSurfaceChanged(GL10 gl, int width, int height) {
 
         mScreenWidth = width;
@@ -172,11 +178,6 @@ public class mglRender implements GLSurfaceView.Renderer {
         // Either rotation should end up trimming or adding to the right edge while keeping vertical
         // same
         // Max of mscreenheight, mscreenwidth for both?
-        // Set 3000px of height  and arrange width to be longer than any possible scaling
-        // Then glscissor it down on length to fit and scale height up
-        //Matrix.orthoM(mtrxProjection, 0, -aspectRatio, aspectRatio, -1, 1, -1, 1);
-        // Setting this to something too small seems to break sprite drawings?
-        // Setting this too large causes letterboxing
         float bigdim = Math.max(mScreenWidth,mScreenHeight);
         float mindim = Math.min(mScreenWidth,mScreenHeight);
         //This may rebreak the orientation changes, trying to work towards proper scaling
@@ -189,11 +190,6 @@ public class mglRender implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(mtrxProjectionAndView, 0, mtrxProjection, 0, mtrxView, 0);
 
         GLES20.glViewport(0, 0, width, height);
-        // Be sure renderers know about the current projection
-        // Should be possible to set these once and leave them until changed but not working maybe need to pass in copy?
-        //GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(SpriteShader.sp_Wave, "uMVPMatrix"), 1, false, mtrxProjectionAndView, 0);
-        //GLES20.glUniformMatrix4fv(GLES20.glGetUniformLocation(SpriteShader.sp_Sprite, "uMVPMatrix"), 1, false, mtrxProjectionAndView, 0);
-        //Also need to reset the sealevel since it is based on actual pixels not projection pixels?
     }
 
     @Override
