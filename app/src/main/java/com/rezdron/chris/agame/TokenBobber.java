@@ -48,7 +48,7 @@ public class TokenBobber extends Token {
     public void onDraw()
     {
         GfxResourceHandler.getInstance().blitAt(this.gfx_type,phys.getX(),phys.getY(),0);
-        Log.d("token",this.name() + " at " + phys.getX().toString() + " : " + phys.getY().toString());
+        //Log.d("token",this.name() + " at " + phys.getX().toString() + " : " + phys.getY().toString());
         // Possibly want to do gfxresource handler blit @string at <x,y>
     }
 }
