@@ -1,7 +1,5 @@
 package com.rezdron.chris.agame;
 
-import android.support.v4.util.Pair;
-
 /**
  * Created by Chris on 1/14/2016.
  * Impliments vertical movement only physics as com.rezdron.chris.agame.Player token would use
@@ -32,7 +30,7 @@ public class PhysFloat extends TokenPhysics {
 
         float xdim = mglRender.getInstance().mScreenWidth;
         float ydim = mglRender.getInstance().mScreenHeight;
-        float xscale, yscale;
+        float xscale, yscale; // Comment for commit
 
         // Are these scaling to or from csreen pixel?
         xscale = 2/xdim;       // Pixels per gl coordinate unit
@@ -62,6 +60,7 @@ public class PhysFloat extends TokenPhysics {
         return true;
     }
 
+    /*
     private Pair<Integer,Integer> toWorldCoords(int x, int y)
     {
 
@@ -72,4 +71,5 @@ public class PhysFloat extends TokenPhysics {
     {
         return Pair.create(0,0);
     }
+    */
 }
