@@ -37,13 +37,13 @@ public class mglRender implements GLSurfaceView.Renderer {
     private static float[] shadowvertices;
     private static short[] shadowindices;
     private static float[] shadowuvs;
-    public static float vertices[];
-    public static short indices[];
-    public static float uvs[];
-    public static FloatBuffer vertexBuffer;
-    public static ShortBuffer drawListBuffer;
-    public static FloatBuffer uvBuffer;
-    public static int indexcount;
+    private static float vertices[];
+    private static short indices[];
+    private static float uvs[];
+    private static FloatBuffer vertexBuffer;
+    private static ShortBuffer drawListBuffer;
+    private static FloatBuffer uvBuffer;
+    private static int indexcount;
 
     private static boolean flip;
     private static short lastidx;
@@ -53,14 +53,14 @@ public class mglRender implements GLSurfaceView.Renderer {
     private static float time = SystemClock.uptimeMillis() / 250;
 
 
-    public float mScreenWidth = 1280;
-    public float mScreenHeight = 768;
+    private float mScreenWidth = 1280;
+    private float mScreenHeight = 768;
 
     private static mglRender instance = new mglRender();
 
     public static mglRender getInstance() { return instance; }
 
-    public mglRender()
+    private mglRender()
     {
     }
 
@@ -78,7 +78,7 @@ public class mglRender implements GLSurfaceView.Renderer {
         Render(mtrxProjectionAndView);
     }
 
-    public void Render(float[] m) {
+    private void Render(float[] m) {
         long last = SystemClock.currentThreadTimeMillis();
         // Flip buffers if needed
         if (flip) {
@@ -352,16 +352,16 @@ public class mglRender implements GLSurfaceView.Renderer {
         // May also not actually be needed?
         /* 0,0 */
         shadowuvs[0+(lastidx*8)] = gfx_x;
-        shadowuvs[1+(lastidx*8)] = 0.0f;
+        shadowuvs[1+(lastidx*8)] = 0.25f * gfx_frame;
         /* 0,1 */
         shadowuvs[2+(lastidx*8)] = gfx_x;
-        shadowuvs[3+(lastidx*8)] = 1.0f;
+        shadowuvs[3+(lastidx*8)] = 0.25f * (gfx_frame+1) ;
         /* 1,1 */
         shadowuvs[4+(lastidx*8)] = gfx_x + 1.0f/3;
-        shadowuvs[5+(lastidx*8)] = 1.0f;
+        shadowuvs[5+(lastidx*8)] = 0.25f * (gfx_frame+1);
         /* 1,0 */
         shadowuvs[6+(lastidx*8)] = gfx_x + 1.0f/3;
-        shadowuvs[7+(lastidx*8)] = 0.0f;
+        shadowuvs[7+(lastidx*8)] = 0.25f * gfx_frame;
         lastidx++;
     }
 }

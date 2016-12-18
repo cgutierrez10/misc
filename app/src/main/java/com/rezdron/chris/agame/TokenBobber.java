@@ -6,8 +6,9 @@ import android.util.Log;
  * Created by Chris on 1/22/2016.
  * First try at creating a fully functional mobile, not intended for release
  */
-public class TokenBobber extends Token {
+  public class TokenBobber extends Token {
     //String gfx_type = "sheep";
+    int frame = 0;
 
     public TokenBobber(int score) {
         super(score, new PhysFloat(10,10,(float) 0.0, (float) 5.0));
@@ -47,7 +48,8 @@ public class TokenBobber extends Token {
     @Override
     public void onDraw()
     {
-        GfxResourceHandler.getInstance().blitAt(this.gfx_type,phys.getX(),phys.getY(),0);
+        GfxResourceHandler.getInstance().blitAt(this.gfx_type,phys.getX(),phys.getY(),frame % 4);
+        frame = ++frame % 4;
         //Log.d("token",this.name() + " at " + phys.getX().toString() + " : " + phys.getY().toString());
         // Possibly want to do gfxresource handler blit @string at <x,y>
     }
