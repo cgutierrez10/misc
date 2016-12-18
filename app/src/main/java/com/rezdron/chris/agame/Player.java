@@ -19,14 +19,14 @@ public class Player extends Token {
     static Player instance = new Player();
     Player()
     {
-        super(0, new PlayerPhys(8,128,(float)0.0,(float)-15.0));
+        super(0, new PlayerPhys(0,128,(float)0.0,(float)-15.0));
         this.gfx_type = "player";
     }
 
     public void reset() {
         phys.x = 1000;
         phys.y = 128;
-        phys.x = 16;
+        phys.x = 0;
         phys.y = 128;
         phys.dvy = -15.0f;
         phys.dvy = 15.0f;

@@ -27,33 +27,21 @@ public class PhysFloat extends TokenPhysics {
         // World max is ?? mapped to
         // OpenGL is -1,1 mapped to
         // Screen pixels
-
-        float xdim = mglRender.getInstance().mScreenWidth;
-        float ydim = mglRender.getInstance().mScreenHeight;
-        float xscale, yscale; // Comment for commit
-
-        // Are these scaling to or from csreen pixel?
-        xscale = 2/xdim;       // Pixels per gl coordinate unit
-
-        yscale = 2/ydim;       // Pixels per gl coordinate unit
-
-        this.x = (int) (this.x * xscale);
-
         float timecount = ((float) ContentGen.getInstance().tickCount) / 25;
         //timecount = 50;
         //timecount += 1;
         // Update internal variables for x,y and dvx dvy
         //dvy = dvy + (grav * grav);
         //y = Math.round(dvy) + y;
-        //y = WaterLine.getInstance().
+        float x = (this.getX() / (mglRender.getInstance().mScreenWidth)) - 64;
         // This needs a scaling factor and a way to sync sea level to align to graphics height and range of motion
         // Looks to be vaguely accurate right now but might be out of time sync?
-        y = (int) (sealevel + Math.round(amp2*Math.sin((x*phase1 + timecount)*phase1*norm)
+         double wave = (Math.round(amp2*Math.sin((x*phase1 + timecount)*phase1*norm)
                 + amp1*Math.sin((x*phase2 - timecount)*phase2*norm)
                 - 0.035*Math.sin(timecount*2.5 + x)));
+        double scale = (512/mglRender.getInstance().mScreenHeight);
+        y = (int) ((wave * scale * 4.0) + (sealevel / 2));
         // Equation is returning pixel coords, object <x,y> are in world coords need to convert to pixel coords before the function and back afterwards
-        this.x = (int) (this.x / xscale);
-        this.y = (int) (this.y / yscale);
 
         // Return values never being used currently anyway
         //return (x < -100 || x > 1000) ? false : true;

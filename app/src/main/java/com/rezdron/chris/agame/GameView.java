@@ -66,19 +66,18 @@ public class GameView
     public void unPause() { Log.d("transition","Unpausing"); mThread.setPause(false); }
     public void newStart() {
         mThread.resetGame();
-        TokenHandler.getInstance().addToken(new TokenBobber(0,70,350));
-        TokenHandler.getInstance().addToken(new TokenBobber(0,140,350));
-        TokenHandler.getInstance().addToken(new TokenBobber(0,210,350));
-        TokenHandler.getInstance().addToken(new TokenBobber(0,280,350));
-        TokenHandler.getInstance().addToken(new TokenBobber(0,350,350));
-        TokenHandler.getInstance().addToken(new TokenBobber(0,420,350));
 
+        TokenHandler.getInstance().addToken(new TokenBobber(0,496,410));
+        TokenHandler.getInstance().addToken(new TokenBobber(0,255,410));
+
+        /*
         TokenHandler.getInstance().addToken(new TokenBobber(0,70,450));
         TokenHandler.getInstance().addToken(new TokenBobber(0,140,450));
         TokenHandler.getInstance().addToken(new TokenBobber(0,210,450));
         TokenHandler.getInstance().addToken(new TokenBobber(0,280,450));
         TokenHandler.getInstance().addToken(new TokenBobber(0,350,450));
         TokenHandler.getInstance().addToken(new TokenBobber(0,420,450));
+        */
         Log.d("transition","Unpausing");
         mThread.setPause(false); }
 
