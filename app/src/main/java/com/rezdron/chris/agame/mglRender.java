@@ -29,7 +29,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Building whole shader pipeline?
  * TODO: Debug screen resolution, possibly related to screen density, tablet is very off from phone displays
  */
-public class mglRender implements GLSurfaceView.Renderer {
+class mglRender implements GLSurfaceView.Renderer {
     private final float[] mtrxProjection = new float[16];
     private final float[] mtrxView = new float[16];
     private final float[] mtrxProjectionAndView = new float[16];
@@ -53,14 +53,14 @@ public class mglRender implements GLSurfaceView.Renderer {
     private static float time = SystemClock.uptimeMillis() / 250;
 
 
-    private float mScreenWidth = 1280;
-    private float mScreenHeight = 768;
+    float mScreenWidth = 1280;
+    float mScreenHeight = 768;
 
     private static mglRender instance = new mglRender();
 
     public static mglRender getInstance() { return instance; }
 
-    private mglRender()
+    mglRender()
     {
     }
 
@@ -245,7 +245,7 @@ public class mglRender implements GLSurfaceView.Renderer {
 
     }
 
-    public void SetupImage()
+    void SetupImage()
     {
         //Textures, load one in
         int[] texturenames = new int[1];
@@ -270,7 +270,7 @@ public class mglRender implements GLSurfaceView.Renderer {
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, GfxResourceHandler.getInstance().getRsx("sheep"), 0);
     }
 
-    public static void setFlip() {
+    static void setFlip() {
         // If lastidx = 0 then no spriteblits were called since last flip
         // Ideally this would do a blank spriteblit then allow screen clears
             vertices = shadowvertices;
@@ -289,7 +289,7 @@ public class mglRender implements GLSurfaceView.Renderer {
     // width, height are drawsize
     // gfx_x are texture cooridinates
     // gfx_frame is a offset for animated frames, multiply by gfx_height to get vertical offset if needed
-    public void spriteBlit(int x, int y, int width, int height, float gfx_x, float gfx_height, int gfx_frame, int gfx_max)
+    void spriteBlit(int x, int y, int width, int height, float gfx_x, float gfx_height, int gfx_frame, int gfx_max)
     {
         // Each shadow buffer is expected to be allocated in render (when flip = yes)
         // And reallocated in render

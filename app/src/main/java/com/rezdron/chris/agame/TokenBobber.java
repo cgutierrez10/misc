@@ -6,15 +6,15 @@ import android.util.Log;
  * Created by Chris on 1/22/2016.
  * First try at creating a fully functional mobile, not intended for release
  */
-  public class TokenBobber extends Token {
+  class TokenBobber extends Token {
     //String gfx_type = "sheep";
-    int frame = 0;
+    private int frame = 0;
 
     public TokenBobber(int score) {
         super(score, new PhysFloat(10,10,(float) 0.0, (float) 5.0));
     }
 
-    public TokenBobber(int score, int x, int y) {
+    TokenBobber(int score, int x, int y) {
         super(score, new PhysFloat(x,y,(float) 0.0, (float) 0.0));
         Log.d("token","Adding bobber");
         this.gfx_type = "player";
