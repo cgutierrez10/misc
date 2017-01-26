@@ -4,12 +4,12 @@ package com.rezdron.chris.agame;
  * Created by Chris on 1/14/2016.
  * Impliments vertical movement only physics as com.rezdron.chris.agame.Player token would use
  */
-public class PhysVertBounce extends TokenPhysics {
-    int range;
-    int offset;
-    int life = 425;
+class PhysVertBounce extends TokenPhysics {
+    private int range;
+    private int offset;
+    private int life = 425;
 
-    public PhysVertBounce(int input_x, int input_y, float input_dvx, float input_dvy, int input_range)
+    PhysVertBounce(int input_x, int input_y, float input_dvx, float input_dvy, int input_range)
     {
         super(input_x,input_y,input_dvx,input_dvy);
         offset = input_y;
@@ -30,6 +30,6 @@ public class PhysVertBounce extends TokenPhysics {
             dvy = dvy * -1;
         }
 
-        return (life < 0) ? false : true;
+        return life >= 0;
     }
 }

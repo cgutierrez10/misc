@@ -4,15 +4,15 @@ package com.rezdron.chris.agame;
  * Created by Chris on 1/14/2016.
  * Impliments vertical movement only physics as com.rezdron.chris.agame.Player token would use
  */
-public class PhysFloat extends TokenPhysics {
-    double phase1 = 19.0f;
-    double phase2 = 24.0f;
-    double amp1 = (phase2/(phase1 + phase2) * 10);
-    double amp2 = (phase1/(phase1 + phase2) * 10);
-    double norm = (1.0/Math.sqrt(phase1 * phase1 + phase2 * phase2));
-    int sealevel = 0;
+class PhysFloat extends TokenPhysics {
+    private double phase1 = 19.0f;
+    private double phase2 = 24.0f;
+    private double amp1 = (phase2/(phase1 + phase2) * 10);
+    private double amp2 = (phase1/(phase1 + phase2) * 10);
+    private double norm = (1.0/Math.sqrt(phase1 * phase1 + phase2 * phase2));
+    private int sealevel = 0;
 
-    public PhysFloat(int input_x, int input_y, float input_dvx, float input_dvy)
+    PhysFloat(int input_x, int input_y, float input_dvx, float input_dvy)
     {
         super(input_x,input_y,input_dvx,input_dvy);
         sealevel = y;
@@ -28,12 +28,9 @@ public class PhysFloat extends TokenPhysics {
         // OpenGL is -1,1 mapped to
         // Screen pixels
         float timecount = ((float) ContentGen.getInstance().tickCount) / 25;
-        //timecount = 50;
-        //timecount += 1;
         // Update internal variables for x,y and dvx dvy
-        //dvy = dvy + (grav * grav);
-        //y = Math.round(dvy) + y;
-        float x = (this.getX() / (mglRender.getInstance().mScreenWidth)) - 64;
+        //float x = (this.getX() / (mglRender.getInstance().mScreenWidth)) - 64; // all sprites are 64px wide before scaling, should be -64 post scaled?
+        float x = (this.getX() / (mglRender.getInstance().mScreenWidth)) + (32 / mglRender.getInstance().mScreenWidth); // all sprites are 64px wide before scaling, should be -64 post scaled?
         // This needs a scaling factor and a way to sync sea level to align to graphics height and range of motion
         // Looks to be vaguely accurate right now but might be out of time sync?
          double wave = (Math.round(amp2*Math.sin((x*phase1 + timecount)*phase1*norm)
@@ -42,7 +39,6 @@ public class PhysFloat extends TokenPhysics {
         double scale = (512/mglRender.getInstance().mScreenHeight);
         y = (int) ((wave * scale * 4.0) + (sealevel / 2));
         // Equation is returning pixel coords, object <x,y> are in world coords need to convert to pixel coords before the function and back afterwards
-
         // Return values never being used currently anyway
         //return (x < -100 || x > 1000) ? false : true;
         return true;
