@@ -63,22 +63,38 @@ class PlayerPhys extends TokenPhysics {
 
     // Not called yet, still minor debugging to do with the bobbers. Placing this to proto out what it will look like and some hooked up variables
     public void jumpCheck() {
-        float timecount = ((float) ContentGen.getInstance().tickCount) / 25;
+        /*float timecount = ((float) ContentGen.getInstance().tickCount) / 25;
         float x = (this.getX() / (mglRender.getInstance().mScreenWidth)) + (32 / mglRender.getInstance().mScreenWidth); // all sprites are 64px wide before scaling, should be -64 post scaled?
         double wave = (Math.round(amp2*Math.sin((x*phase1 + timecount)*phase1*norm)
                 + amp1*Math.sin((x*phase2 - timecount)*phase2*norm)
                 - 0.035*Math.sin(timecount*2.5 + x)));
         double scale = (512/mglRender.getInstance().mScreenHeight);
-        jump = ((wave * scale * 4.0) + (sealevel / 2)) > this.y;
+        jump = ((wave * scale * 4.0) + (sealevel / 2)) > this.y;*/
+
+
+        float timecount = ((float) ContentGen.getInstance().tickCount) / 25;
+        // Update internal variables for x,y and dvx dvy
+        //float x = (this.getX() / (mglRender.getInstance().mScreenWidth)) - 64; // all sprites are 64px wide before scaling, should be -64 post scaled?
+        float x = (this.getX() / (mglRender.getInstance().mScreenWidth)) + (32 / mglRender.getInstance().mScreenWidth); // all sprites are 64px wide before scaling, should be -64 post scaled?
+        // This needs a scaling factor and a way to sync sea level to align to graphics height and range of motion
+        // Looks to be vaguely accurate right now but might be out of time sync?
+        double wave = (Math.round(amp2*Math.sin((x*phase1 + timecount)*phase1*norm)
+                + amp1*Math.sin((x*phase2 - timecount)*phase2*norm)
+                - 0.035*Math.sin(timecount*2.5 + x)));
+        double scale = (512/mglRender.getInstance().mScreenHeight);
+        jump = (int) ((wave * scale * 4.0) + (sealevel / 2)) > this.y;
 
         // Start from sea level instead of adding it in everywhere else
         // Positive transition out of water, dvy increases by a bonus, may need tuning to ensure clearing is instant or does not retrigger again until dvy flips
         if (jump)
         {
-            // TODO: Find unit vector formula for the tangent found above and find formula for alignment of the tangent with the players motion vector
             // This should be the tangent of the above waveheight aligned with current dvy
-            // Added or removed as a bonus
-            addDvy(1.0f);
+            // Added or removed as a bonus, up to 50% +/- currently can be scaled more
+
+            // Using cosines instead of sines here as derivative for tangent
+            addDvy((1.5f - Math.abs((this.x/this.y) - (Math.round(amp2*Math.cos((x*phase1 + timecount)*phase1*norm)
+                    + amp1*Math.cos((x*phase2 - timecount)*phase2*norm)
+                    - 0.035*Math.cos(timecount*2.5 + x))))) * this.dvy);
             fly = dvy > 0;
         }
     }

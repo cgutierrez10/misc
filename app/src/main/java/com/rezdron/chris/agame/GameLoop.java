@@ -36,7 +36,7 @@ public class GameLoop extends Thread {
     {
         while (gameState.getMode() == GameMode.MODE.LOADING)
         {
-            // TODO add somethign here to avoid warnings
+            // TODO add something here to avoid warnings
             // Perform loading operations
 
             // Map build

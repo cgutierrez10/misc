@@ -10,6 +10,8 @@ abstract class TokenPhysics {
     protected Integer y = 32; // Starting pixel
     float dvx = (float) 0.0;
     float dvy = (float) 0.0;
+    float udvy = (float) 0.0; // This could maybe be used as a world travel rate
+                              // If playerjump accelerates forward motion it could be tracked here?
     // Gravity will be -5.4 per second, tick is presuming 1/60th second per physics step
     // After 60 intervals should have come to -5.4m/s of velocity
     // Will be tuned with playtesting, desired sqrt(accel / 60) = 1/60th second accel
@@ -33,6 +35,8 @@ abstract class TokenPhysics {
     public Integer getY() {
         return y;
     }
+
+    public void setudvy(float ddvy) { this.dvy = this.dvy + ddvy; }
 
     abstract public Boolean tick();
 }
