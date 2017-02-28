@@ -51,6 +51,7 @@ public class GameThread extends Thread {
         long start = SystemClock.currentThreadTimeMillis();
         while (running) {
             // TODO: Debug end timer can maybe be removed?
+            // Maybe incorporate as a game mode, time attack?
             // Pausing will reset the timed end interval and maybe throw off score counter
             // Only used for debug
             /* This if breaks the pause function somehow
