@@ -1,3 +1,4 @@
+package com.rezdron.v2cam;
 // Command types
 // S = settings codes
 // P = point (move to coord at safe z then plunge to max depth, bring back to safe-z)

@@ -1,9 +1,6 @@
-import java.io.*;
-import java.lang.reflect.Array;
+package com.rezdron.v2cam;
 import java.math.RoundingMode;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -21,20 +18,26 @@ import java.util.LinkedList;
 // s is 2 digit number associated with a setting
 // All others are duples in mm coords
 public class v2cam_core {
-	String filename = "test.vtx";
-	parser FileParser = new parser(filename);
-	Double[] settings = new Double[256];
+	private String filename = "";
+	private int[] settings = new int[256];
 	// Init to 2mm in thousandths
-	int xinit = 2000;
-	int yinit = 2000;
-	int zinit = 2000;
-	int millspeed,clearspeed,zspeed,zclear, zstep, zmaxdepth, bitwidth, millingspeed;
+	private int xinit = 2000;
+	private int yinit = 2000;
+	private int zinit = 2000;
+	private int millspeed,clearspeed,zspeed,zclear, zstep, zmaxdepth, bitwidth;
 	
+	public String runFile(String Filenm) {
+		this.filename = Filenm;
+		parser FileParser = new parser(filename);
+		LinkedList<cmd> commands = FileParser.getCmds();
+		this.PopulateSettings(commands);
+		return this.pathtoGcode(this.vtxtoPath(this.cmdstoVertexList(commands)));
+	}
 	// Validate stream
 	// On fail should output appropriate errors then return bool to block further processing
 	// Initially accept only one set for each, global to the machine process
 	// Later accept re-set values midway into project
-	private void PopulateSettings(LinkedList<cmd> commands) {
+	protected void PopulateSettings(LinkedList<cmd> commands) {
 		
 		cmd cmdItem;
 		Iterator<cmd> i = commands.iterator();
@@ -42,7 +45,7 @@ public class v2cam_core {
 			cmdItem = i.next();
 			if (cmdItem.type == cmdTypes.S)
 			{
-				this.settings[(cmdItem.value1)] = ((double) cmdItem.value2 / 1000);
+				this.settings[(cmdItem.value1)] = cmdItem.value2;
 			}
 		}
 	}
@@ -51,7 +54,7 @@ public class v2cam_core {
 	// Build vertex order first creating a vertex list object, 
 	// Pass through an optimizer (remove redundant vtx's, combine movements where possible etc)
 	// Then go through the list of vertexes and create the gcode string for the path
-	public LinkedList<triplet> cmdstoVertexList() {
+	protected LinkedList<triplet> cmdstoVertexList(LinkedList<cmd> commands) {
 		// x,y,z will be used for internal tracking of jog coordinates
 		int x = this.xinit;
 		int y = this.yinit;
@@ -69,7 +72,7 @@ public class v2cam_core {
 		zclear=5;
 		
 		
-		LinkedList<cmd> commands = this.FileParser.getCmds();
+		//LinkedList<cmd> commands = this.FileParser.getCmds();
 		cmd cmdItem;
 		// Always create 'home point' vertex, all operations assume previous one committed vertex for its end position
 		// x,y,z initialized above from settings
@@ -116,7 +119,7 @@ public class v2cam_core {
 	// This should be coded such that putting a path back into it should result in the same path
 	// Multiple arrangements of vertexlists may result in equal paths but a computed path should always return the same path
 	// Resulting path is a walk from (0,0), last step will convert walk to absolute coords including xinit and yinit
-	private LinkedList<triplet> vtxtoPath(LinkedList<triplet> vertexList) {
+	protected LinkedList<triplet> vtxtoPath(LinkedList<triplet> vertexList) {
 		// Not going to solve TSP here. The vertex list provided will be followed
 		// Will not try to reorder steps to make shorter or simpler paths
 		LinkedList<triplet> path = new LinkedList<triplet>();
@@ -138,12 +141,12 @@ public class v2cam_core {
 		// Possibly a backup step for ramps to return to start point at current zstep
 		
 		//This assumed offset to to a profile
-		path.add(new triplet(x+(direction*clearance),y+(direction*clearance),zclear));
+		path.add(new triplet(0,0,zclear));
 		int i = 0;
 		while (vertexList.size() >= i) 
 		{
 			current = vertexList.get(i);
-			newVtx = new triplet(x + current.x+(direction*clearance),y + current.y+(direction*clearance),z + current.z);
+			newVtx = new triplet(current.x+(direction*clearance),current.y+(direction*clearance),current.z);
 		 	if (i == 0) { last = vertexList.get(0); }
 		 	else { last = vertexList.get(i-1); }
 		 	if (i+1 < vertexList.size()) { next = vertexList.get(i+1); }
@@ -163,9 +166,9 @@ public class v2cam_core {
 		 			// Ramp mode will break vertexes but never change direction, maybe just create the additional vertex here in the list
 		 			// And then let the path continue as it will still reach the destination at the zstep
 		 			// Determine length of cut, and should be on a clearance pass
-		 			// Length needs to be millingspeed/plungespeed or greater
+		 			// Length needs to be millspeed/plungespeed or greater
 		 			double length = Math.sqrt((current.x*current.x) + (current.y*current.y));
-		 			double ramp = zstep*(millingspeed / zspeed);
+		 			double ramp = zstep*(millspeed / zspeed);
 		 			double ramplength = Math.sqrt((zstep * zstep) + 1);
 		 			// If this then we're good, need to find portion of pass at reduced ramp speed
 		 			if (length > ramp) { 
@@ -181,7 +184,10 @@ public class v2cam_core {
 		 			} */
 		 			else {
 		 				// f'it just do a plunge to depth then mill
-		 				triplet rampVtx = new triplet(last.x, last.y, last.z - zstep);
+		 				// Need to use last x,y from last entered vertex since this has the offsets and if direction changes
+		 				// Recalculating the offsets would be incorrect
+		 				// last from vertexList would be same as path.getLast except it has the clearances
+		 				triplet rampVtx = new triplet(path.getLast().x, path.getLast().y, last.z - zstep);
 		 				path.add(rampVtx);
 		 			}
 		 		}
@@ -217,7 +223,7 @@ public class v2cam_core {
 		return path;
 	}
 
-	private String pathtoGcode(LinkedList<triplet> vertices) {
+	protected String pathtoGcode(LinkedList<triplet> vertices) {
 		Iterator<triplet> iter = vertices.iterator();
 		triplet current = new triplet(0,0,0);
 		int x = this.xinit;
@@ -238,12 +244,12 @@ public class v2cam_core {
 		return commandStr;
 	}
 	
-	private String getJogCode(Integer x, Integer y, Integer z) {
-		return getJogCode(x,y,z,((z<=zclear) ? millingspeed : clearspeed));
+	protected String getJogCode(Integer x, Integer y, Integer z) {
+		return getJogCode(x,y,z,((z<=zclear) ? millspeed : clearspeed));
 	}
 	
 	// Ramp functions can call this directly while others can leave out specifying the speed
-	private String getJogCode(Integer x, Integer y, Integer z, Integer speed) {
+	protected String getJogCode(Integer x, Integer y, Integer z, Integer speed) {
 		Double factor = 1000.0;
 		DecimalFormat df = new DecimalFormat("####0.0000"); // This format gives up to 9.99meters of range
 		df.setRoundingMode(RoundingMode.HALF_UP);

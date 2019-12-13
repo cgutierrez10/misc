@@ -1,3 +1,4 @@
+package com.rezdron.v2cam;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,7 +24,7 @@ public class parser {
 	// On fail should output appropriate errors then return bool to block further processing
 	// Initially accept only one set for each, global to the machine process
 	// Later accept re-set values midway into project
-	private boolean ValidateHeader(LinkedList<cmd> commands) {
+	protected boolean ValidateHeader(LinkedList<cmd> commands) {
 		// Init to a blank value
 		Boolean[] required = new Boolean[16];
 		Arrays.fill(required, false);
@@ -52,7 +53,7 @@ public class parser {
 	}
 	
 	// All commands must have 2 values following, two values must be positive doubles, can flip coords at output if desired
-	private boolean ValidateCmds(LinkedList<cmd> commands) {
+	protected boolean ValidateCmds(LinkedList<cmd> commands) {
 		cmd cmdItem;
 		Iterator<cmd> i = commands.iterator();
 		while (i.hasNext()) {
@@ -66,7 +67,7 @@ public class parser {
 		return true;
 	}
 	
-	private LinkedList<cmd> ReadFileTokens(String fileName) {
+	protected LinkedList<cmd> ReadFileTokens(String fileName) {
 		LinkedList<cmd> commands = new LinkedList<cmd>();
 		int lineNum = 0;
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8));) {
