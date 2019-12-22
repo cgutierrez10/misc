@@ -21,10 +21,19 @@ public class v2cam_core {
 	private String filename = "";
 	private int[] settings = new int[256];
 	// Init to 2mm in thousandths
-	private int xinit = 2000;
-	private int yinit = 2000;
-	private int zinit = 2000;
-	private int millspeed,clearspeed,zspeed,zclear, zstep, zmaxdepth, bitwidth;
+	private int xinit = 5000;
+	private int yinit = 5000;
+	private int zinit = 0;
+	private int millspeed,clearspeed,zspeed; //zclear, zstep, zmaxdepth;
+	
+
+	// For compiling will hardcode these values
+	// Changing the zmax-depth should affect the length of output by adding/removing loops of clearancing
+	private int zmaxdepth=-2000; 
+	private int zstep = 500;
+	private int zclear=5000;
+	private int bitwidth = 3174;
+
 	
 	public String runFile(String Filenm) {
 		this.filename = Filenm;
@@ -38,14 +47,13 @@ public class v2cam_core {
 	// Initially accept only one set for each, global to the machine process
 	// Later accept re-set values midway into project
 	protected void PopulateSettings(LinkedList<cmd> commands) {
-		
 		cmd cmdItem;
 		Iterator<cmd> i = commands.iterator();
 		while (i.hasNext()) {
 			cmdItem = i.next();
 			if (cmdItem.type == cmdTypes.S)
 			{
-				this.settings[(cmdItem.value1)] = cmdItem.value2;
+				this.settings[(cmdItem.value1/1000)] = cmdItem.value2;
 			}
 		}
 	}
@@ -56,27 +64,21 @@ public class v2cam_core {
 	// Then go through the list of vertexes and create the gcode string for the path
 	protected LinkedList<triplet> cmdstoVertexList(LinkedList<cmd> commands) {
 		// x,y,z will be used for internal tracking of jog coordinates
-		int x = this.xinit;
-		int y = this.yinit;
-		int z = this.zinit;
+		int x = xinit;
+		int y = yinit;
+		int z = zinit;
 		LinkedList<triplet> vtx = new LinkedList<triplet>();
 		//VertexList vtx = new VertexList();
 		// These variables come from the settings codes
 		// *speed values control movement when milling, clear of surface and ramp/plunge cuts
 		// zclear and zmaxdepth control minimum z to be assumed clear of surface and z depth at max
 		// bitwidth sets the width of the bit for inside/outside dimension corrections
-
-		// For compiling will hardcode these values
-		zmaxdepth=-1500; 
-		bitwidth=3175;
-		zclear=5;
-		
 		
 		//LinkedList<cmd> commands = this.FileParser.getCmds();
 		cmd cmdItem;
 		// Always create 'home point' vertex, all operations assume previous one committed vertex for its end position
 		// x,y,z initialized above from settings
-		vtx.add(new triplet(x,y,z));
+		vtx.add(new triplet(xinit,yinit,zinit));
 		Iterator<cmd> i = commands.iterator();
 		while (i.hasNext()) {
 			cmdItem = i.next();
@@ -104,6 +106,7 @@ public class v2cam_core {
 					vtx.add(new triplet(x,y,zclear)); // Raise bit to given value
 				}
 				else if (cmdItem.type == cmdTypes.V) {
+					System.out.println(cmdItem.toString());
 					// Optimizer will handle pathing, breaking step down and determining inside/outside angles
 					x = x + cmdItem.value1;
 					y = y + cmdItem.value2;
@@ -113,6 +116,7 @@ public class v2cam_core {
 				}
 			}
 		}
+		//PrintPath(vtx, "vtx,from return of cmdtovtx");
 		return vtx;
 	}
 	
@@ -120,16 +124,14 @@ public class v2cam_core {
 	// Multiple arrangements of vertexlists may result in equal paths but a computed path should always return the same path
 	// Resulting path is a walk from (0,0), last step will convert walk to absolute coords including xinit and yinit
 	protected LinkedList<triplet> vtxtoPath(LinkedList<triplet> vertexList) {
+		PrintPath(vertexList, "vertexlist, from top of vtxtopath");
 		// Not going to solve TSP here. The vertex list provided will be followed
 		// Will not try to reorder steps to make shorter or simpler paths
 		LinkedList<triplet> path = new LinkedList<triplet>();
 		triplet current, next, last, newVtx = new triplet(0,0,0);
-		//int x = this.xinit;
-		//int y = this.yinit;
-		//int z = this.zinit; // Usually 0
 		int direction = -1; // Direction controls pocketing or profiling, -1 creates outside clearance (profiling), 1 offsets inside the line (pocketting)
-		int offset = ((bitwidth*10)/2); // Bit width, to a 1/10,000th of mm, when needed round such that face is correctest and outer is less precise
-		int clearance = bitwidth+offset;
+		int offset = ((bitwidth)/2); // Bit width, to a 1/10,000th of mm, when needed round such that face is correctest and outer is less precise
+		int clearance = bitwidth;
 		Boolean clearancePass = true;
 		
 		// Need to make several determinations
@@ -141,9 +143,9 @@ public class v2cam_core {
 		// Possibly a backup step for ramps to return to start point at current zstep
 		
 		//This assumed offset to to a profile
-		path.add(new triplet(0,0,zclear));
+		//path.add(new triplet(direction*clearance,direction*clearance,zclear));
 		int i = 0;
-		while (vertexList.size() >= i) 
+		while (vertexList.size() > i) 
 		{
 			current = vertexList.get(i);
 			newVtx = new triplet(current.x+(direction*clearance),current.y+(direction*clearance),current.z);
@@ -153,7 +155,7 @@ public class v2cam_core {
 		 	else { next = vertexList.get(i); }
 
 		 	// Determine if this vertex is in the list, toggle clearance cut or milling cut, possibly do a ramp vertex
-		 	if (path.contains(newVtx)) {
+		 	if (path.contains(newVtx)) { // Path contains here seems to not be doing what I expected. May need to compare more explicitly
 		 		clearancePass = clearancePass ? false : true;
 		 		clearance = clearance + (clearancePass ? offset : -offset);
 		 		newVtx.x = current.x+(direction*clearance);
@@ -220,25 +222,27 @@ public class v2cam_core {
 		 	i++;
 		}
 		
+		//It's generating path without a clearance path, not looping in for depth of cutting either
+		PrintPath(path, "path, from bottom of vtx to path");
 		return path;
 	}
 
+	
+	// No math here, purely outputting computed math to gcode format
+	// Command to vtx creates a walk
+	// vtx to path converts walk to absolute coord pathing with clearance cuts and z ramping
+	// path is fully computed coordinates
 	protected String pathtoGcode(LinkedList<triplet> vertices) {
+		PrintPath(vertices, "vertices from top fo pathtogcode");
 		Iterator<triplet> iter = vertices.iterator();
 		triplet current = new triplet(0,0,0);
-		int x = this.xinit;
-		int y = this.yinit;
-		int z = this.zinit;
 		String commandStr = "";
 		while (iter.hasNext()) {
 			current = iter.next();
-			x = x + current.x;
-			y = y + current.y;
-			z = z + current.z;
 			// Will need to determine motion type based on previous motion and next motion
 			// Nevermind, every motion at this point will be a jog motion, optimizer will expand/reduce
 			// vertex list as needed. This will only have to determine speeds
-			commandStr = commandStr + getJogCode(x,y,z);	
+			commandStr = commandStr + getJogCode(current.x,current.y,current.z);	
 				// If this z and the z at vertex at last pass are same attempt to ramp down by 1 zstep else simple straight cutting
 		}
 		return commandStr;
@@ -254,9 +258,18 @@ public class v2cam_core {
 		DecimalFormat df = new DecimalFormat("####0.0000"); // This format gives up to 9.99meters of range
 		df.setRoundingMode(RoundingMode.HALF_UP);
 		df.setMaximumFractionDigits(4);
-		return "$J=X" +	df.format(x) + 
+		return "$J=X" +	df.format(x/factor) + 
 			" Y" + df.format(y/factor) +
-			" Z" + df.format(x/factor) + 
+			" Z" + df.format(z/factor) + 
 		    " F" + speed + "\n";
+	}
+	
+	protected void PrintPath(LinkedList<triplet> vtxList, String extraInfo) {
+		System.out.println(extraInfo);
+		Iterator i = vtxList.iterator();
+		while (i.hasNext()) {
+			System.out.println(i.next().toString());
+		}
+			
 	}
 }

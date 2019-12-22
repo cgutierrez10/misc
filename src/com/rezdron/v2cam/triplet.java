@@ -18,6 +18,11 @@ public class triplet {
 		this.z = (int) c;
 	}
 	
+	public String toString()
+	{
+		return "<" + this.x + "," + this.y + "," + this.z + ">";
+	}
+	
 	public triplet add(triplet plus) {
 		return new triplet(this.x + plus.x, this.y + plus.y, this.z + plus.z);
 	}
