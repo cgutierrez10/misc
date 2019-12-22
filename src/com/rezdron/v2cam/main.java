@@ -7,7 +7,7 @@ public class main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		v2cam_core v2cam = new v2cam_core();
-		System.out.print(v2cam.runFile("test.vtx"));
+		System.out.print(v2cam.runFile("testFile.vtx"));
 	}
 
 }
