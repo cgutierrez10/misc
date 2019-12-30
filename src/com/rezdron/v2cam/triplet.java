@@ -43,4 +43,25 @@ public class triplet {
 		// return normalized scalar
 		return Math.sqrt((this.x * this.x) + (this.y * this.y) + (this.z * this.z));
 	}
-}
+	
+	
+    // Triplet compare, need to check <x,y,z> are equal between them all 
+    @Override
+    public boolean equals(Object o) { 
+  
+        // If the object is compared with itself then return true   
+        if (o == this) { 
+            return true; 
+        } 
+  
+        /* Check if o is an instance of Complex or not 
+          "null instanceof [type]" also returns false */
+        if (!(o instanceof triplet)) { 
+            return false; 
+        } 
+          
+        // typecast o to Complex so that we can compare data members  
+        triplet t = (triplet) o; 
+        return ((Integer.compare(t.x, x) == 0) && (Integer.compare(t.y, y) == 0) && (Integer.compare(t.z, z) == 0));
+    } 
+} 

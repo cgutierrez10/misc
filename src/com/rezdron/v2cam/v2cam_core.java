@@ -24,12 +24,14 @@ public class v2cam_core {
 	private int xinit = 5000;
 	private int yinit = 5000;
 	private int zinit = 0;
-	private int millspeed,clearspeed,zspeed; //zclear, zstep, zmaxdepth;
+	private int clearspeed; //zclear, zstep, zmaxdepth;
 	
 
 	// For compiling will hardcode these values
 	// Changing the zmax-depth should affect the length of output by adding/removing loops of clearancing
-	private int zmaxdepth=-2000; 
+	private int zmaxdepth=-2000;
+	private int zspeed = 500;
+	private int millspeed = 175000;
 	private int zstep = 500;
 	private int zclear=5000;
 	private int bitwidth = 3174;
@@ -145,24 +147,28 @@ public class v2cam_core {
 		//This assumed offset to to a profile
 		//path.add(new triplet(direction*clearance,direction*clearance,zclear));
 		int i = 0;
-		while (vertexList.size() > i) 
+		int zval = 0;
+		while (zval > zmaxdepth) // This must have originally been to do a single loop, should be while last vertex on path is > zmaxdepth
 		{
 			current = vertexList.get(i);
-			newVtx = new triplet(current.x+(direction*clearance),current.y+(direction*clearance),current.z);
+			newVtx = new triplet(current.x+(direction*clearance),current.y+(direction*clearance),zval);
 		 	if (i == 0) { last = vertexList.get(0); }
 		 	else { last = vertexList.get(i-1); }
 		 	if (i+1 < vertexList.size()) { next = vertexList.get(i+1); }
 		 	else { next = vertexList.get(i); }
-
+		 	
 		 	// Determine if this vertex is in the list, toggle clearance cut or milling cut, possibly do a ramp vertex
 		 	if (path.contains(newVtx)) { // Path contains here seems to not be doing what I expected. May need to compare more explicitly
+		 		System.out.println("Enterted first contains true loop");
 		 		clearancePass = clearancePass ? false : true;
 		 		clearance = clearance + (clearancePass ? offset : -offset);
 		 		newVtx.x = current.x+(direction*clearance);
 		 		newVtx.y = current.y+(direction*clearance);
-		 		newVtx.z = current.z;
+		 		newVtx.z = zval;
 			 	// Need to determine ramp settings here and potentially break one movement into two
-		 		if (path.contains(newVtx)) {
+		 		// Only ramp on a clearance pass, otherwise do an edge path first then switch to clearance and ramp
+		 		if (path.contains(newVtx) && clearancePass) {
+		 			System.out.println("Enterted second contains true loop");
 		 			// made clearance pass and milling pass, time to ramp or finish
 		 			// If at finish current == last also
 		 			// Ramp mode will break vertexes but never change direction, maybe just create the additional vertex here in the list
@@ -172,15 +178,16 @@ public class v2cam_core {
 		 			double length = Math.sqrt((current.x*current.x) + (current.y*current.y));
 		 			double ramp = zstep*(millspeed / zspeed);
 		 			double ramplength = Math.sqrt((zstep * zstep) + 1);
+	 				zval = zval - zstep;
 		 			// If this then we're good, need to find portion of pass at reduced ramp speed
-		 			if (length > ramp) { 
-		 				triplet rampVtx = new triplet(newVtx.x * ramplength, newVtx.y * ramplength, newVtx.z - zstep);
+		 			if (length > ramp) {
+		 				triplet rampVtx = new triplet(newVtx.x * ramplength, newVtx.y * ramplength, zval);
 		 				path.add(rampVtx);
 		 			} /*else if (length * 3 > ramp) {
 		 				// Need to slow down the milling speed to complete plunge this jog
 		 				// Try ramp at triple distance, double back
 		 				
-		 				// Todo, impliment this, for the time being will use the fallback, plunge and mill
+		 				// Todo, implement this, for the time being will use the fallback, plunge and mill
 		 				System.out.println("Tried to do a switchback ramp, not fully implimented do not use the result file");
 		 				triplet rampVtx = new triplet(last.x, last.y, last.z - zstep);
 		 			} */
@@ -189,13 +196,11 @@ public class v2cam_core {
 		 				// Need to use last x,y from last entered vertex since this has the offsets and if direction changes
 		 				// Recalculating the offsets would be incorrect
 		 				// last from vertexList would be same as path.getLast except it has the clearances
-		 				triplet rampVtx = new triplet(path.getLast().x, path.getLast().y, last.z - zstep);
+		 				triplet rampVtx = new triplet(path.getLast().x, path.getLast().y, zval);
 		 				path.add(rampVtx);
 		 			}
 		 		}
 		 	}
-
-
 		 	// Also check for safe z and combine vertexes until next z movement occurs
 		 	// If z raising to zclear then at .2mm above 0z can increase to zclear speed for rest of z movement
 		 	if (last.z < 0 && current.z > zclear) {
@@ -220,6 +225,7 @@ public class v2cam_core {
 		 	// Handle for this being the last vertex, revert to original direction hardcoded now for profiling cutting
 		 	if (vertexList.peekLast() == current) { direction = -1; }
 		 	i++;
+		 	i = i % vertexList.size();
 		}
 		
 		//It's generating path without a clearance path, not looping in for depth of cutting either
@@ -233,7 +239,7 @@ public class v2cam_core {
 	// vtx to path converts walk to absolute coord pathing with clearance cuts and z ramping
 	// path is fully computed coordinates
 	protected String pathtoGcode(LinkedList<triplet> vertices) {
-		PrintPath(vertices, "vertices from top fo pathtogcode");
+		PrintPath(vertices, "vertices from top of pathtogcode");
 		Iterator<triplet> iter = vertices.iterator();
 		triplet current = new triplet(0,0,0);
 		String commandStr = "";
@@ -261,7 +267,7 @@ public class v2cam_core {
 		return "$J=X" +	df.format(x/factor) + 
 			" Y" + df.format(y/factor) +
 			" Z" + df.format(z/factor) + 
-		    " F" + speed + "\n";
+		    " F" + df.format(speed/factor) + "\n";
 	}
 	
 	protected void PrintPath(LinkedList<triplet> vtxList, String extraInfo) {
